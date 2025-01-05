@@ -15,8 +15,11 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create()
     {
+        if (Auth::user()) {
+            return redirect('dashboard');
+        }
         return view('auth.login');
     }
 
@@ -25,6 +28,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        $request->validate([
+            'g-recaptcha-response' => 'required|recaptcha',
+        ]);
         $request->authenticate();
 
         $request->session()->regenerate();

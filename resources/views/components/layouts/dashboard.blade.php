@@ -40,8 +40,8 @@
                 <a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
                 <div class="app-branding">
                     <a class="app-logo" href="{{ env('APP_URL') }}">
-                        <img class="logo-icon me-2" src="{{ asset('assets') }}/images/app-logo.svg" alt="logo">
-                        <span class="logo-text">PORTAL</span>
+                        {{-- <img class="logo-icon me-2" src="{{ asset('assets') }}/images/app-logo.svg" alt="logo"> --}}
+                        <span class="logo-text">DISNAK</span>
                     </a>
                 </div>
                 <x-sidebar></x-sidebar>

@@ -19,6 +19,8 @@
 
     <!-- App CSS -->
     <link id="theme-style" rel="stylesheet" href="{{ asset('assets') }}/css/portal.css">
+
+    {!! ReCaptcha::htmlScriptTagJsApi() !!}
 </head>
 {{ $slot }}
 

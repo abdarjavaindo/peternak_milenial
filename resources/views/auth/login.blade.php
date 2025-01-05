@@ -7,9 +7,10 @@
                     <div class="app-auth-body mx-auto">
 
                         <div class="app-auth-branding mb-4">
-                            <a class="app-logo" href="{{ env('APP_URL') }}">
-                                <img class="logo-icon me-2" src="{{ asset('assets') }}/images/app-logo.svg"
-                                    alt="logo">
+                            <a class="h1 app-logo" href="{{ env('APP_URL') }}">
+                                {{-- <img class="logo-icon me-2" src="{{ asset('assets') }}/images/app-logo.svg"
+                                    alt="logo"> --}}
+                                Dinas Peternakan
                             </a>
                         </div>
 
@@ -60,7 +61,15 @@
                                             </div>
                                         </div> --}}
                                     </div>
+                                </div>
 
+                                <div class="password mb-3">
+                                    <div class="text-center">
+                                        {!! htmlFormSnippet() !!}
+                                    </div>
+                                    @error('g-recaptcha-response')
+                                        <span class="fv-help-block text-center" style="color:red">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="text-center">
@@ -70,9 +79,9 @@
                                 </div>
                             </form>
 
-                            <div class="auth-option text-center pt-5">No Account? Sign up
+                            {{-- <div class="auth-option text-center pt-5">No Account? Sign up
                                 <a class="text-link" href="{{ route('register') }}">here</a>.
-                            </div>
+                            </div> --}}
                         </div><!--//auth-form-container-->
 
                     </div><!--//auth-body-->
@@ -87,7 +96,9 @@
 
             <div class="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
                 {{-- change image below --}}
-                <div class="auth-background-holder"></div>
+                {{-- <div class="auth-background-holder"></div> --}}
+                <img src="https://static.promediateknologi.id/crop/0x0:0x0/750x500/photo/p2/77/2024/06/08/adhy-kurban-1453939168.jpg"
+                    alt="" style="height: 100vh; width: 100%; object-fit: cover">
 
                 <div class="auth-background-mask"></div>
             </div><!--//auth-background-col-->
