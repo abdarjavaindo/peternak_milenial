@@ -18,7 +18,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ request()->segment(1) == 'pengadaan' ? 'active' : '' }}"
+            <a class="nav-link {{ request()->segment(1) == 'pembelajaran' ? 'active' : '' }}"
                 href="{{ route('pengadaan') }}">
                 <span class="nav-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -29,22 +29,22 @@
                             d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
                     </svg>
                 </span>
-                <span class="nav-link-text">Pengadaan</span>
+                <span class="nav-link-text">Pembelajaran</span>
             </a>
         </li>
 
         @if (auth()->user()->hasRole('admin'))
             <li class="nav-item">
-                <a class="nav-link {{ request()->segment(1) == 'vendor' ? 'active' : '' }}"
+                <a class="nav-link {{ request()->segment(1) == 'produk' ? 'active' : '' }}"
                     href="{{ route('vendor') }}">
                     <span class="nav-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-bank" viewBox="0 0 16 16">
+                            class="bi bi-bag" viewBox="0 0 16 16">
                             <path
-                                d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.5.5 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89zM3.777 3h8.447L8 1zM2 6v7h1V6zm2 0v7h2.5V6zm3.5 0v7h1V6zm2 0v7H12V6zM13 6v7h1V6zm2-1V4H1v1zm-.39 9H1.39l-.25 1h13.72z" />
+                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
                         </svg>
                     </span>
-                    <span class="nav-link-text">Vendor</span>
+                    <span class="nav-link-text">Produk</span>
                 </a>
             </li>
 
@@ -92,11 +92,11 @@
                     <ul class="submenu-list list-unstyled">
                         <li class="submenu-item">
                             <a class="submenu-link {{ request()->segment(1) == 'kpa' ? 'active' : '' }}"
-                                href="#">KPA</a>
+                                href="#">Kategori Kursus</a>
                         </li>
                         <li class="submenu-item">
                             <a class="submenu-link {{ request()->segment(1) == 'kegiatan' ? 'active' : '' }}"
-                                href="#">Kegiatan</a>
+                                href="#">Kategori Produk</a>
                         </li>
                     </ul>
                 </div>

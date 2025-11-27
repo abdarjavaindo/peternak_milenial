@@ -20,7 +20,8 @@
                                     <th class="text-center" width="5%">No</th>
                                     <th class="text-center" width="12%">Nama</th>
                                     <th class="text-center" width="13%">Email</th>
-                                    <th class="text-center" width="13%">Nominal</th>
+                                    <th class="text-center" width="13%">NIK</th>
+                                    <th class="text-center" width="13%">Level</th>
                                     <th class="text-center" width="13%">Status</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
@@ -65,7 +66,10 @@
                 data: 'email'
             },
             {
-                data: 'nominal'
+                data: 'nik'
+            },
+            {
+                data: 'level'
             },
             {
                 data: 'status_sekarang'

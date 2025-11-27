@@ -1,26 +1,27 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Vendor</h1>
+    <h1 class="app-page-title">Produk</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
         <div class="grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-description" align="right">
+                    {{-- <div class="card-description" align="right">
                         <a href="{{ route('vendor.create') }}" class="btn text-white" style="background-color: #165d7d"><i
                                 class="fa fa-plus"></i>
                             Tambah Vendor
                         </a>
                     </div>
-                    <hr>
+                    <hr> --}}
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" id="_table" width="100%">
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">Nama Vendor</th>
-                                    <th class="text-center" width="13%">Direktur</th>
-                                    <th class="text-center" width="13%">No Telp</th>
+                                    <th class="text-center" width="12%">Nama Produk</th>
+                                    <th class="text-center" width="13%">Harga</th>
+                                    <th class="text-center" width="13%">Stok</th>
+                                    <th class="text-center" width="13%">Peternak</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -48,7 +49,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ url('vendor/loaddata') }}",
+            url: "{{ url('produk/loaddata') }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -58,13 +59,16 @@
                 data: 'DT_RowIndex'
             },
             {
-                data: 'nama_vendor'
+                data: 'title'
             },
             {
-                data: 'nama_direktur'
+                data: 'price'
             },
             {
-                data: 'no_telp'
+                data: 'stock'
+            },
+            {
+                data: 'peternak'
             },
             {
                 data: 'aksi',

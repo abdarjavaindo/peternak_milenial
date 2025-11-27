@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('status', 1)->after('remember_token')->default('0');
+            $table->string('nik')->nullable();
+            $table->string('level')->nullable()->comment("pemula, menengah, ahli");
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['status']);
+            $table->dropColumn(['status', 'nik']);
         });
     }
 };

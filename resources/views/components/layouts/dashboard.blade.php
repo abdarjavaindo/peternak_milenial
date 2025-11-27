@@ -41,7 +41,7 @@
                 <div class="app-branding">
                     <a class="app-logo" href="{{ env('APP_URL') }}">
                         {{-- <img class="logo-icon me-2" src="{{ asset('assets') }}/images/app-logo.svg" alt="logo"> --}}
-                        <span class="logo-text">DISNAK</span>
+                        <span class="logo-text">PETERNAK MILENIAL</span>
                     </a>
                 </div>
                 <x-sidebar></x-sidebar>

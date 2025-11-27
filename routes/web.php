@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PembelajaranController;
 use App\Http\Controllers\PengadaanController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
@@ -19,7 +22,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [AuthenticatedSessionController::class, 'create']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
+Route::get('/login', [AuthenticatedSessionController::class, 'create']);
 Route::get('/license', function () {
     return "Designed by PT Abdar Java Indo";
 });
@@ -42,21 +47,21 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('user')->group(fun
     Route::post('/', [UserController::class, 'store'])->name('user.store');
 });
 
-Route::middleware(['auth', 'verified', 'role:admin'])->prefix('vendor')->group(function () {
-    Route::get('/', [VendorController::class, 'index'])->name('vendor');
-    Route::post('/loaddata', [VendorController::class, 'loaddata'])->name('vendor.loaddata');
-    Route::get('/edit/{vendor}', [VendorController::class, 'edit'])->name('vendor.edit');
-    Route::put('/{vendor}', [VendorController::class, 'update'])->name('vendor.update');
-    Route::get('/change/{vendor}', [VendorController::class, 'change'])->name('vendor.change');
-    Route::get('/create', [VendorController::class, 'create'])->name('vendor.create');
-    Route::post('/', [VendorController::class, 'store'])->name('vendor.store');
-    Route::delete('/{vendor}', [VendorController::class, 'destroy'])->name('vendor.destroy');
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('produk')->group(function () {
+    Route::get('/', [ProdukController::class, 'index'])->name('vendor');
+    Route::post('/loaddata', [ProdukController::class, 'loaddata'])->name('vendor.loaddata');
+    Route::get('/edit/{vendor}', [ProdukController::class, 'edit'])->name('vendor.edit');
+    Route::put('/{vendor}', [ProdukController::class, 'update'])->name('vendor.update');
+    Route::get('/change/{vendor}', [ProdukController::class, 'change'])->name('vendor.change');
+    Route::get('/create', [ProdukController::class, 'create'])->name('vendor.create');
+    Route::post('/', [ProdukController::class, 'store'])->name('vendor.store');
+    Route::delete('/{vendor}', [ProdukController::class, 'destroy'])->name('vendor.destroy');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/pengadaan', [PengadaanController::class, 'index'])->name('pengadaan');
-    Route::post('/pengadaan/loaddata', [PengadaanController::class, 'loaddata'])->name('pengadaan.loaddata');
-    Route::post('/pengadaan', [PengadaanController::class, 'store'])->name('pengadaan.store');
+    Route::get('/pembelajaran', [PembelajaranController::class, 'index'])->name('pengadaan');
+    Route::post('/pembelajaran/loaddata', [PembelajaranController::class, 'loaddata'])->name('pengadaan.loaddata');
+    Route::post('/pembelajaran', [PembelajaranController::class, 'store'])->name('pengadaan.store');
 });
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/pengadaan/create', [PengadaanController::class, 'create'])->name('pengadaan.create');

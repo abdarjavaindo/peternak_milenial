@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('vendor', function (Blueprint $table) {
-            $table->string('bank')->after('no_rek_bank')->nullable();
-            $table->string('pemilik_no_rek')->after('bank')->nullable();
+        Schema::create('kategori_produks', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->timestamps();
         });
     }
 
@@ -22,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('vendor', function (Blueprint $table) {
-            $table->dropColumn(['bank', 'pemilik_no_rek']);
-        });
+        Schema::dropIfExists('kategori_produks');
     }
 };

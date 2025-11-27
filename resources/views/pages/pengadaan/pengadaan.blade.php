@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Pengadaan</h1>
+    <h1 class="app-page-title">Pembelajaran</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -21,10 +21,10 @@
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
                                     <th class="text-center" width="12%">User</th>
-                                    <th class="text-center" width="12%">Nama Vendor</th>
-                                    <th class="text-center" width="13%">Tanggal</th>
-                                    <th class="text-center" width="13%">Nominal</th>
-                                    <th class="text-center" width="13%">Nomor Rekening</th>
+                                    <th class="text-center" width="12%">Nama Kursus</th>
+                                    <th class="text-center" width="13%">publish</th>
+                                    <th class="text-center" width="13%">Level</th>
+                                    <th class="text-center" width="13%">Jumlah Peserta</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -52,7 +52,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ url('pengadaan/loaddata') }}",
+            url: "{{ url('pembelajaran/loaddata') }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -65,16 +65,16 @@
                 data: 'nama'
             },
             {
-                data: 'nama_vendor'
+                data: 'title'
             },
             {
-                data: 'tanggal'
+                data: 'is_published'
             },
             {
-                data: 'nominal'
+                data: 'level'
             },
             {
-                data: 'no_rek_belanja'
+                data: 'jumlah_peserta'
             },
             {
                 data: 'aksi',

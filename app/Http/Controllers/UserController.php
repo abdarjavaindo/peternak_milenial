@@ -20,12 +20,9 @@ class UserController extends Controller
                 $editUrl = '#';
                 $changeUrl = '#';
 
-                return ' <a href="' . $editUrl . '" class="btn btn-sm btn-warning mb-1 btn-icon"><i class="fa fa-edit"></i></a>'
-                    . ' <a href="' . $changeUrl . '" class="badge bg-info text-white mb-1">Ubah Status</a>'
-                    . ' <a href="' . $changeUrl . '" class="badge bg-warning text-black mb-1">Beri Anggaran</a>';
-            })
-            ->addColumn('nominal', function ($user) {
-                return "Rp " . number_format($user->nominal, 0, ',', '.');
+                return ' <a href="' . $editUrl . '" class="badge bg-success mb-1 btn-icon">Pemula</a>'
+                    . ' <a href="' . $changeUrl . '" class="badge bg-warning text-white mb-1 btn-icon">Menengah</a>'
+                    . ' <a href="' . $changeUrl . '" class="badge bg-danger text-black mb-1 btn-icon">Ahli</a>';
             })
             ->addColumn('status_sekarang', function ($user) {
                 return $user->status == 1 ? '<span class="text-success">Aktif</span>' : '<span class="text-danger">Tidak Aktif</span>';

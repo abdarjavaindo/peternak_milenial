@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produk;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class VendorController extends Controller
+class ProdukController extends Controller
 {
     public function loaddata()
     {
-        $data = Vendor::orderBy('id', 'desc')->get();
+        $data = Produk::orderBy('id', 'desc')->get();
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
-                $editUrl = route('vendor.edit', $data->id);
-                $changeUrl = route('vendor.change', $data->id);
+                $editUrl = '#';
+                $changeUrl = '#';
                 $deleteForm = '<form method="POST" action="' . route('vendor.destroy', $data->id) . '" class="delete-form" style="display:inline;">
                             ' . csrf_field() . '
                             ' . method_field('DELETE') . '
@@ -23,8 +24,11 @@ class VendorController extends Controller
 
                 return $deleteForm . ' <a href="' . $editUrl . '" class="btn btn-sm btn-warning mb-1 btn-icon"><i class="fa fa-edit"></i></a>';
             })
+            ->addColumn('peternak', function ($data) {
+                return 'Ramadhani';
+            })
             ->addIndexColumn()
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi', 'peternak'])
             ->make(true);
     }
 

@@ -63,14 +63,14 @@
                                     </div>
                                 </div>
 
-                                <div class="password mb-3">
+                                {{-- <div class="password mb-3">
                                     <div class="text-center">
                                         {!! htmlFormSnippet() !!}
                                     </div>
                                     @error('g-recaptcha-response')
                                         <span class="fv-help-block text-center" style="color:red">{{ $message }}</span>
                                     @enderror
-                                </div>
+                                </div> --}}
 
                                 <div class="text-center">
                                     <button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto">
@@ -79,9 +79,9 @@
                                 </div>
                             </form>
 
-                            {{-- <div class="auth-option text-center pt-5">No Account? Sign up
+                            <div class="auth-option text-center pt-5">No Account? Sign up
                                 <a class="text-link" href="{{ route('register') }}">here</a>.
-                            </div> --}}
+                            </div>
                         </div><!--//auth-form-container-->
 
                     </div><!--//auth-body-->
