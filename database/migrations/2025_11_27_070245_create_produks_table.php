@@ -14,21 +14,18 @@ return new class extends Migration
         Schema::create('produks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id'); // seller
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->string('title');
+            $table->unsignedBigInteger('kategori_produk_id')->nullable();
+            $table->string('nama_produk');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->integer('price')->default(0);
-            $table->integer('stock')->default(0);
-            $table->string('unit')->nullable();
-            $table->float('weight')->nullable();
-            $table->string('age')->nullable();
-            $table->string('health_status')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->text('deskripsi')->nullable();
+            $table->integer('harga')->default(0);
+            $table->integer('stok')->default(0);
+            $table->string('satuan')->nullable();
+            $table->boolean('aktif')->default(true);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('kategori_produks')->onDelete('set null');
+            $table->foreign('kategori_produk_id')->references('id')->on('kategori_produks')->onDelete('set null');
         });
     }
 

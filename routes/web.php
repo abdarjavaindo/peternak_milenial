@@ -1,17 +1,15 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Home\PelatihanController;
-use App\Http\Controllers\Home\ProdukController as HomeProdukController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Home\UserProfileController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PembelajaranController;
-use App\Http\Controllers\PengadaanController;
-use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\VendorController;
+use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\Home\KursusController;
+use App\Http\Controllers\Home\TokoController;
+use App\Http\Controllers\Dashboard\PembelajaranController;
+use App\Http\Controllers\Dashboard\ProdukController;
+use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,14 +23,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/login', [AuthenticatedSessionController::class, 'create']);
+
+#region Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
-Route::get('/login', [AuthenticatedSessionController::class, 'create']);
+
+Route::prefix('toko')->group(function () {
+    Route::get('/', [TokoController::class, 'index'])->name('shop');
+    Route::get('/detail', [TokoController::class, 'detail'])->name('shop.detail');
+});
+
+Route::prefix('kursus')->group(function () {
+    Route::get('/', [KursusController::class, 'index'])->name('pelatihan');
+    Route::get('/detail', [KursusController::class, 'detail'])->name('pelatihan.detail');
+});
+
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+    Route::get('/userprofile', [UserProfileController::class, 'edit'])->name('userprofile.edit');
+    Route::patch('/userprofile', [UserProfileController::class, 'update'])->name('userprofile.update');
+});
+#endregion
+
+#region Dashboard
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/license', function () {
     return "Designed by PT Abdar Java Indo";
 });
-
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -67,30 +84,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/pembelajaran', [PembelajaranController::class, 'store'])->name('pengadaan.store');
 });
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/pengadaan/create', [PengadaanController::class, 'create'])->name('pengadaan.create');
-    Route::post('/', [PengadaanController::class, 'store'])->name('pengadaan.store');
+    Route::get('/pengadaan/create', [PembelajaranController::class, 'create'])->name('pengadaan.create');
+    Route::post('/', [PembelajaranController::class, 'store'])->name('pengadaan.store');
 });
-
-Route::middleware(['auth', 'verified'])->prefix('kpa')->group(function () {
-    Route::get('/', [UserController::class, 'index'])->name('kpa');
-});
-Route::middleware(['auth', 'verified'])->prefix('kegiatan')->group(function () {
-    Route::get('/', [UserController::class, 'index'])->name('kegiatan');
-});
-
-Route::prefix('pelatihan')->group(function () {
-    Route::get('/', [PelatihanController::class, 'index'])->name('pelatihan');
-    Route::get('/detail', [PelatihanController::class, 'detail'])->name('pelatihan.detail');
-});
-
-Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/userprofile', [UserProfileController::class, 'edit'])->name('userprofile.edit');
-    Route::patch('/userprofile', [UserProfileController::class, 'update'])->name('userprofile.update');
-});
-
-Route::prefix('shop')->group(function () {
-    Route::get('/', [HomeProdukController::class, 'index'])->name('shop');
-    Route::get('/detail', [HomeProdukController::class, 'detail'])->name('shop.detail');
-});
+#endregion
 
 require __DIR__ . '/auth.php';

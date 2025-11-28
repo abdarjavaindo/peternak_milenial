@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -34,12 +35,12 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('pages.user.user');
+        return view('pages.dashboard.user.user');
     }
 
     public function create()
     {
-        return view('pages.user.user_form');
+        return view('pages.dashboard.user.user_form');
     }
 
     public function store(Request $request)
