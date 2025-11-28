@@ -80,6 +80,7 @@ Route::middleware(['auth', 'verified'])->prefix('kegiatan')->group(function () {
 
 Route::prefix('pelatihan')->group(function () {
     Route::get('/', [PelatihanController::class, 'index'])->name('pelatihan');
+    Route::get('/detail', [PelatihanController::class, 'detail'])->name('pelatihan.detail');
 });
 
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {

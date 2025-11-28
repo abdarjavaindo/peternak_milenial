@@ -5,14 +5,14 @@
                 <div class="row">
                     @foreach ($pelatihan as $fas)
                         <div class="col-lg-4 col-md-6 col-12">
-                            <a href="#">
+                            <a href="{{ route('pelatihan.detail') }}">
                                 <div class="card shop-list border-0 shadow position-relative overflow-hidden">
                                     <div class="shop-image position-relative overflow-hidden shadow">
                                         <img src="{{ $fas->thumbnail }}" class="img-fluid" alt=""
                                             style="width: 100%; height: 200px;">
                                     </div>
                                     <div class="card-body content p-4">
-                                        <a href="#" class="text-dark product-name h6">
+                                        <a href="{{ route('pelatihan.detail') }}" class="text-dark product-name h6">
                                             {{ $fas->title }}
                                         </a><br>
                                         <small class="text-muted">

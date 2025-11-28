@@ -13,4 +13,10 @@ class PelatihanController extends Controller
         $data['pelatihan'] = Kursus::where('is_published', 1)->get();
         return view('pages.pelatihan.index', $data);
     }
+
+    public function detail()
+    {
+        $data['title'] = 'Detail Pelatihan';
+        return view('pages.pelatihan.detail', $data);
+    }
 }
