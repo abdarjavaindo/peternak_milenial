@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Home\PelatihanController;
+use App\Http\Controllers\Home\ProdukController as HomeProdukController;
+use App\Http\Controllers\Home\UserProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PembelajaranController;
 use App\Http\Controllers\PengadaanController;
@@ -73,6 +76,20 @@ Route::middleware(['auth', 'verified'])->prefix('kpa')->group(function () {
 });
 Route::middleware(['auth', 'verified'])->prefix('kegiatan')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('kegiatan');
+});
+
+Route::prefix('pelatihan')->group(function () {
+    Route::get('/', [PelatihanController::class, 'index'])->name('pelatihan');
+});
+
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+    Route::get('/userprofile', [UserProfileController::class, 'edit'])->name('userprofile.edit');
+    Route::patch('/userprofile', [UserProfileController::class, 'update'])->name('userprofile.update');
+});
+
+Route::prefix('shop')->group(function () {
+    Route::get('/', [HomeProdukController::class, 'index'])->name('shop');
+    Route::get('/detail', [HomeProdukController::class, 'detail'])->name('shop.detail');
 });
 
 require __DIR__ . '/auth.php';

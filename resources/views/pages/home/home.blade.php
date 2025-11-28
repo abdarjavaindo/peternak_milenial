@@ -16,7 +16,11 @@
                             Mawa beya"
                         </p>
                         <div class="mbr-section-btn mt-3">
-                            <a class="btn btn-primary display-7" href="{{ route('login') }}">Ayo Rekk ... Gabung!</a>
+                            @if (!auth()->user())
+                                <a class="btn btn-primary display-7" href="{{ route('login') }}">
+                                    Ayo Rekk ... Gabung!
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>

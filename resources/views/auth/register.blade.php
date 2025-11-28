@@ -6,12 +6,12 @@
                 <div class="d-flex flex-column align-content-end">
                     <div class="app-auth-body mx-auto">
 
-                        <div class="app-auth-branding mb-4">
+                        {{-- <div class="app-auth-branding mb-4">
                             <a class="app-logo" href="{{ env('APP_URL') }}">
                                 <img class="logo-icon me-2" src="{{ asset('assets') }}/images/app-logo.svg"
                                     alt="logo">
                             </a>
-                        </div>
+                        </div> --}}
 
                         <h2 class="auth-heading text-center mb-4">Sign up</h2>
 
@@ -33,6 +33,16 @@
                                         class="form-control signup-email" placeholder="Email" required="required"
                                         value="{{ old('email') }}">
                                     @error('email')
+                                        <span class="text-danger" style="color:red">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="email mb-3">
+                                    <label class="sr-only" for="nik">NIK</label>
+                                    <input id="nik" name="nik" type="number"
+                                        class="form-control signup-email" placeholder="NIK" required="required"
+                                        value="{{ old('nik') }}">
+                                    @error('nik')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>

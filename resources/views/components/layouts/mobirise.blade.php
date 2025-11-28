@@ -64,20 +64,26 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link text-black display-4" href="https://mobiri.se">
+                            <a class="nav-link link text-black display-4" href="{{ route('shop') }}">
                                 Produk
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link text-black display-4" href="https://mobiri.se">
+                            <a class="nav-link link text-black display-4" href="{{ route('pelatihan') }}">
                                 Pelatihan
                             </a>
                         </li>
                     </ul>
                     <div class="navbar-buttons mbr-section-btn">
-                        <a class="btn btn-primary display-4" href="{{ route('login') }}">
-                            Ayo Rekk ... Gabung!
-                        </a>
+                        @if (auth()->user())
+                            <a class="btn btn-primary display-4" href="{{ route('userprofile.edit') }}">
+                                Menuju Profil
+                            </a>
+                        @else
+                            <a class="btn btn-primary display-4" href="{{ route('login') }}">
+                                Ayo Rekk ... Gabung!
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
