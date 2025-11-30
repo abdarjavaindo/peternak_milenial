@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
             'name' => 'user',
             'email' => 'user@gmail.com',
             'password' => bcrypt('password'),
+            'nik' => '3273011001900001',
         ]);
         $user->assignRole('user');
     }

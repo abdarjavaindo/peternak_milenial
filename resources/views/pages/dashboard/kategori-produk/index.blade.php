@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Kelola User</h1>
+    <h1 class="app-page-title">Produk</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -7,9 +7,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-description" align="right">
-                        <a href="{{ route('user.create') }}" class="btn text-white" style="background-color: #165d7d">
+                        <a href="{{ route('kategori-produk.create') }}" class="btn text-white"
+                            style="background-color: #222222">
                             <i class="fa fa-plus"></i>
-                            Tambah User
+                            Tambah
                         </a>
                     </div>
                     <hr>
@@ -18,11 +19,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">Nama</th>
-                                    <th class="text-center" width="13%">Email</th>
-                                    <th class="text-center" width="13%">NIK</th>
-                                    <th class="text-center" width="13%">Level</th>
-                                    <th class="text-center" width="13%">Status</th>
+                                    <th class="text-center" width="12%">Nama Kategori Produk</th>
+                                    <th class="text-center" width="13%">Slug</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -50,7 +48,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ url('user/loaddata') }}",
+            url: "{{ route('kategori-produk.loaddata') }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -60,19 +58,10 @@
                 data: 'DT_RowIndex'
             },
             {
-                data: 'name'
+                data: 'nama_kategori'
             },
             {
-                data: 'email'
-            },
-            {
-                data: 'nik'
-            },
-            {
-                data: 'level_sekarang'
-            },
-            {
-                data: 'status_sekarang'
+                data: 'slug_kategori'
             },
             {
                 data: 'aksi',
@@ -86,7 +75,7 @@
             zeroRecords: 'Data Tidak Ditemukan'
         },
         columnDefs: [{
-            "targets": [0, 4],
+            "targets": [0, 3],
             "className": "text-center",
         }],
     });

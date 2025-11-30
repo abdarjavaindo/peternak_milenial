@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\KategoriProdukController;
 use App\Http\Controllers\Home\UserProfileController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\KursusController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Dashboard\PembelajaranController;
 use App\Http\Controllers\Dashboard\ProdukController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Home\TokokuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +33,14 @@ Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
 
 Route::prefix('toko')->group(function () {
     Route::get('/', [TokoController::class, 'index'])->name('shop');
-    Route::get('/detail', [TokoController::class, 'detail'])->name('shop.detail');
+    Route::get('/detail/{slug}', [TokoController::class, 'detail'])->name('shop.detail');
+    Route::get('/user/{user_id}', [TokoController::class, 'toko'])->name('shop.user');
+});
+
+Route::middleware(['auth', 'verified'])->prefix('tokoku')->group(function () {
+    Route::get('/', [TokokuController::class, 'index'])->name('tokoku');
+    Route::get('/create', [TokokuController::class, 'create'])->name('tokoku.create');
+    Route::post('/create', [TokokuController::class, 'store'])->name('tokoku.store');
 });
 
 Route::prefix('kursus')->group(function () {
@@ -57,6 +66,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('kategori-produk')->group(function () {
+    Route::get('/', [KategoriProdukController::class, 'index'])->name('kategori-produk');
+    Route::post('/loaddata', [KategoriProdukController::class, 'loaddata'])->name('kategori-produk.loaddata');
+    Route::get('/edit/{kategori_produk}', [KategoriProdukController::class, 'edit'])->name('kategori-produk.edit');
+    Route::put('/{kategori_produk}', [KategoriProdukController::class, 'update'])->name('kategori-produk.update');
+    Route::get('/create', [KategoriProdukController::class, 'create'])->name('kategori-produk.create');
+    Route::post('/', [KategoriProdukController::class, 'store'])->name('kategori-produk.store');
+    Route::delete('/{kategori_produk}', [KategoriProdukController::class, 'destroy'])->name('kategori-produk.destroy');
+});
+
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('user');
     Route::post('/loaddata', [UserController::class, 'loaddata'])->name('user.loaddata');
@@ -65,6 +84,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('user')->group(fun
     Route::get('/change/{user}', [UserController::class, 'change'])->name('user.change');
     Route::get('/create', [UserController::class, 'create'])->name('user.create');
     Route::post('/', [UserController::class, 'store'])->name('user.store');
+    Route::delete('/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::get('/level/{user}', [UserController::class, 'level'])->name('user.level');
+    Route::post('/level/{user}', [UserController::class, 'levelstore'])->name('user.levelstore');
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('produk')->group(function () {

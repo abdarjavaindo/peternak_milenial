@@ -39,6 +39,18 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="nik" class="form-label">
+                                NIK
+                                <span class="text-danger"><i>(required)</i></span>
+                            </label>
+                            <input type="text" class="form-control" id="nik" name="nik"
+                                value="{{ isset($adminbasic) ? $adminbasic->nik : old('nik') }}" required>
+                            @error('nik')
+                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
                             <label for="password" class="form-label">Password <span
                                     class="text-danger"><i>{{ isset($adminbasic) ? '' : '(required)' }}</i></span></label>
                             <input type="password" class="form-control" id="password" name="password"

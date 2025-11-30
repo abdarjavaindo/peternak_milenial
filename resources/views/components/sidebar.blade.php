@@ -87,7 +87,7 @@
                     </span><!--//submenu-arrow-->
                 </a><!--//nav-link-->
                 <div id="submenu-1"
-                    class="collapse submenu submenu-1 {{ in_array(request()->segment(1), ['kpa', 'kegiatan']) ? 'show' : '' }}"
+                    class="collapse submenu submenu-1 {{ in_array(request()->segment(1), ['kpa', 'kategori-produk']) ? 'show' : '' }}"
                     data-bs-parent="#menu-accordion">
                     <ul class="submenu-list list-unstyled">
                         <li class="submenu-item">
@@ -95,8 +95,10 @@
                                 href="#">Kategori Kursus</a>
                         </li>
                         <li class="submenu-item">
-                            <a class="submenu-link {{ request()->segment(1) == 'kegiatan' ? 'active' : '' }}"
-                                href="#">Kategori Produk</a>
+                            <a class="submenu-link {{ request()->segment(1) == 'kategori-produk' ? 'active' : '' }}"
+                                href="{{ route('kategori-produk') }}">
+                                Kategori Produk
+                            </a>
                         </li>
                     </ul>
                 </div>

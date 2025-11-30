@@ -24,8 +24,8 @@ return new class extends Migration
             $table->boolean('is_published')->default(false);
             $table->timestamps();
 
-            $table->foreign('category_id')->references('id')->on('kategori_kursuses')->onDelete('set null');
-            $table->foreign('author_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('category_id')->references('id')->on('kategori_kursuses')->onDelete('cascade');
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

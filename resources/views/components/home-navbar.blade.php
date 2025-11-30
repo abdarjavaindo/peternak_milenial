@@ -159,8 +159,13 @@
                         <ul class="submenu">
                             @if (auth()->user()->hasRole('user'))
                                 <li>
-                                    <a href="#" class="sub-menu-item">
+                                    <a href="{{ route('tokoku.create') }}" class="sub-menu-item">
                                         Jual Produk
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('tokoku') }}" class="sub-menu-item">
+                                        Tokoku
                                     </a>
                                 </li>
                                 <li>
