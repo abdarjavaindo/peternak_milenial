@@ -92,14 +92,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('user')->group(fun
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('produk')->group(function () {
-    Route::get('/', [ProdukController::class, 'index'])->name('vendor');
-    Route::post('/loaddata', [ProdukController::class, 'loaddata'])->name('vendor.loaddata');
-    Route::get('/edit/{vendor}', [ProdukController::class, 'edit'])->name('vendor.edit');
-    Route::put('/{vendor}', [ProdukController::class, 'update'])->name('vendor.update');
-    Route::get('/change/{vendor}', [ProdukController::class, 'change'])->name('vendor.change');
-    Route::get('/create', [ProdukController::class, 'create'])->name('vendor.create');
-    Route::post('/', [ProdukController::class, 'store'])->name('vendor.store');
-    Route::delete('/{vendor}', [ProdukController::class, 'destroy'])->name('vendor.destroy');
+    Route::get('/', [ProdukController::class, 'index'])->name('produk');
+    Route::post('/loaddata', [ProdukController::class, 'loaddata'])->name('produk.loaddata');
+    Route::get('/edit/{produk}', [ProdukController::class, 'edit'])->name('produk.edit');
+    Route::put('/{produk}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::get('/change/{produk}', [ProdukController::class, 'change'])->name('produk.change');
+    // Route::get('/create', [ProdukController::class, 'create'])->name('vendor.create');
+    // Route::post('/', [ProdukController::class, 'store'])->name('vendor.store');
+    Route::delete('/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

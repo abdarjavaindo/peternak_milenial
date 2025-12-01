@@ -7,9 +7,9 @@
             <div class="card">
                 <div class="card-body">
                     {{-- <div class="card-description" align="right">
-                        <a href="{{ route('vendor.create') }}" class="btn text-white" style="background-color: #165d7d"><i
+                        <a href="{{ route('produk.create') }}" class="btn text-white" style="background-color: #165d7d"><i
                                 class="fa fa-plus"></i>
-                            Tambah Vendor
+                            Tambah
                         </a>
                     </div>
                     <hr> --}}
@@ -21,6 +21,8 @@
                                     <th class="text-center" width="12%">Nama Produk</th>
                                     <th class="text-center" width="13%">Harga</th>
                                     <th class="text-center" width="13%">Stok</th>
+                                    <th class="text-center" width="13%">Satuan</th>
+                                    <th class="text-center" width="13%">Status</th>
                                     <th class="text-center" width="13%">Peternak</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
@@ -49,7 +51,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ url('produk/loaddata') }}",
+            url: "{{ route('produk.loaddata') }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -59,13 +61,19 @@
                 data: 'DT_RowIndex'
             },
             {
-                data: 'title'
+                data: 'nama_produk'
             },
             {
-                data: 'price'
+                data: 'harga'
             },
             {
-                data: 'stock'
+                data: 'stok'
+            },
+            {
+                data: 'satuan'
+            },
+            {
+                data: 'status'
             },
             {
                 data: 'peternak'
@@ -82,7 +90,7 @@
             zeroRecords: 'Data Tidak Ditemukan'
         },
         columnDefs: [{
-            "targets": [0, 3],
+            "targets": [0, 7],
             "className": "text-center",
         }],
     });
