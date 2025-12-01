@@ -4,42 +4,51 @@
             <div class="row align-items-center">
                 <div class="col-md-5">
                     <div class="tiny-single-item">
-                        <div class="tiny-slide"><img src="{{ asset('assets') }}/landrick/images/shop/product/single-2.jpg"
-                                class="img-fluid rounded" alt=""></div>
-                        <div class="tiny-slide"><img
-                                src="{{ asset('assets') }}/landrick/images/shop/product/single-3.jpg"
-                                class="img-fluid rounded" alt=""></div>
-                        <div class="tiny-slide"><img
-                                src="{{ asset('assets') }}/landrick/images/shop/product/single-4.jpg"
-                                class="img-fluid rounded" alt=""></div>
-                        <div class="tiny-slide"><img
-                                src="{{ asset('assets') }}/landrick/images/shop/product/single-5.jpg"
-                                class="img-fluid rounded" alt=""></div>
-                        <div class="tiny-slide"><img
-                                src="{{ asset('assets') }}/landrick/images/shop/product/single-6.jpg"
-                                class="img-fluid rounded" alt=""></div>
+                        @foreach ($produk->gambar as $item)
+                            <div class="tiny-slide">
+                                <a href="{{ asset('storage/produk/' . $item->nama_file) }}">
+                                    <img src="{{ asset('storage/produk/' . $item->nama_file) }}" class="img-fluid rounded"
+                                        alt="" style="width: 100%; height: 500px;">
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
-                </div><!--end col-->
+                </div>
 
                 <div class="col-md-7 mt-4 mt-sm-0 pt-2 pt-sm-0">
                     <div class="section-title ms-md-4">
-                        <h4 class="title">Branded T-Shirts</h4>
-                        <h5 class="text-muted">$21.00</h5>
-                        <ul class="list-unstyled text-warning h5 mb-0">
+                        <h4 class="title">
+                            {{ $produk->nama_produk }}
+                        </h4>
+                        <h5 class="text-muted">
+                            {{ 'Rp ' . number_format($produk->harga, 0, ',', '.') . " Per $produk->satuan" }} (Stok
+                            {{ $produk->stok }})
+                        </h5>
+                        <p class="fw-light mt-1 mb-0">
+                            <i>
+                                Di publish oleh: {{ $produk->user->name }}
+                            </i>
+                        </p>
+                        {{-- <ul class="list-unstyled text-warning h5 mb-0">
                             <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
                             <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
                             <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
                             <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
                             <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                        </ul>
+                        </ul> --}}
 
                         <h5 class="mt-4 py-2">Overview :</h5>
-                        <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero
-                            exercitationem, unde molestiae sint quae inventore atque minima natus fugiat nihil quisquam
-                            voluptates ea omnis. Modi laborum soluta tempore unde accusantium.</p>
+                        <p class="text-muted">{{ $produk->deskripsi_singkat }}</p>
 
                         <div class="mt-4 pt-2">
-                            <a href="javascript:void(0)" class="btn btn-primary">Kontak WA</a>
+                            <a href="{{ 'https://wa.me/' . @$produk->user->no_telp }}" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+                                </svg>
+                                Kontak WA
+                            </a>
                         </div>
                     </div>
                 </div><!--end col-->
@@ -57,17 +66,17 @@
                                 <div class="text-center">
                                     <h6 class="mb-0">Description</h6>
                                 </div>
-                            </a><!--end nav link-->
-                        </li><!--end nav item-->
+                            </a>
+                        </li>
 
-                        <li class="nav-item m-1">
+                        {{-- <li class="nav-item m-1">
                             <a class="nav-link py-2 px-5 rounded" id="additional-info" data-bs-toggle="pill"
                                 href="#additional" role="tab" aria-controls="additional" aria-selected="false">
                                 <div class="text-center">
                                     <h6 class="mb-0">Additional Information</h6>
                                 </div>
-                            </a><!--end nav link-->
-                        </li><!--end nav item-->
+                            </a>
+                        </li> --}}
 
                         <li class="nav-item m-1">
                             <a class="nav-link py-2 px-5 rounded" id="review-comments" data-bs-toggle="pill"
@@ -75,20 +84,14 @@
                                 <div class="text-center">
                                     <h6 class="mb-0">Review</h6>
                                 </div>
-                            </a><!--end nav link-->
-                        </li><!--end nav item-->
+                            </a>
+                        </li>
                     </ul>
 
                     <div class="tab-content mt-5" id="pills-tabContent">
                         <div class="card border-0 tab-pane fade show active" id="description" role="tabpanel"
                             aria-labelledby="description-data" style="background: #edefea;">
-                            <p class="text-muted mb-0">Due to its widespread use as filler text for layouts,
-                                non-readability is of great importance: human perception is tuned to recognize certain
-                                patterns and repetitions in texts. If the distribution of letters and 'words' is random,
-                                the reader will not be distracted from making a neutral judgement on the visual impact
-                                and readability of the typefaces (typography), or the distribution of text on the page
-                                (layout or type area). For this reason, dummy text usually consists of a more or less
-                                random series of words or syllables.</p>
+                            <p class="text-muted mb-0">{!! $produk->deskripsi !!}</p>
                         </div>
 
                         <div class="card border-0 tab-pane fade" id="additional" role="tabpanel"
@@ -133,7 +136,7 @@
                                                         <small class="text-muted">15th August, 2021 at 01:25 pm</small>
                                                     </div>
                                                 </div>
-                                                <ul class="list-unstyled mb-0">
+                                                {{-- <ul class="list-unstyled mb-0">
                                                     <li class="list-inline-item"><i
                                                             class="mdi mdi-star text-warning"></i></li>
                                                     <li class="list-inline-item"><i
@@ -144,7 +147,7 @@
                                                             class="mdi mdi-star text-warning"></i></li>
                                                     <li class="list-inline-item"><i
                                                             class="mdi mdi-star text-warning"></i></li>
-                                                </ul>
+                                                </ul> --}}
                                             </div>
                                             <div class="mt-3">
                                                 <p class="text-muted fst-italic p-3 bg-light rounded">" Awesome product
@@ -166,7 +169,7 @@
                                                         <small class="text-muted">15th August, 2021 at 05:44 pm</small>
                                                     </div>
                                                 </div>
-                                                <ul class="list-unstyled mb-0">
+                                                {{-- <ul class="list-unstyled mb-0">
                                                     <li class="list-inline-item"><i
                                                             class="mdi mdi-star text-warning"></i></li>
                                                     <li class="list-inline-item"><i
@@ -177,14 +180,14 @@
                                                             class="mdi mdi-star text-warning"></i></li>
                                                     <li class="list-inline-item"><i
                                                             class="mdi mdi-star-outline text-warning"></i></li>
-                                                </ul>
+                                                </ul> --}}
                                             </div>
                                             <div class="mt-3">
                                                 <p class="text-muted fst-italic p-3 bg-light rounded mb-0">" Good "</p>
                                             </div>
                                         </li>
                                     </ul>
-                                </div><!--end col-->
+                                </div>
 
                                 <div class="col-lg-6 mt-4 mt-lg-0 pt-2 pt-lg-0">
                                     <form class="ms-lg-4">
@@ -192,7 +195,7 @@
                                             <div class="col-12">
                                                 <h5>Add your review:</h5>
                                             </div>
-                                            <div class="col-12 mt-4">
+                                            {{-- <div class="col-12 mt-4">
                                                 <h6 class="small fw-bold">Your Rating:</h6>
                                                 <a href="javascript:void(0)" class="d-inline-block me-3">
                                                     <ul class="list-unstyled mb-0 small">
@@ -268,7 +271,7 @@
                                                                 class="mdi mdi-star text-warning"></i></li>
                                                     </ul>
                                                 </a>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-md-12 mt-3">
                                                 <div class="mb-3">
                                                     <label class="form-label">Your Review:</label>
@@ -279,7 +282,7 @@
                                                             required=""></textarea>
                                                     </div>
                                                 </div>
-                                            </div><!--end col-->
+                                            </div>
 
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
@@ -292,7 +295,7 @@
                                                             required="">
                                                     </div>
                                                 </div>
-                                            </div><!--end col-->
+                                            </div>
 
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
@@ -304,17 +307,17 @@
                                                             name="email" class="form-control ps-5" required="">
                                                     </div>
                                                 </div>
-                                            </div><!--end col-->
+                                            </div>
 
                                             <div class="col-md-12">
                                                 <div class="send d-grid">
                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                 </div>
-                                            </div><!--end col-->
-                                        </div><!--end row-->
-                                    </form><!--end form-->
-                                </div><!--end col-->
-                            </div><!--end row-->
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

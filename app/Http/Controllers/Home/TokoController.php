@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kategori_produk;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -76,7 +77,14 @@ class TokoController extends Controller
 
     public function detail($slug)
     {
-        $data['produk'] = 'Detail Produk';
-        return view('pages.home.toko.detail_produk', $data);
+        $produk = Produk::with([
+            'kategori',
+            'user',
+            'gambar'
+        ])->where('slug', $slug)->firstOrFail();
+
+        return view('pages.home.toko.detail_produk', [
+            'produk' => $produk,
+        ]);
     }
 }

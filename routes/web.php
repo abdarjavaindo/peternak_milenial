@@ -34,6 +34,7 @@ Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
 Route::prefix('toko')->group(function () {
     Route::get('/', [TokoController::class, 'index'])->name('shop');
     Route::get('/detail/{slug}', [TokoController::class, 'detail'])->name('shop.detail');
+    // masih blm
     Route::get('/user/{user_id}', [TokoController::class, 'toko'])->name('shop.user');
 });
 
@@ -43,6 +44,7 @@ Route::middleware(['auth', 'verified'])->prefix('tokoku')->group(function () {
     Route::post('/create', [TokokuController::class, 'store'])->name('tokoku.store');
 });
 
+// masih blm
 Route::prefix('kursus')->group(function () {
     Route::get('/', [KursusController::class, 'index'])->name('pelatihan');
     Route::get('/detail', [KursusController::class, 'detail'])->name('pelatihan.detail');
@@ -55,7 +57,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
 #endregion
 
 #region Dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified', 'role:admin'])->get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/license', function () {
     return "Designed by PT Abdar Java Indo";
 });

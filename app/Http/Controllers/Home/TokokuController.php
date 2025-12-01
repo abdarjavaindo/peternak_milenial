@@ -87,6 +87,7 @@ class TokokuController extends Controller
         $request->validate([
             'nama_produk' => ['required'],
             'kategori_produk_id' => ['required'],
+            'deskripsi_singkat' => ['required'],
             'deskripsi' => ['required'],
             'harga' => ['required'],
             'stok' => ['required'],
@@ -98,6 +99,7 @@ class TokokuController extends Controller
             'nama_produk' => $request->nama_produk,
             'slug' => Str::slug($request->nama_produk),
             'kategori_produk_id' => $request->kategori_produk_id,
+            'deskripsi_singkat' => $request->deskripsi_singkat,
             'deskripsi' => $request->deskripsi,
             'harga' => str_replace('.', '', $request->harga),
             'stok' => $request->stok,

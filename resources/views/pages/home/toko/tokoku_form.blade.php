@@ -46,6 +46,17 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label for="deskripsi_singkat" class="form-label">
+                                        Overview (deskripsi singkat)
+                                    </label>
+                                    <textarea type="text" name="deskripsi_singkat" id="deskripsi_singkat" class="form-control border border-dark"
+                                        placeholder="" required>{{ old('deskripsi_singkat') }}</textarea>
+                                    @error('deskripsi_singkat')
+                                        <span class="text-danger" style="color:red">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
                                     <label for="deskripsi" class="form-label">
                                         Deskripsi Produk
                                     </label>

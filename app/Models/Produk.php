@@ -21,4 +21,9 @@ class Produk extends Model
     {
         return $this->hasMany(ProdukGambar::class, 'produk_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

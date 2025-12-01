@@ -18,7 +18,7 @@
                         <div class="auth-form-container text-start mx-auto">
                             <form class="auth-form auth-signup-form" method="POST" action="{{ route('register') }}">
                                 @csrf
-                                <div class="email mb-3">
+                                <div class="mb-3">
                                     <label class="sr-only" for="name">Nama</label>
                                     <input id="name" name="name" type="text" class="form-control signup-name"
                                         placeholder="Nama Lengkap" required="required" value="{{ old('name') }}">
@@ -27,7 +27,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="email mb-3">
+                                <div class="mb-3">
                                     <label class="sr-only" for="email">Email</label>
                                     <input id="email" name="email" type="email"
                                         class="form-control signup-email" placeholder="Email" required="required"
@@ -37,11 +37,19 @@
                                     @enderror
                                 </div>
 
-                                <div class="email mb-3">
+                                <div class="mb-3">
+                                    <label class="sr-only" for="no_telp">No Telpon (WA)</label>
+                                    <input id="no_telp" name="no_telp" type="number" class="form-control"
+                                        placeholder="628xxxxxxxxxx" required="required" value="{{ old('no_telp') }}">
+                                    @error('no_telp')
+                                        <span class="text-danger" style="color:red">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
                                     <label class="sr-only" for="nik">NIK</label>
-                                    <input id="nik" name="nik" type="number"
-                                        class="form-control signup-email" placeholder="NIK" required="required"
-                                        value="{{ old('nik') }}">
+                                    <input id="nik" name="nik" type="number" class="form-control"
+                                        placeholder="NIK" required="required" value="{{ old('nik') }}">
                                     @error('nik')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
@@ -72,14 +80,14 @@
                                         Sign Up
                                     </button>
                                 </div>
-                            </form><!--//auth-form-->
+                            </form>
 
                             <div class="auth-option text-center pt-1">Already have an account?
                                 <a class="text-link" href="{{ route('login') }}">Log in</a>
                             </div>
-                        </div><!--//auth-form-container-->
+                        </div>
 
-                    </div><!--//auth-body-->
+                    </div>
 
                     <footer class="app-auth-footer">
                         <x-footer></x-footer>

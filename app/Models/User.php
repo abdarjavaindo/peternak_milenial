@@ -25,6 +25,7 @@ class User extends Authenticatable
         'nik',
         'level',
         'status',
+        'no_telp',
     ];
 
     /**
