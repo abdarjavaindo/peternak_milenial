@@ -18,12 +18,12 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
+                                    <th class="text-center" width="13%">Peternak</th>
                                     <th class="text-center" width="12%">Nama Produk</th>
                                     <th class="text-center" width="13%">Harga</th>
                                     <th class="text-center" width="13%">Stok</th>
                                     <th class="text-center" width="13%">Satuan</th>
                                     <th class="text-center" width="13%">Status</th>
-                                    <th class="text-center" width="13%">Peternak</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -61,6 +61,9 @@
                 data: 'DT_RowIndex'
             },
             {
+                data: 'peternak'
+            },
+            {
                 data: 'nama_produk'
             },
             {
@@ -74,9 +77,6 @@
             },
             {
                 data: 'status'
-            },
-            {
-                data: 'peternak'
             },
             {
                 data: 'aksi',

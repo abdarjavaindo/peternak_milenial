@@ -12,6 +12,7 @@ use App\Http\Controllers\Dashboard\ProdukController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Home\TokokuController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create']);
+Route::middleware(['auth', 'verified'])->post('/upload-image', function (Request $request) {
+    if ($request->hasFile('file')) {
+        $image = $request->file('file');
+        $path = $image->store('uploads', 'public'); // Simpan ke `storage/app/public/uploads`
+        return response()->json(['location' => asset('storage/' . $path)]);
+    }
+    return response()->json(['error' => 'Gagal mengunggah gambar'], 400);
+})->name('upload.image');
 
 #region Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -100,6 +109,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('produk')->group(f
     // Route::get('/create', [ProdukController::class, 'create'])->name('vendor.create');
     // Route::post('/', [ProdukController::class, 'store'])->name('vendor.store');
     Route::delete('/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+    Route::get('/gambar/{produk_gambar}', [ProdukController::class, 'destroy_gambar'])->name('produk.destroy_gambar');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

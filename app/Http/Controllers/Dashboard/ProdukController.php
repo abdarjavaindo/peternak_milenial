@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kategori_produk;
 use App\Models\Produk;
+use App\Models\ProdukGambar;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -15,7 +17,7 @@ class ProdukController extends Controller
         $data = Produk::with(['user'])->orderBy('id', 'desc')->get();
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
-                $editUrl = '#';
+                $editUrl = route('produk.edit', $data->id);
                 $changeUrl = route('produk.change', $data->id);
                 $deleteForm = '<form method="POST" action="' . route('produk.destroy', $data->id) . '" class="delete-form" style="display:inline;">
                             ' . csrf_field() . '
@@ -60,36 +62,50 @@ class ProdukController extends Controller
         return redirect()->route('produk')->with('sukses', 'Anda berhasil memperbarui data');
     }
 
-    public function create()
+    public function edit(Produk $produk)
     {
-        return view('pages.vendor.vendor_form');
+        $data['kategori_produk'] = Kategori_produk::orderBy('id', 'desc')->get();
+        $data['produk'] = $produk;
+        return view('pages.dashboard.produk.produk_form', $data);
+    }
+    public function update(Request $request, Produk $produk)
+    {
+        $request->validate([
+            'nama_produk' => ['required'],
+            'kategori_produk_id' => ['required'],
+            'deskripsi_singkat' => ['required'],
+            'deskripsi' => ['required'],
+            'harga' => ['required'],
+            'stok' => ['required'],
+            'satuan' => ['required'],
+        ]);
+        $produk->nama_produk = $request->nama_produk;
+        $produk->kategori_produk_id = $request->kategori_produk_id;
+        $produk->deskripsi_singkat = $request->deskripsi_singkat;
+        $produk->deskripsi = $request->deskripsi;
+        $produk->harga = str_replace('.', '', $request->harga);
+        $produk->stok = $request->stok;
+        $produk->satuan = $request->satuan;
+        $produk->save();
+        if ($request->file('gambar')) {
+            foreach ($request->file('gambar') as $file) {
+                $originalName = $file->getClientOriginalName();
+                $safeName = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', pathinfo($originalName, PATHINFO_FILENAME));
+                $extension = $file->getClientOriginalExtension();
+                $finalName = $safeName . '_' . time() . '.' . $extension;
+                $path = $file->storeAs('produk', $finalName, 'public');
+                ProdukGambar::create([
+                    'produk_id' => $produk->id,
+                    'nama_file' => $finalName,
+                ]);
+            }
+        }
+        return redirect()->back()->with('sukses', 'Anda berhasil mengubah data');
     }
 
-    public function store(Request $request)
+    public function destroy_gambar(ProdukGambar $produk_gambar)
     {
-        $data = $request->validate([
-            'email' => 'required',
-            'nama_vendor' => 'required',
-            'nama_direktur' => 'required',
-            'npwp' => 'required',
-            'no_rek_bank' => 'required',
-            'bank' => 'required',
-            'pemilik_no_rek' => 'required',
-            'no_telp' => 'required',
-            'alamat' => 'required',
-        ]);
-
-        // $data = [
-        //     'nama_fasilitas' => $request->nama_fasilitas,
-        //     'kode_nomor' => $request->kode_nomor,
-        //     'deskripsi' => $request->deskripsi,
-        //     'alamat' => $request->alamat,
-        //     'link_maps' => $request->link_maps,
-        //     'kategori' => $request->kategori,
-        //     'status' => $request->status,
-        // ];
-
-        Vendor::create($data);
-        return redirect('vendor')->with('sukses', 'Anda berhasil menambahkan data vendor');
+        $produk_gambar->delete();
+        return redirect()->back()->with('sukses', 'Anda berhasil menghapus gambar');
     }
 }

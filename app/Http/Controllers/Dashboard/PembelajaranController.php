@@ -39,13 +39,13 @@ class PembelajaranController extends Controller
 
     public function index()
     {
-        return view('pages.pengadaan.pengadaan');
+        return view('pages.dashboard.pengadaan.pengadaan');
     }
 
     public function create()
     {
         $data['data_vendor'] = Vendor::get();
-        return view('pages.pengadaan.pengadaan_form', $data);
+        return view('pages.dashboard.pengadaan.pengadaan_form', $data);
     }
 
     public function store(Request $request)
