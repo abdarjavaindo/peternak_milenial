@@ -26,7 +26,8 @@
                         </h5>
                         <p class="fw-light mt-1 mb-0">
                             <i>
-                                Di publish oleh: {{ $produk->user->name }}
+                                Dijual oleh: <a
+                                    href="{{ route('shop.user', $produk->user->slug) }}">{{ $produk->user->name }}</a>
                             </i>
                         </p>
                         {{-- <ul class="list-unstyled text-warning h5 mb-0">
@@ -40,16 +41,35 @@
                         <h5 class="mt-4 py-2">Overview :</h5>
                         <p class="text-muted">{{ $produk->deskripsi_singkat }}</p>
 
-                        <div class="mt-4 pt-2">
-                            <a href="{{ 'https://wa.me/' . @$produk->user->no_telp }}" class="btn btn-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-                                </svg>
-                                Kontak WA
-                            </a>
-                        </div>
+                        @if (!auth()->check() || $produk->user_id != auth()->user()->id)
+                            <div class="mt-4 pt-2">
+                                <a href="{{ 'https://wa.me/' . @$produk->user->no_telp }}" class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+                                    </svg>
+                                    Kontak WA
+                                </a>
+                            </div>
+                        @else
+                            <div class="mt-4 pt-2">
+                                <a href="{{ route('tokoku.edit', $produk->id) }}" class="btn btn-warning">
+                                    Edit
+                                </a>
+                                <a href="{{ route('tokoku.destroy', $produk->id) }}" class="btn btn-danger"
+                                    onclick="return confirm('Apakah anda yakin akan ingin menghapus data ini')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                    Hapus
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div><!--end col-->
             </div><!--end row-->

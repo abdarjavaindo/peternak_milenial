@@ -11,13 +11,15 @@
                                 <h1 class="txtheader text-dark">
                                     {{ Str::upper(auth()->user()->name) }}
                                 </h1>
-                                <div class="widget">
-                                    <div class="d-grid gap-2">
-                                        <a class="btn btn-outline-dark" href="{{ route('tokoku.create') }}">
-                                            + Tambah Produk
-                                        </a>
+                                @if ($slug_user == auth()->user()->slug)
+                                    <div class="widget">
+                                        <div class="d-grid gap-2">
+                                            <a class="btn btn-outline-dark" href="{{ route('tokoku.create') }}">
+                                                + Tambah Produk
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endif
 
                             <!-- Categories -->
@@ -26,14 +28,14 @@
                                 <ul class="list-unstyled mt-4 mb-0 blog-categories">
                                     @foreach ($kategori_produk as $item)
                                         <li>
-                                            <a href="{{ route('tokoku') }}?slug={{ $item->slug_kategori }}"
+                                            <a href="{{ route('shop.user', $slug_user) }}?slug={{ $item->slug_kategori }}"
                                                 class="{{ isset($current_kategori) && $current_kategori->id == $item->id ? 'text-primary fw-bold' : '' }}">
                                                 {{ $item->nama_kategori }}
                                             </a>
                                         </li>
                                     @endforeach
                                     <li>
-                                        <a href="{{ route('tokoku') }}" class="text-danger">
+                                        <a href="{{ route('shop.user', $slug_user) }}" class="text-danger">
                                             <i>
                                                 Tidak ada
                                             </i>
@@ -90,10 +92,12 @@
                                                 {{ 'Rp ' . number_format($item->harga, 0, ',', '.') . " Per $item->satuan" }}
                                             </h6>
                                         </div>
-                                        @if ($item->aktif)
-                                            <p class="fw-light text-success mt-1 mb-0">Published</p>
-                                        @else
-                                            <p class="fw-light text-danger mt-1 mb-0">Suspend</p>
+                                        @if (auth()->check())
+                                            @if ($item->aktif)
+                                                <p class="fw-light text-success mt-1 mb-0">Published</p>
+                                            @else
+                                                <p class="fw-light text-danger mt-1 mb-0">Suspend</p>
+                                            @endif
                                         @endif
                                     </div>
                                 </div>

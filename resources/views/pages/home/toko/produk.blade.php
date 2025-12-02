@@ -9,7 +9,8 @@
                             @if (auth()->user())
                                 <div class="widget">
                                     <div class="d-grid gap-2">
-                                        <a class="btn btn-dark" href="{{ route('tokoku') }}">Lihat Tokoku</a>
+                                        <a class="btn btn-dark"
+                                            href="{{ route('shop.user', auth()->user()->slug) }}">Lihat Tokoku</a>
                                     </div>
                                 </div>
                             @endif
@@ -68,7 +69,8 @@
                                     <div class="mb-0">
                                         <select class="form-select form-control" id="Sortbylist-job">
                                             <option value="">Uratkan berdasarkan ...</option>
-                                            <option value="terbaru" {{ request('sort') == 'terbaru' ? 'selected' : '' }}>
+                                            <option value="terbaru"
+                                                {{ request('sort') == 'terbaru' ? 'selected' : '' }}>
                                                 Terbaru
                                             </option>
                                             {{-- <option>Sort by popularity</option> --}}

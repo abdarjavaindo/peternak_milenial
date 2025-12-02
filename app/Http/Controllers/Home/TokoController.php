@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori_produk;
 use App\Models\Produk;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -85,6 +86,73 @@ class TokoController extends Controller
 
         return view('pages.home.toko.detail_produk', [
             'produk' => $produk,
+        ]);
+    }
+
+    public function toko(Request $request, $slug_user)
+    {
+        $user = User::where('slug', $slug_user)->firstOrFail();
+        $userId = $user->id;
+
+        // Ambil kategori berdasarkan produk milik user
+        $kategori_produk  = DB::table('kategori_produks')
+            ->join('produks', 'kategori_produks.id', '=', 'produks.kategori_produk_id')
+            ->where('produks.user_id', $userId)
+            ->select('kategori_produks.*')
+            ->distinct()
+            ->get();
+
+        $search = $request->s; // keyword pencarian
+        $slug = $request->slug; // kategori slug
+
+        $query = DB::table('produks')
+            ->leftJoin('kategori_produks', 'produks.kategori_produk_id', '=', 'kategori_produks.id')
+            ->leftJoin('users', 'produks.user_id', '=', 'users.id')
+            ->leftJoin('produk_gambars', function ($join) {
+                $join->on('produks.id', '=', 'produk_gambars.produk_id')
+                    ->whereRaw('produk_gambars.id = (
+                            SELECT id FROM produk_gambars
+                            WHERE produk_id = produks.id
+                            ORDER BY id ASC LIMIT 1
+                            )');
+            })
+            ->where('produks.user_id', $userId);
+
+        // --- Jika slug ada → filter kategori ---
+        $current_kategori = null;
+        if ($slug) {
+            $current_kategori = DB::table('kategori_produks')
+                ->where('slug_kategori', $slug)
+                ->first();
+            if (!$current_kategori) {
+                abort(404, 'Kategori tidak ditemukan.');
+            }
+            $query->where('produks.kategori_produk_id', $current_kategori->id);
+        }
+
+        // --- Jika ada keyword pencarian ---
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('produks.nama_produk', 'like', "%$search%")
+                    ->orWhere('produks.harga', 'like', "%$search%");
+            });
+        }
+
+        // --- Eksekusi query ---
+        $produks = $query->select(
+            'produks.*',
+            'kategori_produks.*',
+            'users.name',
+            'produk_gambars.nama_file as thumbnail'
+        )
+            ->paginate(12) // <= pagination 12 produk per halaman
+            ->withQueryString(); // supaya search & slug tidak hilang ketika pindah halaman
+
+        return view('pages.home.toko.tokoku', [
+            'kategori_produk' => $kategori_produk,
+            'produks' => $produks,
+            'current_kategori' => $current_kategori,
+            'slug_user' => $slug_user,
         ]);
     }
 }

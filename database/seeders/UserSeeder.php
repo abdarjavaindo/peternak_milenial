@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -17,6 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
+            'slug' => Str::slug('admin')
         ]);
         $admin->assignRole('admin');
 
@@ -25,6 +27,7 @@ class UserSeeder extends Seeder
             'email' => 'user@gmail.com',
             'password' => bcrypt('password'),
             'nik' => '3273011001900001',
+            'slug' => Str::slug('user 1234')
         ]);
         $user->assignRole('user');
     }

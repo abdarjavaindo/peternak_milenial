@@ -43,14 +43,17 @@ Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
 Route::prefix('toko')->group(function () {
     Route::get('/', [TokoController::class, 'index'])->name('shop');
     Route::get('/detail/{slug}', [TokoController::class, 'detail'])->name('shop.detail');
-    // masih blm
-    Route::get('/user/{user_id}', [TokoController::class, 'toko'])->name('shop.user');
+    Route::get('/user/{slug_user}', [TokoController::class, 'toko'])->name('shop.user');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('tokoku')->group(function () {
     Route::get('/', [TokokuController::class, 'index'])->name('tokoku');
     Route::get('/create', [TokokuController::class, 'create'])->name('tokoku.create');
     Route::post('/create', [TokokuController::class, 'store'])->name('tokoku.store');
+    Route::get('/edit/{produk}', [TokokuController::class, 'edit'])->name('tokoku.edit');
+    Route::put('/update/{produk}', [TokokuController::class, 'update'])->name('tokoku.update');
+    Route::get('/gambar/{produk_gambar}', [TokokuController::class, 'destroy_gambar'])->name('tokoku.destroy_gambar');
+    Route::get('/delete/{produk}', [TokokuController::class, 'destroy'])->name('tokoku.destroy');
 });
 
 // masih blm

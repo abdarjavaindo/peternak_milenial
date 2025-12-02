@@ -164,7 +164,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('tokoku') }}" class="sub-menu-item">
+                                    <a href="{{ route('shop.user', auth()->user()->slug) }}" class="sub-menu-item">
                                         Tokoku
                                     </a>
                                 </li>

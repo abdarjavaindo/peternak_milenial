@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'slug' => $this->generateSlugWithRandom($request->name, 4),
             'nik' => $request->nik,
             'email' => $request->email,
             'no_telp' => $request->no_telp,
@@ -51,6 +52,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('tokoku');
+        return redirect()->route('shop.user', $user->slug);
     }
 }
