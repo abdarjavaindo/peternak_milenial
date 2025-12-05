@@ -1,5 +1,14 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Kategori Produk</h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('bagian', $bagian->kursus->id) }}">Section</a></li>
+            <li class="breadcrumb-item active">Materi</li>
+        </ol>
+    </nav>
+
+    <h1 class="app-page-title">Materi</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -7,10 +16,9 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-description" align="right">
-                        <a href="{{ route('kategori-produk.create') }}" class="btn text-white"
-                            style="background-color: #222222">
-                            <i class="fa fa-plus"></i>
-                            Tambah
+                        <a href="{{ route('materi.create', $bagian->id) }}" class="btn text-white"
+                            style="background-color: #165d7d"><i class="fa fa-plus"></i>
+                            Tambah Materi
                         </a>
                     </div>
                     <hr>
@@ -19,8 +27,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">Nama Kategori Produk</th>
-                                    <th class="text-center" width="13%">Slug</th>
+                                    <th class="text-center" width="12%">Judul Materi</th>
+                                    <th class="text-center" width="13%">Type</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -48,7 +56,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ route('kategori-produk.loaddata') }}",
+            url: "{{ route('materi.loaddata', $bagian->id) }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -58,10 +66,10 @@
                 data: 'DT_RowIndex'
             },
             {
-                data: 'nama_kategori'
+                data: 'judul'
             },
             {
-                data: 'slug_kategori'
+                data: 'jenis'
             },
             {
                 data: 'aksi',

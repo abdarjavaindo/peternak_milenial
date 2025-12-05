@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kategori_kursuses', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_kategori');
-            $table->string('slug_kategori')->unique();
-            $table->timestamps();
+        Schema::table('kursuses', function (Blueprint $table) {
+            $table->unsignedBigInteger('pengajar_id')->nullable();
+            $table->foreign('pengajar_id')->references('id')->on('pengajars')->onDelete('cascade');
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kategori_kursuses');
+        Schema::table('kursuses', function (Blueprint $table) {
+            $table->dropColumn(['pengajar_id']);
+        });
     }
 };

@@ -13,19 +13,21 @@ return new class extends Migration
     {
         Schema::create('kursuses', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->unsignedBigInteger('kategori_kursus_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable(); // user yang membuat course
+            $table->string('judul');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->string('thumbnail')->nullable();
-            $table->unsignedBigInteger('category_id')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->string('gambar')->nullable();
+            $table->string('youtube')->nullable();
             $table->enum('level', ['pemula', 'menengah', 'ahli'])->default('pemula');
-            $table->unsignedBigInteger('author_id')->nullable(); // user yang membuat course
-            $table->integer('price')->default(0);
+            $table->integer('harga')->default(0);
+            $table->string('hari')->default(0);
             $table->boolean('is_published')->default(false);
             $table->timestamps();
 
-            $table->foreign('category_id')->references('id')->on('kategori_kursuses')->onDelete('cascade');
-            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('kategori_kursus_id')->references('id')->on('kategori_kursuses')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

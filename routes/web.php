@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\KategoriKursusController;
 use App\Http\Controllers\Dashboard\KategoriProdukController;
 use App\Http\Controllers\Home\UserProfileController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\KursusController;
 use App\Http\Controllers\Home\TokoController;
 use App\Http\Controllers\Dashboard\PembelajaranController;
+use App\Http\Controllers\Dashboard\PengajarController;
 use App\Http\Controllers\Dashboard\ProdukController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
@@ -90,6 +92,26 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('kategori-produk')
     Route::delete('/{kategori_produk}', [KategoriProdukController::class, 'destroy'])->name('kategori-produk.destroy');
 });
 
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('kategori-kursus')->group(function () {
+    Route::get('/', [KategoriKursusController::class, 'index'])->name('kategori-kursus');
+    Route::post('/loaddata', [KategoriKursusController::class, 'loaddata'])->name('kategori-kursus.loaddata');
+    Route::get('/edit/{kategori_kursus}', [KategoriKursusController::class, 'edit'])->name('kategori-kursus.edit');
+    Route::put('/{kategori_kursus}', [KategoriKursusController::class, 'update'])->name('kategori-kursus.update');
+    Route::get('/create', [KategoriKursusController::class, 'create'])->name('kategori-kursus.create');
+    Route::post('/', [KategoriKursusController::class, 'store'])->name('kategori-kursus.store');
+    Route::delete('/{kategori_kursus}', [KategoriKursusController::class, 'destroy'])->name('kategori-kursus.destroy');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('pengajar')->group(function () {
+    Route::get('/', [PengajarController::class, 'index'])->name('pengajar');
+    Route::post('/loaddata', [PengajarController::class, 'loaddata'])->name('pengajar.loaddata');
+    Route::get('/edit/{pengajar}', [PengajarController::class, 'edit'])->name('pengajar.edit');
+    Route::put('/{pengajar}', [PengajarController::class, 'update'])->name('pengajar.update');
+    Route::get('/create', [PengajarController::class, 'create'])->name('pengajar.create');
+    Route::post('/', [PengajarController::class, 'store'])->name('pengajar.store');
+    Route::delete('/{pengajar}', [PengajarController::class, 'destroy'])->name('pengajar.destroy');
+});
+
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('user');
     Route::post('/loaddata', [UserController::class, 'loaddata'])->name('user.loaddata');
@@ -115,14 +137,30 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('produk')->group(f
     Route::get('/gambar/{produk_gambar}', [ProdukController::class, 'destroy_gambar'])->name('produk.destroy_gambar');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/pembelajaran', [PembelajaranController::class, 'index'])->name('pengadaan');
-    Route::post('/pembelajaran/loaddata', [PembelajaranController::class, 'loaddata'])->name('pengadaan.loaddata');
-    Route::post('/pembelajaran', [PembelajaranController::class, 'store'])->name('pengadaan.store');
-});
-Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/pengadaan/create', [PembelajaranController::class, 'create'])->name('pengadaan.create');
-    Route::post('/', [PembelajaranController::class, 'store'])->name('pengadaan.store');
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('pembelajaran')->group(function () {
+    Route::get('/', [PembelajaranController::class, 'index'])->name('pembelajaran');
+    Route::post('/loaddata', [PembelajaranController::class, 'loaddata'])->name('pembelajaran.loaddata');
+    Route::get('/create', [PembelajaranController::class, 'create'])->name('pembelajaran.create');
+    Route::post('/', [PembelajaranController::class, 'store'])->name('pembelajaran.store');
+    Route::get('/edit/{kursus}', [PembelajaranController::class, 'edit'])->name('pembelajaran.edit');
+    Route::put('/{kursus}', [PembelajaranController::class, 'update'])->name('pembelajaran.update');
+    Route::delete('/{kursus}', [PembelajaranController::class, 'destroy'])->name('pembelajaran.destroy');
+    //bagian kursus
+    Route::get('/bagian/{kursus}', [PembelajaranController::class, 'bagian'])->name('bagian');
+    Route::post('/bagian-loaddata/{kursus}', [PembelajaranController::class, 'bagian_loaddata'])->name('bagian.loaddata');
+    Route::get('/bagian-create/{kursus}', [PembelajaranController::class, 'bagian_create'])->name('bagian.create');
+    Route::post('/bagian/{kursus}', [PembelajaranController::class, 'bagian_store'])->name('bagian.store');
+    Route::get('/bagian-edit/{bagian}', [PembelajaranController::class, 'bagian_edit'])->name('bagian.edit');
+    Route::put('/bagian/{bagian}', [PembelajaranController::class, 'bagian_update'])->name('bagian.update');
+    Route::delete('/bagian/{bagian}', [PembelajaranController::class, 'bagian_destroy'])->name('bagian.destroy');
+    //bagian materi
+    Route::get('/materi/{bagian}', [PembelajaranController::class, 'materi'])->name('materi');
+    Route::post('/materi-loaddata/{bagian}', [PembelajaranController::class, 'materi_loaddata'])->name('materi.loaddata');
+    Route::get('/materi-create/{bagian}', [PembelajaranController::class, 'materi_create'])->name('materi.create');
+    Route::post('/materi/{bagian}', [PembelajaranController::class, 'materi_store'])->name('materi.store');
+    Route::get('/materi-edit/{materi}', [PembelajaranController::class, 'materi_edit'])->name('materi.edit');
+    Route::put('/materi/{materi}', [PembelajaranController::class, 'materi_update'])->name('materi.update');
+    Route::delete('/materi/{materi}', [PembelajaranController::class, 'materi_destroy'])->name('materi.destroy');
 });
 #endregion
 

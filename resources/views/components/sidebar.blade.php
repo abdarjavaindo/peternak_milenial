@@ -20,7 +20,7 @@
 
             <li class="nav-item">
                 <a class="nav-link {{ request()->segment(1) == 'pembelajaran' ? 'active' : '' }}"
-                    href="{{ route('pengadaan') }}">
+                    href="{{ route('pembelajaran') }}">
                     <span class="nav-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-journal" viewBox="0 0 16 16">
@@ -84,20 +84,28 @@
                             <path fill-rule="evenodd"
                                 d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                         </svg>
-                    </span><!--//submenu-arrow-->
-                </a><!--//nav-link-->
+                    </span>
+                </a>
                 <div id="submenu-1"
-                    class="collapse submenu submenu-1 {{ in_array(request()->segment(1), ['kpa', 'kategori-produk']) ? 'show' : '' }}"
+                    class="collapse submenu submenu-1 {{ in_array(request()->segment(1), ['kategori-kursus', 'kategori-produk', 'pengajar']) ? 'show' : '' }}"
                     data-bs-parent="#menu-accordion">
                     <ul class="submenu-list list-unstyled">
                         <li class="submenu-item">
-                            <a class="submenu-link {{ request()->segment(1) == 'kpa' ? 'active' : '' }}"
-                                href="#">Kategori Kursus</a>
+                            <a class="submenu-link {{ request()->segment(1) == 'kategori-kursus' ? 'active' : '' }}"
+                                href="{{ route('kategori-kursus') }}">
+                                Kategori Kursus
+                            </a>
                         </li>
                         <li class="submenu-item">
                             <a class="submenu-link {{ request()->segment(1) == 'kategori-produk' ? 'active' : '' }}"
                                 href="{{ route('kategori-produk') }}">
                                 Kategori Produk
+                            </a>
+                        </li>
+                        <li class="submenu-item">
+                            <a class="submenu-link {{ request()->segment(1) == 'pengajar' ? 'active' : '' }}"
+                                href="{{ route('pengajar') }}">
+                                Instruktur
                             </a>
                         </li>
                     </ul>
@@ -131,7 +139,6 @@
             <li class="nav-item">
                 <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
                 <a class="nav-link" href="{{ url('/license') }}">
-                    {{-- icon --}}
                     <span class="nav-icon">
                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-person"
                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">

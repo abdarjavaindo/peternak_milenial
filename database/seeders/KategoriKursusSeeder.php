@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Kategori_produk;
+use App\Models\Kategori_kursus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-class KategoriProdukSeeder extends Seeder
+class KategoriKursusSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,20 +15,12 @@ class KategoriProdukSeeder extends Seeder
     public function run(): void
     {
         $kategori = [
-            'Unggas Hidup',
-            'Ternak Hidup',
-            'Daging Segar',
-            'Olahan Daging',
-            'Telur',
-            'Produk Susu',
-            'Olahan Susu',
-            'Produk Non-Pangan',
-            'Produk Lebah',
-            'Pupuk & Limbah',
+            'Kursus Online',
+            'Kursus Offline',
         ];
 
         foreach ($kategori as $item) {
-            Kategori_produk::create([
+            Kategori_kursus::create([
                 'nama_kategori' => $item,
                 'slug_kategori' => Str::slug($item),
             ]);

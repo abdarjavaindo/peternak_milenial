@@ -1,30 +1,36 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Pembelajaran</h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
+            <li class="breadcrumb-item active">Section</li>
+        </ol>
+    </nav>
+
+    <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+        <a class="flex-sm-fill text-sm-center nav-link active" href="{{ route('bagian', $kursus->id) }}">Section</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="#orders-paid">Peserta</a>
+    </nav>
 
     <section class="section">
         <x-flash-message></x-flash-message>
         <div class="grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    @if (auth()->user()->hasRole('user'))
-                        <div class="card-description" align="right">
-                            <a href="{{ route('pengadaan.create') }}" class="btn text-white"
-                                style="background-color: #165d7d"><i class="fa fa-plus"></i>
-                                Tambah Pengadaan
-                            </a>
-                        </div>
-                        <hr>
-                    @endif
+                    <div class="card-description" align="right">
+                        <a href="{{ route('bagian.create', $kursus->id) }}" class="btn text-white"
+                            style="background-color: #165d7d"><i class="fa fa-plus"></i>
+                            Tambah Section
+                        </a>
+                    </div>
+                    <hr>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" id="_table" width="100%">
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">User</th>
-                                    <th class="text-center" width="12%">Nama Kursus</th>
-                                    <th class="text-center" width="13%">publish</th>
-                                    <th class="text-center" width="13%">Level</th>
-                                    <th class="text-center" width="13%">Jumlah Peserta</th>
+                                    <th class="text-center" width="12%">Judul Section</th>
+                                    <th class="text-center" width="13%">Urutan</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -52,7 +58,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ url('pembelajaran/loaddata') }}",
+            url: "{{ route('bagian.loaddata', $kursus->id) }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -62,19 +68,10 @@
                 data: 'DT_RowIndex'
             },
             {
-                data: 'nama'
+                data: 'judul'
             },
             {
-                data: 'title'
-            },
-            {
-                data: 'is_published'
-            },
-            {
-                data: 'level'
-            },
-            {
-                data: 'jumlah_peserta'
+                data: 'urutan'
             },
             {
                 data: 'aksi',
@@ -91,5 +88,11 @@
             "targets": [0, 3],
             "className": "text-center",
         }],
+    });
+
+    $(document).on('click', '.delete-button', function() {
+        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            $(this).closest('form').submit(); // Submit form penghapusan
+        }
     });
 </script>

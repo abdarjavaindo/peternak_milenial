@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Kategori Produk</h1>
+    <h1 class="app-page-title">Instruktur</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -7,9 +7,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-description" align="right">
-                        <a href="{{ route('kategori-produk.create') }}" class="btn text-white"
-                            style="background-color: #222222">
-                            <i class="fa fa-plus"></i>
+                        <a href="{{ route('pengajar.create') }}" class="btn text-white"
+                            style="background-color: #165d7d"><i class="fa fa-plus"></i>
                             Tambah
                         </a>
                     </div>
@@ -19,8 +18,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">Nama Kategori Produk</th>
-                                    <th class="text-center" width="13%">Slug</th>
+                                    <th class="text-center" width="12%">Nama</th>
+                                    <th class="text-center" width="13%">Title</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -48,7 +47,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ route('kategori-produk.loaddata') }}",
+            url: "{{ route('pengajar.loaddata') }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -58,10 +57,10 @@
                 data: 'DT_RowIndex'
             },
             {
-                data: 'nama_kategori'
+                data: 'nama'
             },
             {
-                data: 'slug_kategori'
+                data: 'title'
             },
             {
                 data: 'aksi',

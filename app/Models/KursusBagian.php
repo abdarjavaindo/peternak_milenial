@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kursus extends Model
+class KursusBagian extends Model
 {
     use HasFactory;
     protected $guarded = [
         'id'
     ];
 
-    public function user()
+    public function kursus()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Kursus::class);
     }
 
-    public function pengajar()
+    public function materi()
     {
-        return $this->belongsTo(Pengajar::class, 'pengajar_id');
+        return $this->hasMany(KursusMateri::class, 'kursus_bagian_id');
     }
 }

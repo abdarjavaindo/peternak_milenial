@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kategori_produk;
+use App\Models\Kategori_kursus;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
 
-class KategoriProdukController extends Controller
+class KategoriKursusController extends Controller
 {
     public function loaddata()
     {
-        $data = Kategori_produk::orderBy('id', 'desc')->get();
+        $data = Kategori_kursus::orderBy('id', 'desc')->get();
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
-                $editUrl = route('kategori-produk.edit', $data->id);
-                $deleteForm = '<form method="POST" action="' . route('kategori-produk.destroy', $data->id) . '" class="delete-form" style="display:inline;">
+                $editUrl = route('kategori-kursus.edit', $data->id);;
+                $deleteForm = '<form method="POST" action="' . route('kategori-kursus.destroy', $data->id) . '" class="delete-form" style="display:inline;">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
                         <button type="button" class="btn btn-danger delete-button mb-1"><i class="fa fa-trash"></i></button>
@@ -30,44 +30,44 @@ class KategoriProdukController extends Controller
     }
     public function index()
     {
-        return view('pages.dashboard.kategori-produk.index');
+        return view('pages.dashboard.kategori-kursus.index');
     }
 
     public function create()
     {
-        return view('pages.dashboard.kategori-produk.form');
+        return view('pages.dashboard.kategori-kursus.form');
     }
     public function store(Request $request)
     {
         $request->validate([
             'nama_kategori' => ['required'],
         ]);
-        Kategori_produk::create([
+        Kategori_kursus::create([
             'nama_kategori' => $request->nama_kategori,
             'slug_kategori' => Str::slug($request->nama_kategori),
         ]);
-        return redirect()->route('kategori-produk')->with('sukses', 'Anda berhasil menambahkan data');
+        return redirect()->route('kategori-kursus')->with('sukses', 'Anda berhasil menambahkan data');
     }
 
-    public function edit(Kategori_produk $kategori_produk)
+    public function edit(Kategori_kursus $kategori_kursus)
     {
-        return view('pages.dashboard.kategori-produk.form', compact('kategori_produk'));
+        return view('pages.dashboard.kategori-kursus.form', compact('kategori_kursus'));
     }
-    public function update(Request $request, Kategori_produk $kategori_produk)
+    public function update(Request $request, Kategori_kursus $kategori_kursus)
     {
         $request->validate([
             'nama_kategori' => ['required'],
             'slug_kategori' => ['required'],
         ]);
-        $kategori_produk->nama_kategori = $request->nama_kategori;
-        $kategori_produk->slug_kategori = $request->slug_kategori;
-        $kategori_produk->save();
-        return redirect()->route('kategori-produk')->with('sukses', 'Anda berhasil mengubah data');
+        $kategori_kursus->nama_kategori = $request->nama_kategori;
+        $kategori_kursus->slug_kategori = $request->slug_kategori;
+        $kategori_kursus->save();
+        return redirect()->route('kategori-kursus')->with('sukses', 'Anda berhasil mengubah data');
     }
 
-    public function destroy(Kategori_produk $kategori_produk)
+    public function destroy(Kategori_kursus $kategori_kursus)
     {
-        $kategori_produk->delete();
-        return redirect()->route('kategori-produk')->with('sukses', 'Anda berhasil menghapus data');
+        $kategori_kursus->delete();
+        return redirect()->route('kategori-kursus')->with('sukses', 'Anda berhasil menghapus data');
     }
 }

@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Kategori Produk</h1>
+    <h1 class="app-page-title">Kategori Kursus</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-description" align="right">
-                        <a href="{{ route('kategori-produk.create') }}" class="btn text-white"
+                        <a href="{{ route('kategori-kursus.create') }}" class="btn text-white"
                             style="background-color: #222222">
                             <i class="fa fa-plus"></i>
                             Tambah
@@ -19,7 +19,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">Nama Kategori Produk</th>
+                                    <th class="text-center" width="12%">Nama Kategori Kursus</th>
                                     <th class="text-center" width="13%">Slug</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
@@ -48,7 +48,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ route('kategori-produk.loaddata') }}",
+            url: "{{ route('kategori-kursus.loaddata') }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
