@@ -8,6 +8,8 @@ use App\Models\Kursus;
 use App\Models\KursusBagian;
 use App\Models\KursusMateri;
 use App\Models\Pengajar;
+use App\Models\User;
+use App\Models\UserKursusProgres;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -37,7 +39,7 @@ class PembelajaranController extends Controller
                 return '0';
             })
             ->addColumn('publish', function ($data) {
-                return $data->is_published == 0 ? 'tida' : 'IYA';
+                return $data->is_published == 0 ? 'tidak' : 'IYA';
             })
             ->addColumn('pengajar', function ($data) {
                 return $data->pengajar->nama;
@@ -77,6 +79,7 @@ class PembelajaranController extends Controller
             'slug' => $this->generateSlugWithRandom($request->judul),
             'deskripsi' => $request->deskripsi,
             'youtube' => $request->youtube,
+            'level' => $request->level,
             'harga' => str_replace('.', '', $request->harga),
             'hari' => $request->hari,
             'is_published' => $request->is_published,
@@ -114,6 +117,7 @@ class PembelajaranController extends Controller
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'youtube' => $request->youtube,
+            'level' => $request->level,
             'harga' => str_replace('.', '', $request->harga),
             'hari' => $request->hari,
             'is_published' => $request->is_published,
@@ -130,6 +134,42 @@ class PembelajaranController extends Controller
     {
         $kursus->delete();
         return redirect()->route('pembelajaran')->with('sukses', 'Anda berhasil menghapus data');
+    }
+    #endregion
+
+    #region peserta
+    public function peserta_loaddata(Kursus $kursus)
+    {
+        $data = UserKursusProgres::with('user')->where('kursus_id', $kursus->id)->orderBy('id', 'desc')->get();
+        return DataTables::of($data)
+            ->addColumn('aksi', function ($data) {
+                $deleteForm = '<form method="POST" action="' . route('peserta.destroy', ['kursus' => $data->kursus_id, 'user' => $data->user_id]) . '" class="delete-form" style="display:inline;">
+                        ' . csrf_field() . '
+                        ' . method_field('DELETE') . '
+                        <button type="button" class="btn btn-danger delete-button mb-1"><i class="fa fa-trash"></i></button>
+                    </form>';
+
+                return $deleteForm;
+            })
+            ->addColumn('nama', function ($data) {
+                return $data->user->name;
+            })
+            ->addIndexColumn()
+            ->rawColumns(['aksi', 'nama'])
+            ->make(true);
+    }
+    public function peserta(Kursus $kursus)
+    {
+        return view('pages.dashboard.pembelajaran.peserta', compact('kursus'));
+    }
+    public function peserta_destroy(Kursus $kursus, User $user)
+    {
+        $userkursus = UserKursusProgres::where([
+            'user_id' => $user->id,
+            'kursus_id' => $kursus->id,
+        ])->firstOrFail();
+        $userkursus->delete();
+        return redirect()->back()->with('sukses', 'Anda berhasil menghapus data');
     }
     #endregion
 

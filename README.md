@@ -54,3 +54,14 @@ php artisan storage:link
 _After creating the new permissions use the following commands to update cashed permissions (optional)._
 
 `php artisan cache:forget spatie.permission.cache`
+
+## Yang perlu dibenahi
+
+-   Fitur forum
+-   Registrasi
+-   Fitur komuditas yang dimiliki user
+-   Peta jatim dengan jumlah komuditasnya
+-   Profil user + gambar profil
+-   Komentar pada produk
+-   Fitur pencarian dan sorting pada kursus
+-   Postest pada kursus

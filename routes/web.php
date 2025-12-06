@@ -58,10 +58,13 @@ Route::middleware(['auth', 'verified'])->prefix('tokoku')->group(function () {
     Route::get('/delete/{produk}', [TokokuController::class, 'destroy'])->name('tokoku.destroy');
 });
 
-// masih blm
 Route::prefix('kursus')->group(function () {
     Route::get('/', [KursusController::class, 'index'])->name('pelatihan');
-    Route::get('/detail', [KursusController::class, 'detail'])->name('pelatihan.detail');
+    Route::get('/detail/{slug}', [KursusController::class, 'detail'])->name('pelatihan.detail');
+    Route::get('/daftar/{slug}', [KursusController::class, 'daftar'])->name('pelatihan.daftar');
+    Route::get('/materi/{kursus_materi}', [KursusController::class, 'materi'])->name('pelatihan.materi');
+    Route::get('/next/{kursus_materi}', [KursusController::class, 'next'])->name('pelatihan.next');
+    Route::post('/selesai/{slug}/{kursus_materi}', [KursusController::class, 'selesai'])->name('pelatihan.selesai');
 });
 
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
@@ -145,6 +148,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('pembelajaran')->g
     Route::get('/edit/{kursus}', [PembelajaranController::class, 'edit'])->name('pembelajaran.edit');
     Route::put('/{kursus}', [PembelajaranController::class, 'update'])->name('pembelajaran.update');
     Route::delete('/{kursus}', [PembelajaranController::class, 'destroy'])->name('pembelajaran.destroy');
+    //bagian peserta
+    Route::get('/peserta/{kursus}', [PembelajaranController::class, 'peserta'])->name('peserta');
+    Route::post('/peserta-loaddata/{kursus}', [PembelajaranController::class, 'peserta_loaddata'])->name('peserta.loaddata');
+    Route::delete('/peserta/{kursus}/{user}', [PembelajaranController::class, 'peserta_destroy'])->name('peserta.destroy');
     //bagian kursus
     Route::get('/bagian/{kursus}', [PembelajaranController::class, 'bagian'])->name('bagian');
     Route::post('/bagian-loaddata/{kursus}', [PembelajaranController::class, 'bagian_loaddata'])->name('bagian.loaddata');

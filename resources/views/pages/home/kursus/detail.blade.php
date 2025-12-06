@@ -1,365 +1,196 @@
 <x-layouts.home>
-    <!-- Start -->
     <section class="section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h4 class="title mb-4">Overview</h4>
+                        <br>
+                        <br>
+                        <br>
+                        <x-flash-message></x-flash-message>
+                        <h4 class="title mb-4">{{ $pelatihan->judul }}</h4>
                         <ul class="list-unstyled mt-4 mb-0">
+                            @php
+                                $color =
+                                    ['pemula' => 'text-success', 'menengah' => 'text-warning'][$pelatihan->level] ??
+                                    'text-danger';
+                            @endphp
+                            <li class="align-items-center justify-content-center list-inline-item mx-2">
+                                <i class="uil uil-signal fs-5 {{ $color }} title-dark align-middle"></i>
+                                <span class="{{ $color }} ms-1">Level {{ Str::ucfirst($pelatihan->level) }}</span>
+                            </li>
+
                             <li class="align-items-center justify-content-center list-inline-item mx-2">
                                 <i class="uil uil-clock fs-5 text-dark title-dark align-middle"></i>
-                                <span class="text-dark-50 ms-1">10 Weeks</span>
-                            </li>
-
-                            <li class="align-items-center justify-content-center list-inline-item mx-2">
-                                <i class="uil uil-signal fs-5 text-dark title-dark align-middle"></i>
-                                <span class="text-success ms-1">Level Pemula</span>
-                            </li>
-
-                            <li class="align-items-center justify-content-center list-inline-item mx-2">
-                                <i class="uil uil-book-open fs-5 text-dark title-dark align-middle"></i>
-                                <span class="text-dark-50 ms-1">16 Lessons</span>
-                            </li>
-
-                            <li class="align-items-center justify-content-center list-inline-item mx-2">
-                                <i class="uil uil-cube fs-5 text-dark title-dark align-middle"></i>
-                                <span class="text-dark-50 ms-1">0 Quiz</span>
+                                <span class="text-dark-50 ms-1">Waktu pengerjaan {{ $pelatihan->hari }} Hari</span>
                             </li>
 
                             <li class="align-items-center justify-content-center list-inline-item mx-2">
                                 <i class="uil uil-book-reader fs-5 text-dark title-dark align-middle"></i>
-                                <span class="text-dark-50 ms-1">5 Peternak</span>
+                                <span class="text-dark-50 ms-1">Di ikuti oleh 5 peserta</span>
                             </li>
                         </ul>
-                        <a class="btn btn-dark" href="#">Belajar Sekarang</a>
+
+                        @if (isset($user_progress))
+                            <p>
+                                Waktu anda tinggal: <span id="timer">Menghitung...</span>
+                            </p>
+                        @endif
+                        @if (!auth()->check())
+                            {{-- User belum login --}}
+                            <a class="btn btn-dark" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}"
+                                onclick="return confirm('Apakah anda yakin ingin balajar kursus ini')">
+                                Belajar Sekarang
+                            </a>
+                        @elseif (!$user_progress)
+                            {{-- User login tetapi belum mendaftar kursus --}}
+                            <a class="btn btn-dark" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}"
+                                onclick="return confirm('Apakah anda yakin ingin balajar kursus ini')">
+                                Belajar Sekarang
+                            </a>
+                        @else
+                            {{-- User sudah mulai kursus --}}
+                            @if ($next_materi)
+                                <a class="btn btn-success" href="{{ route('pelatihan.materi', $next_materi->id) }}">
+                                    Lanjutkan Materi: {{ $next_materi->judul }}
+                                </a>
+                            @else
+                                <a class="btn btn-primary" href="#">
+                                    Semua materi telah selesai 🎉
+                                </a>
+                            @endif
+                        @endif
+
                         <hr>
-                        <p class="text-muted">Ooh, name it after me! Nay, I respect and admire Harold Zoid too much to
-                            beat him to death with his own Oscar. Why would I want to know that? What’s with you kids?
-                            Every other day it’s food, food, food. Alright, I’ll get you some stupid food.</p>
-                        <p class="text-muted">It’s a T. It goes “tuh”. You seem malnourished. Are you suffering from
-                            intestinal parasites? I suppose I could part with ‘one’ and still be feared… And I’d do it
-                            again! And perhaps a third time! But that would be it.</p>
-                        <p class="text-muted">I’m just glad my fat, ugly mama isn’t alive to see this day. I can
-                            explain. It’s very valuable. I barely knew Philip, but as a clergyman I have no problem
-                            telling his most intimate friends all about him.</p>
-                        <p class="text-muted">Bender, we’re trying our best. Kif might! You can crush me but you can’t
-                            crush my spirit! Kif, I have mated with a woman. Inform the men. I’m Santa Claus!</p>
-                        <p class="text-muted mb-0">What are you hacking off? Is it my torso?! ‘It is!’ My precious
-                            torso! You, a bobsleder!? That I’d like to see! And I’d do it again! And perhaps a third
-                            time! But that would be it. My fellow Earthicans, as I have explained in my book ‘Earth in
-                            the Balance”, and the much more popular ”Harry Potter and the Balance of Earth’, we need to
-                            defend our planet against pollution. Also dark wizards.</p>
+                        {!! $pelatihan->deskripsi !!}
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mt-4 pt-2"><img src="{{ asset('assets') }}/landrick/images/course/de01.jpg"
-                                class="img-fluid rounded shadow" alt=""></div>
                         <div class="col-md-6 mt-4 pt-2">
-                            <div class="position-relative">
-                                <img src="{{ asset('assets') }}/landrick/images/course/de02.jpg"
-                                    class="rounded img-fluid mx-auto d-block" alt="">
-                                <div class="play-icon">
-                                    <a href="#!" data-type="youtube" data-id="yba7hPeTSjk"
-                                        class="play-btn lightbox border-0">
-                                        <i class="mdi mdi-play text-primary rounded-circle shadow"></i>
-                                    </a>
+                            <img src="{{ asset('storage/' . $pelatihan->gambar) }}" class="img-fluid rounded shadow"
+                                alt="">
+                        </div>
+
+                        <div class="col-md-6 mt-4 pt-2">
+                            @php
+                                preg_match(
+                                    '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/',
+                                    $pelatihan->youtube,
+                                    $matches,
+                                );
+                                $videoId = $matches[1] ?? null;
+                            @endphp
+
+                            @if ($videoId)
+                                <div class="ratio ratio-16x9 w-100 h-100">
+                                    <iframe src="https://www.youtube.com/embed/{{ $videoId }}"
+                                        title="YouTube video player" allowfullscreen class="rounded shadow">
+                                    </iframe>
                                 </div>
-                            </div>
-                        </div><!--end col-->
-                    </div><!--end row-->
-
-                    <div class="section-title mt-4 pt-2">
-                        <h4 class="title mb-0">Curriculum</h4>
-
-                        <div class="row">
-                            <div class="col-md-6 mt-4 pt-2">
-                                <h5 class="mb-0">Introductions</h5>
-
-                                <div class="table-responsive bg-white shadow rounded mt-4">
-                                    <table class="table mb-0 table-center">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" class="fw-normal border-bottom text-muted py-4 px-3"
-                                                    style="min-width: 100px;">Lessons</th>
-                                                <th scope="col"
-                                                    class="fw-normal border-bottom text-muted py-4 px-3 text-end">Time
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                1</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><span class="badge bg-soft-primary">Read
-                                                        Free</span></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                2</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                3</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                4</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div><!--end col-->
-
-                            <div class="col-md-6 mt-4 pt-2">
-                                <h5 class="mb-0">Mastery</h5>
-
-                                <div class="table-responsive bg-white shadow rounded mt-4">
-                                    <table class="table mb-0 table-center">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" class="fw-normal border-bottom text-muted py-4 px-3"
-                                                    style="min-width: 100px;">Lessons</th>
-                                                <th scope="col"
-                                                    class="fw-normal border-bottom text-muted py-4 px-3 text-end">Time
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                11</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><span class="badge bg-soft-primary">Read
-                                                        Free</span></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                12</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                13</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                14</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div><!--end col-->
-
-                            <div class="col-md-6 mt-4 pt-2">
-                                <h5 class="mb-0">Final Thoughts</h5>
-
-                                <div class="table-responsive bg-white shadow rounded mt-4">
-                                    <table class="table mb-0 table-center">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col"
-                                                    class="fw-normal border-bottom text-muted py-4 px-3"
-                                                    style="min-width: 100px;">Lessons</th>
-                                                <th scope="col"
-                                                    class="fw-normal border-bottom text-muted py-4 px-3 text-end">Time
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                21</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><span class="badge bg-soft-primary">Read
-                                                        Free</span></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                22</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                23</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                24</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div><!--end col-->
-
-                            <div class="col-md-6 mt-4 pt-2">
-                                <h5 class="mb-0">Bonus</h5>
-
-                                <div class="table-responsive bg-white shadow rounded mt-4">
-                                    <table class="table mb-0 table-center">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col"
-                                                    class="fw-normal border-bottom text-muted py-4 px-3"
-                                                    style="min-width: 100px;">Lessons</th>
-                                                <th scope="col"
-                                                    class="fw-normal border-bottom text-muted py-4 px-3 text-end">Time
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                31</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><span class="badge bg-soft-primary">Read
-                                                        Free</span></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                32</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                33</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="p-3">
-                                                    <div class="align-items-center">
-                                                        <i class="uil uil-notes h6"></i>
-                                                        <p class="mb-0 d-inline fw-normal h6 ms-1"><a
-                                                                href="javascript:void(0)" class="text-muted">Lesson
-                                                                34</a></p>
-                                                    </div>
-                                                </th>
-                                                <td class="p-3 text-end"><i class="uil uil-lock"></i></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
+                            @else
+                                <p class="text-danger">Link YouTube tidak valid.</p>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="section-title mt-4 pt-2">
-                        <h4 class="title mb-0">Instructor</h4>
+
+                        <div class="row">
+                            @foreach ($pelatihan->bagian->sortBy('urutan') as $bagi)
+                                <div class="col-md-12 mt-4 pt-2">
+                                    <h5 class="mb-0">{{ $bagi->judul }}</h5>
+                                    <div class="table-responsive bg-white shadow rounded mt-4">
+                                        <table class="table mb-0 table-center">
+                                            <tbody>
+                                                @foreach ($bagi->materi as $mat)
+                                                    <tr>
+                                                        <th class="p-3">
+                                                            <div class="align-items-center">
+                                                                <i class="uil uil-notes h6"></i>
+                                                                <p class="mb-0 d-inline fw-normal h6 ms-1">
+                                                                    <a href="{{ route('pelatihan.materi', $mat->id) }}"
+                                                                        class="text-muted">
+                                                                        {{ $mat->judul }}
+                                                                    </a>
+                                                                </p>
+                                                            </div>
+                                                        </th>
+                                                        <td class="p-3 text-end">
+                                                            @php
+                                                                $progress = $materi_progress[$mat->id] ?? null;
+                                                            @endphp
+                                                            @if ($progress)
+                                                                @if ($progress->status == 'progres')
+                                                                    <span class="badge bg-soft-warning">
+                                                                        Lanjutkan
+                                                                    </span>
+                                                                @elseif ($progress->status == 'selesai')
+                                                                    <span class="badge bg-soft-primary">
+                                                                        Selesai
+                                                                    </span>
+                                                                @endif
+                                                            @else
+                                                                <i class="uil uil-lock"></i>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="section-title mt-4 pt-2">
+                        <h4 class="title mb-0">Instruktur</h4>
 
                         <div class="d-md-flex align-items-center mt-4 pt-2">
-                            <img src="{{ asset('assets') }}/landrick/images/client/05.jpg"
+                            <img src="{{ asset('storage/' . $pelatihan->pengajar->gambar) }}"
                                 class="avatar avatar-medium rounded-pill" alt="">
 
                             <div class="ms-md-3 mt-4 mt-sm-0">
-                                <a href="javascript:void(0)" class="text-dark h5">Cristina Murphy</a>
-                                <p class="text-muted mb-0 mt-2">I have started my career as a trainee and prove my self
-                                    and achieve all the milestone with good guidance and reach up to the project
-                                    manager. In this journey, I understand all the procedure which make me a good
-                                    developer, team leader, and a project manager.</p>
+                                <a href="javascript:void(0)" class="text-dark h5">{{ $pelatihan->pengajar->nama }}</a>
+                                <p class="text-muted mb-0 mt-2">{{ $pelatihan->pengajar->title }}</p>
                             </div>
                         </div>
                     </div>
-                </div><!--end col-->
-            </div><!--end row-->
-        </div><!--end container-->
-    </section><!--end section-->
-    <!-- End -->
+                </div>
+            </div>
+        </div>
+    </section>
 </x-layouts.home>
+
+@if (isset($user_progress))
+    <script>
+        // ini buat timer
+        document.addEventListener("DOMContentLoaded", function() {
+            // Tentukan durasi berdasarkan status
+            const waktuPelunasan = new Date("{{ $user_progress->harus_selesai_tgl }}");
+
+            function updateTimer() {
+                const now = new Date();
+                const timeRemaining = waktuPelunasan - now;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById("timer").textContent = "Waktu Habis";
+                    return;
+                }
+
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+                document.getElementById("timer").textContent =
+                    `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+            }
+
+            // Update timer setiap detik
+            const timerInterval = setInterval(updateTimer, 1000);
+            updateTimer(); // Panggil langsung agar tampil segera
+        });
+    </script>
+@endif

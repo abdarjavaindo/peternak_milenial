@@ -21,4 +21,26 @@ class Kursus extends Model
     {
         return $this->belongsTo(Pengajar::class, 'pengajar_id');
     }
+
+    public function bagian()
+    {
+        return $this->hasMany(KursusBagian::class, 'kursus_id');
+    }
+
+    // Relasi progres user
+    public function progres()
+    {
+        return $this->hasMany(KursusProgres::class);
+    }
+
+    // Relasi ke kategori
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriKursus::class, 'kategori_kursus_id');
+    }
+
+    public function user_status()
+    {
+        return $this->hasOne(UserKursusProgres::class, 'kursus_id')->where('user_id', auth()->id());
+    }
 }

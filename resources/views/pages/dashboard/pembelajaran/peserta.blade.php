@@ -3,13 +3,13 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
-            <li class="breadcrumb-item active">Section</li>
+            <li class="breadcrumb-item active">Peserta</li>
         </ol>
     </nav>
 
     <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-        <a class="flex-sm-fill text-sm-center nav-link active" href="{{ route('bagian', $kursus->id) }}">Section</a>
-        <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('peserta', $kursus->id) }}">Peserta</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('bagian', $kursus->id) }}">Section</a>
+        <a class="flex-sm-fill text-sm-center nav-link active" href="{{ route('peserta', $kursus->id) }}">Peserta</a>
     </nav>
 
     <section class="section">
@@ -17,20 +17,14 @@
         <div class="grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-description" align="right">
-                        <a href="{{ route('bagian.create', $kursus->id) }}" class="btn text-white"
-                            style="background-color: #165d7d"><i class="fa fa-plus"></i>
-                            Tambah Section
-                        </a>
-                    </div>
-                    <hr>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" id="_table" width="100%">
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">Judul Section</th>
-                                    <th class="text-center" width="13%">Urutan</th>
+                                    <th class="text-center" width="12%">Nama</th>
+                                    <th class="text-center" width="13%">Status</th>
+                                    <th class="text-center" width="13%">Deadline</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -58,7 +52,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ route('bagian.loaddata', $kursus->id) }}",
+            url: "{{ route('peserta.loaddata', $kursus->id) }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -68,10 +62,13 @@
                 data: 'DT_RowIndex'
             },
             {
-                data: 'judul'
+                data: 'nama'
             },
             {
-                data: 'urutan'
+                data: 'status'
+            },
+            {
+                data: 'harus_selesai_tgl'
             },
             {
                 data: 'aksi',
@@ -85,7 +82,7 @@
             zeroRecords: 'Data Tidak Ditemukan'
         },
         columnDefs: [{
-            "targets": [0, 3],
+            "targets": [0, 4],
             "className": "text-center",
         }],
     });

@@ -16,4 +16,9 @@ class KursusMateri extends Model
     {
         return $this->belongsTo(KursusBagian::class, 'kursus_bagian_id');
     }
+
+    public function progres()
+    {
+        return $this->belongsTo(KursusProgres::class, 'materi_id');
+    }
 }

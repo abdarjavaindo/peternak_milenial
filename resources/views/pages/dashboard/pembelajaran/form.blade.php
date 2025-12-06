@@ -87,14 +87,13 @@
                             <select type="text" class="form-select bg-light border-black" id="is_published"
                                 name="is_published" required>
                                 <option value="">Pilih ...</option>
-                                <option value="1"
-                                    {{ old('is_published') == 1 || @$kursus->is_published == 1 ? 'selected' : '' }}>
+                                <option value="1" {{ @$kursus->is_published == '1' ? 'selected' : '' }}>
                                     IYA
                                 </option>
-                                <option value="0"
-                                    {{ old('is_published') == 0 || @$kursus->is_published == 0 ? 'selected' : '' }}>
+                                <option value="0" {{ @$kursus->is_published == '0' ? 'selected' : '' }}>
                                     Tidak
                                 </option>
+
                             </select>
                             @error('is_published')
                                 <span class="text-danger" style="color:red">{{ $message }}</span>
