@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\PengajarController;
 use App\Http\Controllers\Dashboard\ProdukController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Home\DaftarTernakController;
 use App\Http\Controllers\Home\ForumController;
 use App\Http\Controllers\Home\TokokuController;
 use Illuminate\Http\Request;
@@ -82,6 +83,16 @@ Route::prefix('forum')->group(function () {
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/userprofile', [UserProfileController::class, 'edit'])->name('userprofile.edit');
     Route::patch('/userprofile', [UserProfileController::class, 'update'])->name('userprofile.update');
+});
+
+Route::middleware(['auth', 'verified', 'role:user'])->prefix('daftar-ternak')->group(function () {
+    Route::get('/', [DaftarTernakController::class, 'index'])->name('ternak');
+    Route::post('/loaddata', [DaftarTernakController::class, 'loaddata'])->name('ternak.loaddata');
+    Route::get('/create', [DaftarTernakController::class, 'create'])->name('ternak.create');
+    Route::post('/create', [DaftarTernakController::class, 'store'])->name('ternak.store');
+    Route::get('/edit/{ternak}', [DaftarTernakController::class, 'edit'])->name('ternak.edit');
+    Route::put('/update/{ternak}', [DaftarTernakController::class, 'update'])->name('ternak.update');
+    Route::delete('/delete/{ternak}', [DaftarTernakController::class, 'destroy'])->name('ternak.destroy');
 });
 #endregion
 

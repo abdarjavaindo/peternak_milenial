@@ -29,7 +29,8 @@
                         </div>
 
                         @if (isset($materiSelanjutnya))
-                            <a href="{{ route('pelatihan.next', $materiSelanjutnya->id) }}" class="btn btn-primary">
+                            <a id="btnNext1" href="{{ route('pelatihan.next', $materiSelanjutnya->id) }}"
+                                class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-skip-forward-fill" viewBox="0 0 16 16">
                                     <path
@@ -61,7 +62,8 @@
                         </div>
 
                         @if (isset($materiSelanjutnya))
-                            <a href="{{ route('pelatihan.next', $materiSelanjutnya->id) }}" class="btn btn-primary">
+                            <a id="btnNext2" href="{{ route('pelatihan.next', $materiSelanjutnya->id) }}"
+                                class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-skip-forward-fill" viewBox="0 0 16 16">
                                     <path
@@ -85,3 +87,54 @@
         </div>
     </section>
 </x-layouts.home>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // daftar ID tombol
+        const buttons = [
+            document.getElementById('btnNext1'),
+            document.getElementById('btnNext2')
+        ];
+
+        let countdown = 300; // 5 menit = 300 detik
+
+        // Fungsi disable semua tombol
+        function disableButtons() {
+            buttons.forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-secondary');
+                btn.style.pointerEvents = 'none'; // tidak bisa diklik
+            });
+        }
+
+        // Fungsi enable kembali
+        function enableButtons() {
+            buttons.forEach(btn => {
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-primary');
+                btn.style.pointerEvents = 'auto';
+                btn.textContent = "Next";
+            });
+        }
+
+        // Jalankan countdown
+        function startCountdown() {
+            disableButtons();
+
+            const interval = setInterval(() => {
+                countdown--;
+
+                // update teks tiap detik
+                buttons.forEach(btn => btn.textContent = "Tunggu " + countdown + " detik");
+
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    enableButtons();
+                }
+            }, 1000);
+        }
+
+        // Mulai hitungan
+        startCountdown();
+    });
+</script>

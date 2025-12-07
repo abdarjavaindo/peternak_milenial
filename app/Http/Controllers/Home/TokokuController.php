@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kategori_produk;
 use App\Models\Produk;
 use App\Models\ProdukGambar;
+use App\Models\UserTernak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -19,6 +20,9 @@ class TokokuController extends Controller
 
     public function create()
     {
+        if (UserTernak::where('user_id', auth()->user()->id)->count() < 1) {
+            return redirect()->route('ternak');
+        }
         $data['kategori_produk'] = Kategori_produk::orderBy('id', 'desc')->get();
         return view('pages.home.toko.tokoku_form', $data);
     }

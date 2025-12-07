@@ -175,6 +175,11 @@
                                     </a>
                                 </li>
                                 <li>
+                                    <a href="{{ route('ternak') }}" class="sub-menu-item">
+                                        Daftar Ternak
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="{{ route('userprofile.edit') }}" class="sub-menu-item">
                                         Akun
                                     </a>

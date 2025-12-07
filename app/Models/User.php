@@ -27,6 +27,11 @@ class User extends Authenticatable
         'status',
         'no_telp',
         'slug',
+        'gambar',
+        'kabupaten',
+        'kecamatan',
+        'desa',
+        'tgl_lahir',
     ];
 
     /**
@@ -47,4 +52,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function ternak()
+    {
+        return $this->hasMany(UserTernak::class, 'user_id');
+    }
 }

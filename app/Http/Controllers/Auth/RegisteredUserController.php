@@ -9,7 +9,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -20,7 +22,23 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $kabupaten = DB::table('wilayah')
+            ->whereRaw("LENGTH(kode) = 5")
+            ->orderBy('nama')
+            ->get();
+
+        $kecamatan = DB::table('wilayah')
+            // ->where('kode', 'like', $request->kabupaten . '.%')
+            ->whereRaw("LENGTH(kode) = 8")
+            ->orderBy('nama')
+            ->get();
+
+        $desa = DB::table('wilayah')
+            // ->where('kode', 'like', $request->kecamatan . '.%')
+            ->whereRaw("LENGTH(kode) = 13")
+            ->orderBy('nama')
+            ->get();
+        return view('auth.register', compact('kabupaten', 'kecamatan', 'desa'));
     }
 
     /**
@@ -36,7 +54,27 @@ class RegisteredUserController extends Controller
             'no_telp' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'nik' => [
+                'required',
+                'digits:16',          // harus tepat 16 karakter dan angka semua
+                'regex:/^[0-9]{16}$/', // memastikan benar-benar hanya angka
+                function ($attribute, $value, $fail) {
+                    if (substr($value, 0, 2) !== '35') {
+                        $fail('NIK yang Anda masukkan tidak terdaftar sebagai wilayah Jawa Timur.');
+                    }
+                },
+                Rule::unique('users', 'nik'),
+            ],
+            'kabupaten' => ['required', 'string', 'max:255'],
+            'kecamatan' => ['required', 'string', 'max:255'],
+            'desa' => ['required', 'string', 'max:255'],
+            'tgl_lahir' => ['required', 'date'],
         ]);
+
+        $umur = \Carbon\Carbon::parse($request->tgl_lahir)->age;
+        if ($umur < 19 || $umur > 39) {
+            return redirect()->back()->with('gagal', 'Umur harus antara 19 sampai 39 tahun.');
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -44,6 +82,10 @@ class RegisteredUserController extends Controller
             'nik' => $request->nik,
             'email' => $request->email,
             'no_telp' => $request->no_telp,
+            'kabupaten' => $request->kabupaten,
+            'kecamatan' => $request->kecamatan,
+            'desa' => $request->desa,
+            'tgl_lahir' => $request->tgl_lahir,
             'password' => Hash::make($request->password),
         ]);
         $user->assignRole('user');
@@ -52,6 +94,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('shop.user', $user->slug);
+        return redirect()->route('ternak');
     }
 }

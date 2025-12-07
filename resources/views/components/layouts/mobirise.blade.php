@@ -103,10 +103,13 @@
                 <div class="row-links">
                     <ul class="header-menu">
                         <li class="header-menu-item mbr-fonts-style display-5">
-                            <a href="#" class="text-primary">Marketplace</a>
+                            <a href="{{ route('shop') }}" class="text-primary">Marketplace</a>
                         </li>
                         <li class="header-menu-item mbr-fonts-style display-5">
-                            <a href="#" class="text-primary">Pelatihan</a>
+                            <a href="{{ route('pelatihan') }}" class="text-primary">Pelatihan</a>
+                        </li>
+                        <li class="header-menu-item mbr-fonts-style display-5">
+                            <a href="{{ route('forum') }}" class="text-primary">Forum</a>
                         </li>
                     </ul>
                 </div>

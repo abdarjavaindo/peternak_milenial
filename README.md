@@ -55,12 +55,12 @@ _After creating the new permissions use the following commands to update cashed 
 
 `php artisan cache:forget spatie.permission.cache`
 
+11. Upload file mysql `wilayah.sql` ke tabel wilayah
+
 ## Yang perlu dibenahi
 
--   Registrasi
--   Fitur komuditas yang dimiliki user
--   Profil user + gambar profil
--   Peta jatim dengan jumlah komuditasnya
+-   gambar profil (menyusul)
+-   Peta jatim dengan jumlah komuditasnya (menyusul)
 -   Komentar pada produk (menyusul)
 -   Fitur pencarian dan sorting pada kursus (menyusul)
 -   Postest pada kursus (menyusul)

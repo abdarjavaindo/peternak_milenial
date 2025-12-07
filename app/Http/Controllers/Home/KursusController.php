@@ -9,6 +9,7 @@ use App\Models\KursusBagian;
 use App\Models\KursusMateri;
 use App\Models\KursusProgres;
 use App\Models\UserKursusProgres;
+use App\Models\UserTernak;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -85,6 +86,11 @@ class KursusController extends Controller
         if (!auth()->user()) {
             return redirect()->route('login');
         }
+
+        if (UserTernak::where('user_id', auth()->user()->id)->count() < 1) {
+            return redirect()->route('ternak');
+        }
+
         $kursus = Kursus::with(['pengajar', 'bagian'])
             ->where(['is_published' => 1, 'slug' => $slug])
             ->firstOrFail();

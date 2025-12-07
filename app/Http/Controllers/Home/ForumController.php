@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Models\Forum;
 use App\Models\ForumKomentar;
+use App\Models\UserTernak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -28,6 +29,9 @@ class ForumController extends Controller
 
     public function create()
     {
+        if (UserTernak::where('user_id', auth()->user()->id)->count() < 1) {
+            return redirect()->route('ternak');
+        }
         return view('pages.home.forum.form');
     }
     public function store(Request $request) {
@@ -63,7 +67,9 @@ class ForumController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        return view('pages.home.forum.detail', compact('forum'));
+        $jumlahternak = UserTernak::where('user_id', auth()->user()->id)->count();
+
+        return view('pages.home.forum.detail', compact('forum', 'jumlahternak'));
     }
     public function komentar_store(Request $request, Forum $forum)
     {

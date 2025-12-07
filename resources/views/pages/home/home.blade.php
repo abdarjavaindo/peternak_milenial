@@ -48,7 +48,7 @@
                         </div>
                         <div class="item-content align-left">
                             <h5 class="item-title mbr-fonts-style mt-0 mb-2 display-5">
-                                <strong>Marketing</strong>
+                                <strong>Marketplace</strong>
                             </h5>
                             <p class="mbr-text mbr-fonts-style mb-3 display-7">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
@@ -65,7 +65,7 @@
                         </div>
                         <div class="item-content align-left">
                             <h5 class="item-title mbr-fonts-style mb-2 mt-0 display-5">
-                                <strong>E-Commers</strong>
+                                <strong>Pelatihan</strong>
                             </h5>
                             <p class="mbr-text mbr-fonts-style mb-3 display-7">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
@@ -82,7 +82,7 @@
                         </div>
                         <div class="item-content align-left">
                             <h5 class="item-title mbr-fonts-style mb-2 mt-0 display-5">
-                                <strong>Pelatihan</strong>
+                                <strong>Forum Peternak</strong>
                             </h5>
                             <p class="mbr-text mbr-fonts-style mb-3 display-7">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit

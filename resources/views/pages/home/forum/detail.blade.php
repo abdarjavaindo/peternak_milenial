@@ -121,52 +121,62 @@
 
             <div class="col-lg-6 mt-4 mt-lg-0 pt-2 pt-lg-0">
                 @if (auth()->user())
-                    <div class="card border-0 sidebar sticky-bar rounded shadow bg-light p-2">
-                        <form class="ms-lg-4" method="POST" action="{{ route('komentar.store', $forum->id) }}">
-                            @csrf
-                            <div class="row">
-                                <div class="col-12">
-                                    <h5>Tambahkan Komentar</h5>
-                                </div>
-                                <div class="col-md-12 mt-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">
-                                            Komentar:
-                                            <span class="text-danger"><i>(required)</i></span>
-                                        </label>
-                                        <div class="form-icon position-relative">
-                                            <i data-feather="message-circle" class="fea icon-sm icons"></i>
-                                            <textarea id="komentar" placeholder="Komentar Anda" rows="5" name="komentar" class="form-control ps-5"
-                                                required=""></textarea>
-                                            @error('komentar')
-                                                <span class="text-danger" style="color:red">{{ $message }}</span>
-                                            @enderror
+                    @if ($jumlahternak < 1)
+                        <div class="alert alert-warning" role="alert">
+                            Anda harus melengkapi daftar ternak yang anda miliki terlebih dahulu sebelum menulis
+                            komentar <a href="{{ route('ternak') }}" class="text-dark"><u>(Menuju Daftar
+                                    Ternak)</u></a>
+                        </div>
+                    @else
+                        <div class="card border-0 sidebar sticky-bar rounded shadow bg-light p-2">
+                            <form class="ms-lg-4" method="POST" action="{{ route('komentar.store', $forum->id) }}">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5>Tambahkan Komentar</h5>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">
+                                                Komentar:
+                                                <span class="text-danger"><i>(required)</i></span>
+                                            </label>
+                                            <div class="form-icon position-relative">
+                                                <i data-feather="message-circle" class="fea icon-sm icons"></i>
+                                                <textarea id="komentar" placeholder="Komentar Anda" rows="5" name="komentar" class="form-control ps-5"
+                                                    required=""></textarea>
+                                                @error('komentar')
+                                                    <span class="text-danger" style="color:red">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">
+                                                Nama:
+                                                <span class="text-warning"><i>(readonly)</i></span>
+                                            </label>
+                                            <div class="form-icon position-relative">
+                                                <i data-feather="user" class="fea icon-sm icons"></i>
+                                                <input id="name" name="name" type="text"
+                                                    class="form-control ps-5" readonly
+                                                    value="{{ auth()->user()->name }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="send d-grid">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
                                     </div>
                                 </div>
+                            </form>
+                        </div>
+                    @endif
 
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">
-                                            Nama:
-                                            <span class="text-warning"><i>(readonly)</i></span>
-                                        </label>
-                                        <div class="form-icon position-relative">
-                                            <i data-feather="user" class="fea icon-sm icons"></i>
-                                            <input id="name" name="name" type="text"
-                                                class="form-control ps-5" readonly value="{{ auth()->user()->name }}">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="send d-grid">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 @endif
             </div>
         </div>
