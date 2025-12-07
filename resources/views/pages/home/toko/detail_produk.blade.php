@@ -145,29 +145,17 @@
                                             <div class="d-flex justify-content-between">
                                                 <div class="d-flex align-items-center">
                                                     <a class="pe-3" href="#">
-                                                        <img src="{{ asset('assets') }}/landrick/images/client/01.jpg"
+                                                        <img src="{{ asset('assets') }}/mobirise/images/user.png"
                                                             class="img-fluid avatar avatar-md-sm rounded-circle shadow"
                                                             alt="img">
                                                     </a>
                                                     <div class="flex-1 commentor-detail">
                                                         <h6 class="mb-0"><a href="javascript:void(0)"
-                                                                class="text-dark media-heading">Lorenzo Peterson</a>
+                                                                class="text-dark media-heading">User 1</a>
                                                         </h6>
-                                                        <small class="text-muted">15th August, 2021 at 01:25 pm</small>
+                                                        <small class="text-muted">15 Agustus 2026 13:25</small>
                                                     </div>
                                                 </div>
-                                                {{-- <ul class="list-unstyled mb-0">
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                </ul> --}}
                                             </div>
                                             <div class="mt-3">
                                                 <p class="text-muted fst-italic p-3 bg-light rounded">" Awesome product
@@ -179,28 +167,16 @@
                                             <div class="d-flex justify-content-between">
                                                 <div class="d-flex align-items-center">
                                                     <a class="pe-3" href="#">
-                                                        <img src="{{ asset('assets') }}/landrick/images/client/02.jpg"
+                                                        <img src="{{ asset('assets') }}/mobirise/images/user.png"
                                                             class="img-fluid avatar avatar-md-sm rounded-circle shadow"
                                                             alt="img">
                                                     </a>
                                                     <div class="flex-1 commentor-detail">
                                                         <h6 class="mb-0"><a href="javascript:void(0)"
-                                                                class="media-heading text-dark">Tammy Camacho</a></h6>
-                                                        <small class="text-muted">15th August, 2021 at 05:44 pm</small>
+                                                                class="media-heading text-dark">User 2</a></h6>
+                                                        <small class="text-muted">15 Agustus 2026 17:25</small>
                                                     </div>
                                                 </div>
-                                                {{-- <ul class="list-unstyled mb-0">
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star-outline text-warning"></i></li>
-                                                </ul> --}}
                                             </div>
                                             <div class="mt-3">
                                                 <p class="text-muted fst-italic p-3 bg-light rounded mb-0">" Good "</p>
@@ -215,83 +191,6 @@
                                             <div class="col-12">
                                                 <h5>Add your review:</h5>
                                             </div>
-                                            {{-- <div class="col-12 mt-4">
-                                                <h6 class="small fw-bold">Your Rating:</h6>
-                                                <a href="javascript:void(0)" class="d-inline-block me-3">
-                                                    <ul class="list-unstyled mb-0 small">
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                    </ul>
-                                                </a>
-
-                                                <a href="javascript:void(0)" class="d-inline-block me-3">
-                                                    <ul class="list-unstyled mb-0 small">
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                    </ul>
-                                                </a>
-
-                                                <a href="javascript:void(0)" class="d-inline-block me-3">
-                                                    <ul class="list-unstyled mb-0 small">
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                    </ul>
-                                                </a>
-
-                                                <a href="javascript:void(0)" class="d-inline-block me-3">
-                                                    <ul class="list-unstyled mb-0 small">
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star-outline text-warning"></i></li>
-                                                    </ul>
-                                                </a>
-
-                                                <a href="javascript:void(0)" class="d-inline-block">
-                                                    <ul class="list-unstyled mb-0 small">
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                        <li class="list-inline-item"><i
-                                                                class="mdi mdi-star text-warning"></i></li>
-                                                    </ul>
-                                                </a>
-                                            </div> --}}
                                             <div class="col-md-12 mt-3">
                                                 <div class="mb-3">
                                                     <label class="form-label">Your Review:</label>

@@ -49,6 +49,10 @@
     }
 
     @media only screen and (min-width: 768px) {
+        #navigation .navigation-menu>li>a {
+            padding: 25px 10px !important;
+        }
+
         #topnav {
             background-color: #222222
         }
@@ -90,15 +94,12 @@
         <!-- Logo container-->
         <a class="logo" href="{{ env('APP_URL') }}">
             <span class="logo-light-mode">
-                {{-- <img src="{{ asset('assets') }}/images/logo-dark.png" class="l-dark" height="60" alt="">
-                <img src="{{ asset('assets') }}/images/logo-light.png" class="l-light" height="60" alt=""> --}}
                 <img src="{{ asset('assets') }}/mobirise/images/channels4-profile-137x137.jpg"
                     alt="Mobirise Website Builder" height="60" />
             </span>
-            <small class="txtheader">
+            <small class="txtheader d-none d-md-inline">
                 PETERNAK MILENIAL
             </small>
-            {{-- <img src="{{ asset('assets') }}/images/logo-light.png" height="60" class="logo-dark-mode" alt=""> --}}
         </a>
 
         <!-- End Logo container-->
@@ -147,6 +148,11 @@
                 <li>
                     <a href="{{ route('pelatihan') }}" class="sub-menu-item">
                         Pelatihan
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('forum') }}" class="sub-menu-item">
+                        Forum
                     </a>
                 </li>
                 @if (auth()->user())

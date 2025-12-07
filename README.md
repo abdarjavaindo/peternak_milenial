@@ -1,8 +1,8 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-## Laravel Starter Kit
+## Peternak Milenial
 
-**Laravel Starter Kit** adalah sebuah starter project sederhana menggunakan framework Laravel 10. Website ini dibuat dengan menggunakan `Laravel Breze` dan `Portal Theme Bootstrap 5`.
+**Peternak Milenial** adalah sebuah platform dimana peternak sebagai user dapat menjual hasil ternaknya, belajar mengelola peternakan dan berdiskusi dalam sebuah forum dengan sesama peternak. Aplikasi ini dibuat oleh Dinas Peternakan Jawa Timur dan bekerjasama dengan PT Abdar Java Indo.
 
 <p align="center">
     <img src="1.png" width="80%" height="auto" />
@@ -57,11 +57,10 @@ _After creating the new permissions use the following commands to update cashed 
 
 ## Yang perlu dibenahi
 
--   Fitur forum
 -   Registrasi
 -   Fitur komuditas yang dimiliki user
--   Peta jatim dengan jumlah komuditasnya
 -   Profil user + gambar profil
--   Komentar pada produk
--   Fitur pencarian dan sorting pada kursus
--   Postest pada kursus
+-   Peta jatim dengan jumlah komuditasnya
+-   Komentar pada produk (menyusul)
+-   Fitur pencarian dan sorting pada kursus (menyusul)
+-   Postest pada kursus (menyusul)

@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\PengajarController;
 use App\Http\Controllers\Dashboard\ProdukController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Home\ForumController;
 use App\Http\Controllers\Home\TokokuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +66,17 @@ Route::prefix('kursus')->group(function () {
     Route::get('/materi/{kursus_materi}', [KursusController::class, 'materi'])->name('pelatihan.materi');
     Route::get('/next/{kursus_materi}', [KursusController::class, 'next'])->name('pelatihan.next');
     Route::post('/selesai/{slug}/{kursus_materi}', [KursusController::class, 'selesai'])->name('pelatihan.selesai');
+});
+
+Route::prefix('forum')->group(function () {
+    Route::get('/', [ForumController::class, 'index'])->name('forum');
+    Route::middleware(['auth', 'verified'])->get('/create', [ForumController::class, 'create'])->name('forum.create');
+    Route::middleware(['auth', 'verified'])->post('/store', [ForumController::class, 'store'])->name('forum.store');
+    Route::get('/detail/{slug}', [ForumController::class, 'detail'])->name('forum.detail');
+    Route::middleware(['auth', 'verified'])->get('/delete/{forum}', [ForumController::class, 'destroy'])->name('forum.destroy');
+    // komentar
+    Route::middleware(['auth', 'verified'])->post('/komentar/{forum}', [ForumController::class, 'komentar_store'])->name('komentar.store');
+    Route::middleware(['auth', 'verified'])->get('/komentar/{komentar}', [ForumController::class, 'komentar_destroy'])->name('komentar.destroy');
 });
 
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {

@@ -73,6 +73,11 @@
                                 Pelatihan
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link link text-black display-4" href="{{ route('forum') }}">
+                                Forum
+                            </a>
+                        </li>
                     </ul>
                     <div class="navbar-buttons mbr-section-btn">
                         @if (auth()->user())
