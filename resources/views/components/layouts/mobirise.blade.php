@@ -60,7 +60,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link link text-black text-primary display-4" href="{{ route('kontak') }}">
-                                Hubungi Kami
+                                Kontak
                             </a>
                         </li>
                         <li class="nav-item">

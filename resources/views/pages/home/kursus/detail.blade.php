@@ -27,7 +27,7 @@
 
                             <li class="align-items-center justify-content-center list-inline-item mx-2">
                                 <i class="uil uil-book-reader fs-5 text-dark title-dark align-middle"></i>
-                                <span class="text-dark-50 ms-1">Di ikuti oleh 5 peserta</span>
+                                <span class="text-dark-50 ms-1">Di ikuti oleh {{ $jumlahpeserta }} peserta</span>
                             </li>
                         </ul>
 

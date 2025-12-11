@@ -10,13 +10,16 @@
         urlconverter_callback: 'myCustomURLConverter',
         height: 400,
 
+        extended_valid_elements: 'iframe[src|width|height|frameborder|allowfullscreen|allow|referrerpolicy]',
+        valid_children: "+body[iframe]",
+
         image_advtab: true,
         image_dimensions: false,
         object_resizing: false,
 
         content_style: `
             .mce-content-body { font-size: 15px; font-family: Arial, sans-serif; }
-            img { max-width: 120px; height: auto; }
+            img { max-width: 100%; height: auto; }
         `, // Gabungkan dua style
 
         // Konfigurasi Upload Gambar
@@ -49,13 +52,13 @@
 
             ed.on('BeforeSetContent', function(e) {
                 e.content = e.content.replace(/<img /g,
-                    '<img style="max-width:120px; height:auto;" ');
+                    '<img style="max-width:100%; height:auto;" ');
             });
 
             ed.on('PostProcess', function(e) {
                 if (e.set) {
                     e.content = e.content.replace(/<img /g,
-                        '<img style="max-width:120px; height:auto;" ');
+                        '<img style="max-width:100%; height:auto;" ');
                 }
             });
 

@@ -84,9 +84,9 @@
                                         <label for="kabupaten">Kabupaten/Kota</label>
                                         <select class="form-select" id="kabupaten" name="kabupaten" required>
                                             <option value="">Pilih Kabupaten ...</option>
-                                            @foreach ($kabupaten as $kab)
+                                            {{-- @foreach ($kabupaten as $kab)
                                                 <option value="{{ $kab->nama }}">{{ $kab->nama }}</option>
-                                            @endforeach
+                                            @endforeach --}}
                                         </select>
                                         @error('kabupaten')
                                             <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -101,9 +101,9 @@
                                         <label for="kecamatan">Kecamatan</label>
                                         <select class="form-select" id="kecamatan" name="kecamatan" required>
                                             <option value="">Pilih Kecamatan ...</option>
-                                            @foreach ($kecamatan as $kec)
+                                            {{-- @foreach ($kecamatan as $kec)
                                                 <option value="{{ $kec->nama }}">{{ $kec->nama }}</option>
-                                            @endforeach
+                                            @endforeach --}}
                                         </select>
                                         @error('kecamatan')
                                             <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -115,9 +115,9 @@
                                         <label for="desa">Kelurahan/Desa</label>
                                         <select class="form-select" id="desa" name="desa" required>
                                             <option value="">Pilih Desa ...</option>
-                                            @foreach ($desa as $des)
+                                            {{-- @foreach ($desa as $des)
                                                 <option value="{{ $des->nama }}">{{ $des->nama }}</option>
-                                            @endforeach
+                                            @endforeach --}}
                                         </select>
                                         @error('desa')
                                             <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -182,6 +182,84 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // --- Inisialisasi Select2 ---
+        $('#kabupaten').select2({
+            theme: "bootstrap-5",
+            placeholder: "Pilih Kabupaten..."
+        });
+        $('#kecamatan').select2({
+            theme: "bootstrap-5",
+            placeholder: "Pilih Kecamatan..."
+        });
+        $('#desa').select2({
+            theme: "bootstrap-5",
+            placeholder: "Pilih Desa..."
+        });
+
+        // --- Load Kabupaten ---
+        fetch('/wilayah/kabupaten')
+            .then(res => res.json())
+            .then(data => {
+                let select = $('#kabupaten');
+                select.empty().append(`<option value="">Pilih Kabupaten ...</option>`);
+
+                data.forEach(item => {
+                    select.append(`<option value="${item.kode}">${item.nama}</option>`);
+                });
+
+                select.trigger('change'); // penting!
+            });
+
+        // --- Ketika Kabupaten Dipilih → Load Kecamatan ---
+        $('#kabupaten').on('change', function() {
+            let kab = $(this).val();
+
+            $('#kecamatan').empty().append(`<option value="">Kecamatan ...</option>`).trigger('change');
+            $('#desa').empty().append(`<option value="">Desa ...</option>`).trigger('change');
+
+            if (!kab) return;
+
+            fetch('/wilayah/kecamatan?kabupaten=' + kab)
+                .then(res => res.json())
+                .then(data => {
+                    let kec = $('#kecamatan');
+                    kec.empty().append(`<option value="">Kecamatan ...</option>`);
+
+                    data.forEach(item => {
+                        kec.append(`<option value="${item.kode}">${item.nama}</option>`);
+                    });
+
+                    kec.trigger('change'); // refresh Select2
+                });
+        });
+
+        // --- Ketika Kecamatan Dipilih → Load Desa ---
+        $('#kecamatan').on('change', function() {
+            let kec = $(this).val();
+
+            $('#desa').empty().append(`<option value="">Desa ...</option>`).trigger('change');
+
+            if (!kec) return;
+
+            fetch('/wilayah/desa?kecamatan=' + kec)
+                .then(res => res.json())
+                .then(data => {
+                    let desa = $('#desa');
+                    desa.empty().append(`<option value="">Desa ...</option>`);
+
+                    data.forEach(item => {
+                        desa.append(`<option value="${item.kode}">${item.nama}</option>`);
+                    });
+
+                    desa.trigger('change');
+                });
+        });
+
+    });
+</script>
+{{-- <script>
     $('#kabupaten').select2({
         theme: "bootstrap-5",
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -197,4 +275,4 @@
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
         placeholder: $(this).data('placeholder'),
     });
-</script>
+</script> --}}

@@ -40,6 +40,7 @@ class KursusController extends Controller
         $user_progress = null;
         $materi_progress = [];
         $next_materi = null;
+        $jumlahpeserta = UserKursusProgres::where('kursus_id', $pelatihan->id)->count();
 
         if (auth()->check()) {
 
@@ -77,7 +78,8 @@ class KursusController extends Controller
             'pelatihan',
             'user_progress',
             'materi_progress',
-            'next_materi'
+            'next_materi',
+            'jumlahpeserta'
         ));
     }
 

@@ -63,13 +63,15 @@ class ForumController extends Controller
 
     public function detail($slug)
     {
-        $forum = Forum::with(['user', 'komentar'])
+        $data['forum'] = Forum::with(['user', 'komentar'])
             ->where('slug', $slug)
             ->firstOrFail();
 
-        $jumlahternak = UserTernak::where('user_id', auth()->user()->id)->count();
+        if (auth()->user()) {
+            $data['jumlahternak'] = UserTernak::where('user_id', auth()->user()->id)->count();
+        }
 
-        return view('pages.home.forum.detail', compact('forum', 'jumlahternak'));
+        return view('pages.home.forum.detail', $data);
     }
     public function komentar_store(Request $request, Forum $forum)
     {

@@ -24,10 +24,12 @@ return new class extends Migration
             $table->integer('harga')->default(0);
             $table->string('hari')->default(0);
             $table->boolean('is_published')->default(false);
+            $table->unsignedBigInteger('pengajar_id')->nullable();
             $table->timestamps();
 
             $table->foreign('kategori_kursus_id')->references('id')->on('kategori_kursuses')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('pengajar_id')->references('id')->on('pengajars')->onDelete('cascade');
         });
     }
 

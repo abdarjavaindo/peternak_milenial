@@ -26,8 +26,13 @@ class UserSeeder extends Seeder
             'name' => 'user',
             'email' => 'user@gmail.com',
             'password' => bcrypt('password'),
-            'nik' => '3273011001900001',
-            'slug' => Str::slug('user 1234')
+            'nik' => '3573011001900001',
+            'slug' => Str::slug('user 1234'),
+            'no_telp' => '6289695615256',
+            'kabupaten' => 'Kabupaten Sidoarjo',
+            'kecamatan' => 'Candi',
+            'desa' => 'Kendalpecabean',
+            'tgl_lahir' => '2000-07-04',
         ]);
         $user->assignRole('user');
     }

@@ -474,4 +474,19 @@
             </div>
         </div>
     </section>
+
+    <section data-bs-version="5.1" class="people04 cid-v3EdDRbvvn" id="people04-6">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 mb-0 content-head">
+                    <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-3">
+                        <strong>Peta Komuditas di Jawa Timur</strong>
+                    </h3>
+                </div>
+            </div>
+            <div class="m-0">
+                <x-peta class="m-0"></x-peta>
+            </div>
+        </div>
+    </section>
 </x-layouts.mobirise>

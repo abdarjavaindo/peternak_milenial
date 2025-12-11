@@ -137,7 +137,7 @@
                 </li>
                 <li>
                     <a href="{{ route('kontak') }}" class="sub-menu-item">
-                        Hubungi Kami
+                        Kontak
                     </a>
                 </li>
                 <li>
@@ -159,7 +159,7 @@
                     <li class="has-submenu parent-menu-item">
                         <a href="javascript:void(0)">
                             <u>
-                                {{ Str::limit(Auth::user()->name, 15, '...') }}
+                                {{ Str::limit(Auth::user()->name, 5, '...') }}
                             </u>
                         </a><span class="menu-arrow"></span>
                         <ul class="submenu">

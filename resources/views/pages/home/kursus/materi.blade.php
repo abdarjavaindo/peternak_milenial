@@ -96,7 +96,7 @@
             document.getElementById('btnNext2')
         ];
 
-        let countdown = 300; // 5 menit = 300 detik
+        let countdown = 30; // 5 menit = 300 detik
 
         // Fungsi disable semua tombol
         function disableButtons() {

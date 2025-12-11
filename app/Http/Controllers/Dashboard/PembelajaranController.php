@@ -18,7 +18,7 @@ class PembelajaranController extends Controller
     #region kursus
     public function loaddata()
     {
-        $data = Kursus::with(['user', 'pengajar'])->orderBy('id', 'desc')->get();
+        $data = Kursus::with(['user', 'pengajar', 'progres'])->orderBy('id', 'desc')->get();
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
                 $editUrl = route('pembelajaran.edit', $data->id);
@@ -36,7 +36,7 @@ class PembelajaranController extends Controller
                 return $data->user->name;
             })
             ->addColumn('jumlah_peserta', function ($data) {
-                return '0';
+                return $data->progres->count();
             })
             ->addColumn('publish', function ($data) {
                 return $data->is_published == 0 ? 'tidak' : 'IYA';

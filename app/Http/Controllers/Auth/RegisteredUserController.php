@@ -22,23 +22,53 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        // $kabupaten = DB::table('wilayah')
+        //     ->whereRaw("LENGTH(kode) = 5")
+        //     ->orderBy('nama')
+        //     ->get();
+
+        // $kecamatan = DB::table('wilayah')
+        //     // ->where('kode', 'like', $request->kabupaten . '.%')
+        //     ->whereRaw("LENGTH(kode) = 8")
+        //     ->orderBy('nama')
+        //     ->get();
+
+        // $desa = DB::table('wilayah')
+        //     // ->where('kode', 'like', $request->kecamatan . '.%')
+        //     ->whereRaw("LENGTH(kode) = 13")
+        //     ->orderBy('nama')
+        //     ->get();
+        // return view('auth.register', compact('kabupaten', 'kecamatan', 'desa'));
+        return view('auth.register');
+    }
+
+    public function kabupaten()
+    {
         $kabupaten = DB::table('wilayah')
             ->whereRaw("LENGTH(kode) = 5")
             ->orderBy('nama')
             ->get();
+        return response()->json($kabupaten);
+    }
 
+    public function kecamatan(Request $request)
+    {
         $kecamatan = DB::table('wilayah')
-            // ->where('kode', 'like', $request->kabupaten . '.%')
+            ->where('kode', 'like', $request->kabupaten . '.%')
             ->whereRaw("LENGTH(kode) = 8")
             ->orderBy('nama')
             ->get();
+        return response()->json($kecamatan);
+    }
 
+    public function desa(Request $request)
+    {
         $desa = DB::table('wilayah')
-            // ->where('kode', 'like', $request->kecamatan . '.%')
+            ->where('kode', 'like', $request->kecamatan . '.%')
             ->whereRaw("LENGTH(kode) = 13")
             ->orderBy('nama')
             ->get();
-        return view('auth.register', compact('kabupaten', 'kecamatan', 'desa'));
+        return response()->json($desa);
     }
 
     /**
@@ -65,9 +95,9 @@ class RegisteredUserController extends Controller
                 },
                 Rule::unique('users', 'nik'),
             ],
-            'kabupaten' => ['required', 'string', 'max:255'],
-            'kecamatan' => ['required', 'string', 'max:255'],
-            'desa' => ['required', 'string', 'max:255'],
+            'kabupaten' => ['required'],
+            'kecamatan' => ['required'],
+            'desa' => ['required'],
             'tgl_lahir' => ['required', 'date'],
         ]);
 
@@ -76,15 +106,25 @@ class RegisteredUserController extends Controller
             return redirect()->back()->with('gagal', 'Umur harus antara 19 sampai 39 tahun.');
         }
 
+        $kabupaten = DB::table('wilayah')
+            ->where('kode', $request->kabupaten)
+            ->first();
+        $kecamatan = DB::table('wilayah')
+            ->where('kode', $request->kecamatan)
+            ->first();
+        $desa = DB::table('wilayah')
+            ->where('kode', $request->desa)
+            ->first();
+
         $user = User::create([
             'name' => $request->name,
             'slug' => $this->generateSlugWithRandom($request->name, 4),
             'nik' => $request->nik,
             'email' => $request->email,
             'no_telp' => $request->no_telp,
-            'kabupaten' => $request->kabupaten,
-            'kecamatan' => $request->kecamatan,
-            'desa' => $request->desa,
+            'kabupaten' => $kabupaten->nama,
+            'kecamatan' => $kecamatan->nama,
+            'desa' => $desa->nama,
             'tgl_lahir' => $request->tgl_lahir,
             'password' => Hash::make($request->password),
         ]);

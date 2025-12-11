@@ -18,6 +18,7 @@ use App\Http\Controllers\Home\ForumController;
 use App\Http\Controllers\Home\TokokuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create']);
+Route::get('/wilayah/kabupaten', [RegisteredUserController::class, 'kabupaten']);
+Route::get('/wilayah/kecamatan', [RegisteredUserController::class, 'kecamatan']);
+Route::get('/wilayah/desa', [RegisteredUserController::class, 'desa']);
 Route::middleware(['auth', 'verified'])->post('/upload-image', function (Request $request) {
     if ($request->hasFile('file')) {
         $image = $request->file('file');
@@ -97,7 +101,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('daftar-ternak')->g
 #endregion
 
 #region Dashboard
-Route::middleware(['auth', 'verified', 'role:admin'])->get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified', 'role:admin'])->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/license', function () {
     return "Designed by PT Abdar Java Indo";
 });

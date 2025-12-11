@@ -97,7 +97,8 @@
             <div class="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
                 {{-- change image below --}}
                 {{-- <div class="auth-background-holder"></div> --}}
-                <img src="https://static.promediateknologi.id/crop/0x0:0x0/750x500/photo/p2/77/2024/06/08/adhy-kurban-1453939168.jpg"
+                {{-- <img src="https://static.promediateknologi.id/crop/0x0:0x0/750x500/photo/p2/77/2024/06/08/adhy-kurban-1453939168.jpg" --}}
+                <img src="https://nusantaraabadinews.com/wp-content/uploads/2025/11/IMG-20251117-WA0826.jpg"
                     alt="" style="height: 100vh; width: 100%; object-fit: cover">
 
                 <div class="auth-background-mask"></div>

@@ -111,6 +111,7 @@
                                 <div class="mb-3">
                                     <label for="kabupaten">Kabupaten/Kota</label>
                                     <select class="form-select" id="kabupaten" name="kabupaten" required>
+                                        <option value="">Pilih Kabupaten ...</option>
                                         @foreach ($kabupaten as $kab)
                                             <option value="{{ $kab->nama }}"
                                                 {{ $user->kabupatan == $kab->nama ? 'selected' : '' }}>
@@ -126,6 +127,7 @@
                                 <div class="mb-3">
                                     <label for="kecamatan">Kecamatan</label>
                                     <select class="form-select" id="kecamatan" name="kecamatan" required>
+                                        <option value="">Pilih Kecamatan ...</option>
                                         @foreach ($kecamatan as $kec)
                                             <option value="{{ $kec->nama }}"
                                                 {{ $user->kecamatan == $kec->nama ? 'selected' : '' }}>
