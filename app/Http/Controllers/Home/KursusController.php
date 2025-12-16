@@ -220,11 +220,62 @@ class KursusController extends Controller
             }
         }
 
+        $pelatihan = Kursus::with([
+            'pengajar',
+            'bagian',
+            'bagian.materi'
+        ])
+            ->where(['is_published' => 1, 'slug' => $kursus->slug])
+            ->firstOrFail();
+
+        $user_progress = null;
+        $materi_progress = [];
+        $next_materi = null;
+        $jumlahpeserta = UserKursusProgres::where('kursus_id', $pelatihan->id)->count();
+
+        if (auth()->check()) {
+
+            // Ambil progres utama
+            $user_progress = UserKursusProgres::where([
+                'user_id'   => auth()->id(),
+                'kursus_id' => $pelatihan->id,
+            ])->first();
+
+            // Ambil progres per materi
+            $materi_progress = KursusProgres::where('user_id', auth()->id())
+                ->where('kursus_id', $pelatihan->id)
+                ->get()
+                ->keyBy('materi_id');
+
+            // CARI MATERI YANG BELUM SELESAI ATAU SEDANG PROGRES
+            foreach ($pelatihan->bagian->sortBy('urutan') as $bagian) {
+                foreach ($bagian->materi as $materi) {
+                    $progress = $materi_progress[$materi->id] ?? null;
+                    // Jika belum ada progres → itu materi berikutnya
+                    if (!$progress) {
+                        $next_materi = $materi;
+                        break 2;
+                    }
+                    // Jika progres masih berjalan
+                    if ($progress->status == 'progres') {
+                        $next_materi = $materi;
+                        break 2;
+                    }
+                }
+            }
+        }
+
         return view('pages.home.kursus.materi', [
             'kursus_materi'   => $kursus_materi,
             'materiSebelumnya' => $materiSebelumnya,
             'materiSelanjutnya' => $materiSelanjutnya,
-            'materiProgress' => $materiProgress, // jika view butuh
+            'materiProgress' => $materiProgress,
+
+            'pelatihan' => $pelatihan,
+            'user_progress' => $user_progress,
+            'materi_progress' => $materi_progress,
+            'next_materi' => $next_materi,
+            'jumlahpeserta' => $jumlahpeserta
         ]);
     }
 

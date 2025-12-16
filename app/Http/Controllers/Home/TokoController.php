@@ -8,6 +8,7 @@ use App\Models\Produk;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class TokoController extends Controller
 {
@@ -89,9 +90,36 @@ class TokoController extends Controller
         ]);
     }
 
-    public function toko(Request $request, $slug_user)
+    public function loaddata()
     {
-        $user = User::where('slug', $slug_user)->firstOrFail();
+        $data = User::role('user')->where('status', '1')
+            ->orderByRaw("
+                CASE level
+                    WHEN 'ahli' THEN 1
+                    WHEN 'menengah' THEN 2
+                    WHEN 'pemula' THEN 3
+                    ELSE 4
+                END
+            ")
+            ->orderBy('id', 'desc')->get();
+        return DataTables::of($data)
+            ->addColumn('aksi', function ($data) {
+                $detail = route('shop.user', $data->slug);
+
+                return '<a href="' . $detail . '" class="btn btn-sm btn-info">Kunjungi</a>';
+            })
+            ->addIndexColumn()
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
+    public function toko(Request $request, $slug_user = null)
+    {
+        if ($slug_user) {
+            $user = User::where('slug', $slug_user)->firstOrFail();
+        } else {
+            $data['cari'] = $request->query('cari', '');
+            return view('pages.home.toko.user', $data);
+        }
         $userId = $user->id;
 
         // Ambil kategori berdasarkan produk milik user

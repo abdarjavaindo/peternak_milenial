@@ -1,7 +1,7 @@
 <x-layouts.home>
     <!-- Start -->
     <section class="section">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <br>
@@ -41,9 +41,63 @@
                         @endif
                     </div>
 
-                    <div class="card rounded shadow p-4 border-0">
-                        <h4 class="title mb-4">{{ $kursus_materi->judul }}</h4>
-                        {!! $kursus_materi->konten !!}
+                    <div class="row">
+                        <div class="col-lg-3 mt-4 mt-lg-0 pt-2 pt-lg-0">
+                            <div class="card border-0 sidebar sticky-bar rounded shadow bg-light p-2">
+                                <div class="row">
+                                    @foreach ($pelatihan->bagian->sortBy('urutan') as $bagi)
+                                        <div class="col-md-12 mt-4 pt-2">
+                                            <h5 class="mb-0">{{ $bagi->judul }}</h5>
+                                            <div class="table-responsive bg-white shadow rounded mt-4">
+                                                <table class="table mb-0 table-center">
+                                                    <tbody>
+                                                        @foreach ($bagi->materi as $mat)
+                                                            <tr>
+                                                                <th class="p-3">
+                                                                    <div class="align-items-center">
+                                                                        <i class="uil uil-notes h6"></i>
+                                                                        <p class="mb-0 d-inline fw-normal h6 ms-1">
+                                                                            <a href="{{ route('pelatihan.materi', $mat->id) }}"
+                                                                                class="text-muted">
+                                                                                {{ $mat->judul }}
+                                                                            </a>
+                                                                        </p>
+                                                                    </div>
+                                                                </th>
+                                                                <td class="p-3 text-end">
+                                                                    @php
+                                                                        $progress = $materi_progress[$mat->id] ?? null;
+                                                                    @endphp
+                                                                    @if ($progress)
+                                                                        @if ($progress->status == 'progres')
+                                                                            <span class="badge bg-soft-warning">
+                                                                                Lanjutkan
+                                                                            </span>
+                                                                        @elseif ($progress->status == 'selesai')
+                                                                            <span class="badge bg-soft-primary">
+                                                                                Selesai
+                                                                            </span>
+                                                                        @endif
+                                                                    @else
+                                                                        <i class="uil uil-lock"></i>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 mt-4 mt-lg-0 pt-2 pt-lg-0">
+                            <div class="card rounded shadow p-4 border-0">
+                                <h4 class="title mb-4">{{ $kursus_materi->judul }}</h4>
+                                {!! $kursus_materi->konten !!}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-between mt-1">

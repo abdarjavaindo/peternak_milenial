@@ -94,8 +94,8 @@
         <!-- Logo container-->
         <a class="logo" href="{{ env('APP_URL') }}">
             <span class="logo-light-mode">
-                <img src="{{ asset('assets') }}/mobirise/images/channels4-profile-137x137.jpg"
-                    alt="Mobirise Website Builder" height="60" />
+                <img src="{{ asset('assets') }}/mobirise/images/channels4-profile-137x137.jpg" alt=""
+                    style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;" />
             </span>
             <small class="txtheader d-none d-md-inline">
                 PETERNAK MILENIAL

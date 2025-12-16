@@ -11,7 +11,7 @@
             <div class="col-12 col-md-7 col-lg-8 auth-main-col text-center p-4">
                 <div class="d-flex flex-column align-content-end">
 
-                    <h2 class="auth-heading text-center mb-4">Sign up</h2>
+                    <h2 class="auth-heading text-center">Sign up</h2>
                     <x-flash-message></x-flash-message>
 
                     <div class="auth-form-container text-start">
@@ -20,7 +20,7 @@
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="mb-3">
+                                    <div class="mb-2">
                                         <label class="sr-only" for="name">Nama</label>
                                         <input id="name" name="name" type="text"
                                             class="form-control signup-name" placeholder="Nama Lengkap"
@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="mb-3">
+                                    <div class="mb-2">
                                         <label class="sr-only" for="email">Email</label>
                                         <input id="email" name="email" type="email"
                                             class="form-control signup-email" placeholder="Email" required="required"
@@ -45,7 +45,7 @@
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="mb-3">
+                                    <div class="mb-2">
                                         <label class="sr-only" for="no_telp">No Telpon (WA)</label>
                                         <input id="no_telp" name="no_telp" type="number" class="form-control"
                                             placeholder="628xxxxxxxxxx" required="required"
@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="mb-3">
+                                    <div class="mb-2">
                                         <label class="sr-only" for="nik">NIK</label>
                                         <input id="nik" name="nik" type="number" class="form-control"
                                             placeholder="NIK" required="required" value="{{ old('nik') }}">
@@ -69,7 +69,7 @@
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="mb-3">
+                                    <div class="mb-2">
                                         <label for="tgl_lahir">Tanggal Lahir</label>
                                         <input id="tgl_lahir" name="tgl_lahir" type="date" class="form-control"
                                             placeholder="Tanggal Lahir" required="required"
@@ -80,13 +80,10 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label for="kabupaten">Kabupaten/Kota</label>
+                                    <div class="mb-2">
+                                        <label for="kabupaten" class="form-label">Kabupaten/Kota</label>
                                         <select class="form-select" id="kabupaten" name="kabupaten" required>
                                             <option value="">Pilih Kabupaten ...</option>
-                                            {{-- @foreach ($kabupaten as $kab)
-                                                <option value="{{ $kab->nama }}">{{ $kab->nama }}</option>
-                                            @endforeach --}}
                                         </select>
                                         @error('kabupaten')
                                             <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -97,13 +94,10 @@
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label for="kecamatan">Kecamatan</label>
+                                    <div class="mb-2">
+                                        <label for="kecamatan" class="form-label">Kecamatan</label>
                                         <select class="form-select" id="kecamatan" name="kecamatan" required>
                                             <option value="">Pilih Kecamatan ...</option>
-                                            {{-- @foreach ($kecamatan as $kec)
-                                                <option value="{{ $kec->nama }}">{{ $kec->nama }}</option>
-                                            @endforeach --}}
                                         </select>
                                         @error('kecamatan')
                                             <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -111,13 +105,10 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label for="desa">Kelurahan/Desa</label>
+                                    <div class="mb-2">
+                                        <label for="desa" class="form-label">Kelurahan/Desa</label>
                                         <select class="form-select" id="desa" name="desa" required>
                                             <option value="">Pilih Desa ...</option>
-                                            {{-- @foreach ($desa as $des)
-                                                <option value="{{ $des->nama }}">{{ $des->nama }}</option>
-                                            @endforeach --}}
                                         </select>
                                         @error('desa')
                                             <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -128,7 +119,7 @@
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="password mb-3">
+                                    <div class="password mb-2">
                                         <label class="sr-only" for="password">Password Baru</label>
                                         <input id="password" name="password" type="password"
                                             class="form-control signup-password" placeholder="Password Baru"
@@ -139,7 +130,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="password mb-3">
+                                    <div class="password mb-2">
                                         <label class="sr-only" for="password_confirmation">Konfirmasi
                                             Password</label>
                                         <input id="password_confirmation" name="password_confirmation"
@@ -149,6 +140,69 @@
                                             <span class="text-danger" style="color:red">{{ $message }}</span>
                                         @enderror
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-2">
+                                        <label for="nama_ternak" class="form-label">
+                                            Hewan yang Diternakkan
+                                        </label>
+                                        <select type="text" class="form-select border border-dark"
+                                            id="nama_ternak" name="nama_ternak" required>
+                                            <option value="">Pilih ...</option>
+                                            <!-- Ternak Besar -->
+                                            <option value="Sapi Potong">Sapi Potong</option>
+                                            <option value="Sapi Perah">Sapi Perah</option>
+                                            <option value="Kerbau">Kerbau</option>
+                                            <!-- Ternak Kecil -->
+                                            <option value="Domba/Kambing">Domba/Kambing</option>
+                                            <option value="Babi">Babi</option>
+                                            <!-- Ternak Unggas -->
+                                            <option value="Ayam Petelur">Ayam Petelur</option>
+                                            <option value="Ayam Pedaging">Ayam Pedaging</option>
+                                            <option value="Burung Puyuh">Burung Puyuh</option>
+                                        </select>
+                                        @error('nama_ternak')
+                                            <span class="text-danger" style="color:red">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-2">
+                                        <label for="kategori_produk_id" class="form-label">
+                                            Kategori Ternak
+                                        </label>
+                                        <select type="text" class="form-select border border-dark"
+                                            id="kategori_produk_id" name="kategori_produk_id" required>
+                                            <option value="">Pilih ...</option>
+                                            @foreach ($kategori_produk as $item)
+                                                <option value="{{ $item->id }}">
+                                                    {{ $item->nama_kategori }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('kategori_produk_id')
+                                            <span class="text-danger" style="color:red">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="mb-2">
+                                    <label for="jumlah" class="form-label sr-only">
+                                        Jumlah
+                                    </label>
+                                    <input type="text" id="jumlah" name="jumlah"
+                                        class="form-control border border-dark"
+                                        value="{{ isset($ternak) ? number_format($ternak->jumlah, 0, ',', '.') : old('jumlah') }}"
+                                        required placeholder="Jumlah Ternak yang Dimiliki (per ekor)"
+                                        inputmode="numeric" autocomplete="off">
+                                    @error('jumlah')
+                                        <span class="text-danger" style="color:red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -259,20 +313,27 @@
 
     });
 </script>
-{{-- <script>
-    $('#kabupaten').select2({
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
+<script>
+    var harga = document.getElementById("jumlah");
+
+    harga.addEventListener("keyup", function(e) {
+        this.value = formatRibuan(this.value);
     });
-    $('#kecamatan').select2({
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
-    });
-    $('#desa').select2({
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
-    });
-</script> --}}
+
+    function formatRibuan(angka) {
+        // hapus semua selain angka
+        var number_string = angka.replace(/[^0-9]/g, '');
+
+        // format ribuan dengan titik
+        var sisa = number_string.length % 3,
+            rupiah = number_string.substr(0, sisa),
+            ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+        if (ribuan) {
+            var separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
+        }
+
+        return rupiah;
+    }
+</script>

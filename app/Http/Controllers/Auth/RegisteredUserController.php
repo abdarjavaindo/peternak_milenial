@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kategori_produk;
 use App\Models\User;
+use App\Models\UserTernak;
+use App\Models\WilayahKomuditas;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -22,24 +25,29 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        // $kabupaten = DB::table('wilayah')
-        //     ->whereRaw("LENGTH(kode) = 5")
-        //     ->orderBy('nama')
-        //     ->get();
+        $kategori_produk = Kategori_produk::get();
+        return view('auth.register', compact('kategori_produk'));
+    }
 
-        // $kecamatan = DB::table('wilayah')
-        //     // ->where('kode', 'like', $request->kabupaten . '.%')
-        //     ->whereRaw("LENGTH(kode) = 8")
-        //     ->orderBy('nama')
-        //     ->get();
+    public function info($namakabupaten)
+    {
+        $wilayah = WilayahKomuditas::where('kabupaten', $namakabupaten)->first();
+        $jumlahPeternak = User::role('user')->where('kabupaten', $namakabupaten)->count();
 
-        // $desa = DB::table('wilayah')
-        //     // ->where('kode', 'like', $request->kecamatan . '.%')
-        //     ->whereRaw("LENGTH(kode) = 13")
-        //     ->orderBy('nama')
-        //     ->get();
-        // return view('auth.register', compact('kabupaten', 'kecamatan', 'desa'));
-        return view('auth.register');
+        return response()->json(
+            [
+                'nama' => $wilayah->kabupaten,
+                'jumlah_peternak' => $jumlahPeternak,
+                'jml_sapi_potong' => $wilayah->jml_sapi_potong,
+                'jml_sapi_perah' => $wilayah->jml_sapi_perah,
+                'jml_kerbau' => $wilayah->jml_kerbau,
+                'jml_dombakambing' => $wilayah->jml_dombakambing,
+                'jml_babi' => $wilayah->jml_babi,
+                'jml_ayam_petelur' => $wilayah->jml_ayam_petelur,
+                'jml_ayam_pedaging' => $wilayah->jml_ayam_pedaging,
+                'jml_burung_puyuh' => $wilayah->jml_burung_puyuh,
+            ]
+        );
     }
 
     public function kabupaten()
@@ -99,6 +107,9 @@ class RegisteredUserController extends Controller
             'kecamatan' => ['required'],
             'desa' => ['required'],
             'tgl_lahir' => ['required', 'date'],
+            'kategori_produk_id' => ['required'],
+            'nama_ternak' => ['required'],
+            'jumlah' => ['required'],
         ]);
 
         $umur = \Carbon\Carbon::parse($request->tgl_lahir)->age;
@@ -134,6 +145,80 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('ternak');
+        UserTernak::create([
+            'user_id' => $user->id,
+            'kategori_produk_id' => $request->kategori_produk_id,
+            'nama_ternak' => $request->nama_ternak,
+            'jumlah' => str_replace('.', '', $request->jumlah),
+        ]);
+        $this->hitungLevelUser($user);
+
+        return redirect()->route('tokoku');
+    }
+
+    private function hitungLevelUser(User $user)
+    {
+        // Ambil seluruh ternak milik user
+        $ternaks = $user->ternak; // pastikan relasi: User hasMany Ternak
+        $total = 0;
+        foreach ($ternaks as $t) {
+            $jenis = $t->nama_ternak;
+            $jumlah = $t->jumlah;
+            switch ($jenis) {
+                case 'Sapi Potong':
+                    if ($jumlah >= 100) $total += 3;
+                    elseif ($jumlah >= 5) $total += 2;
+                    elseif ($jumlah >= 1) $total += 1;
+                    break;
+                case 'Sapi Perah':
+                    if ($jumlah >= 20) $total += 3;
+                    elseif ($jumlah >= 5) $total += 2;
+                    elseif ($jumlah >= 1) $total += 1;
+                    break;
+                case 'Kerbau':
+                    if ($jumlah >= 75) $total += 3;
+                    elseif ($jumlah >= 5) $total += 2;
+                    elseif ($jumlah >= 1) $total += 1;
+                    break;
+                case 'Kambing':
+                case 'Domba':
+                    if ($jumlah >= 300) $total += 3;
+                    elseif ($jumlah >= 15) $total += 2;
+                    elseif ($jumlah >= 1) $total += 1;
+                    break;
+                case 'Babi':
+                    if ($jumlah >= 125) $total += 3;
+                    elseif ($jumlah >= 5) $total += 2;
+                    elseif ($jumlah >= 1) $total += 1;
+                    break;
+                case 'Ayam Petelur':
+                    if ($jumlah >= 10000) $total += 3;
+                    elseif ($jumlah >= 100) $total += 2;
+                    elseif ($jumlah >= 1) $total += 1;
+                    break;
+                case 'Ayam Pedaging':
+                    if ($jumlah >= 15000) $total += 3;
+                    elseif ($jumlah >= 100) $total += 2;
+                    elseif ($jumlah >= 1) $total += 1;
+                    break;
+                case 'Burung Puyuh':
+                    if ($jumlah >= 25000) $total += 3;
+                    elseif ($jumlah >= 5000) $total += 2;
+                    elseif ($jumlah >= 1) $total += 1;
+                    break;
+            }
+        }
+        // Tentukan level berdasarkan total skor
+        if ($total >= 3) {
+            $level = 'ahli';
+        } elseif ($total == 2) {
+            $level = 'menengah';
+        } else {
+            $level = 'pemula';
+        }
+        // Update ke database
+        $user->update([
+            'level' => $level,
+        ]);
     }
 }

@@ -35,6 +35,7 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create']);
 Route::get('/wilayah/kabupaten', [RegisteredUserController::class, 'kabupaten']);
 Route::get('/wilayah/kecamatan', [RegisteredUserController::class, 'kecamatan']);
 Route::get('/wilayah/desa', [RegisteredUserController::class, 'desa']);
+Route::get('/wilayah/info/{namakabupaten}', [RegisteredUserController::class, 'info']);
 Route::middleware(['auth', 'verified'])->post('/upload-image', function (Request $request) {
     if ($request->hasFile('file')) {
         $image = $request->file('file');
@@ -51,7 +52,8 @@ Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
 Route::prefix('toko')->group(function () {
     Route::get('/', [TokoController::class, 'index'])->name('shop');
     Route::get('/detail/{slug}', [TokoController::class, 'detail'])->name('shop.detail');
-    Route::get('/user/{slug_user}', [TokoController::class, 'toko'])->name('shop.user');
+    Route::post('/user/loaddata', [TokoController::class, 'loaddata'])->name('shop.loaddata');
+    Route::get('/user/{slug_user?}', [TokoController::class, 'toko'])->name('shop.user');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('tokoku')->group(function () {

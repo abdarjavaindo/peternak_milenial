@@ -59,8 +59,10 @@ _After creating the new permissions use the following commands to update cashed 
 
 ## Yang perlu dibenahi
 
--   gambar profil (menyusul)
--   Peta jatim dengan jumlah komuditasnya (menyusul)
--   Komentar pada produk (menyusul)
--   Fitur pencarian dan sorting pada kursus (menyusul)
--   Postest pada kursus (menyusul)
+-   gambar profil (menyusul) > pendukung
+-   Peta jatim dengan jumlah komuditasnya (menyusul) > pendukung
+-   Komentar pada produk (menyusul) > pendukung
+-   Fitur pencarian dan sorting pada kursus (menyusul) > pendukung
+-   Postest pada kursus (menyusul) > Major
+-   Buat cronjob untuk cek kondisi progress kursus user per 15 menit (menyusul) > Major
+-   Testing internal (menyusul) > Major
