@@ -1,34 +1,54 @@
+@if (request()->segment(1) != null)
+    <style>
+        #topnav .navigation-menu>li.active>a,
+        #topnav .navigation-menu>li:hover>a {
+            color: #129d89 !important;
+        }
+
+        #topnav .has-submenu.active.active .menu-arrow {
+            border-color: #129d89;
+        }
+
+        #topnav .has-submenu.active .submenu li.active>a {
+            color: #129d89 !important;
+        }
+
+        #topnav .navigation-menu>li.active>a,
+        #topnav .navigation-menu>li:hover>a {
+            color: #129d89 !important;
+        }
+
+        #topnav .has-submenu.active.active .menu-arrow {
+            border-color: #129d89;
+        }
+
+        #topnav .has-submenu.active .submenu li.active>a {
+            color: #129d89 !important;
+        }
+
+        #topnav .navigation-menu .has-submenu .menu-arrow {
+            padding: 3px;
+        }
+
+        #topnav .navigation-menu.nav-light>li>a {
+            color: black;
+        }
+
+        @media only screen and (min-width: 768px) {
+            #topnav {
+                /* background-color: #222222 */
+                /* background-color: #006a39 */
+                background-color: #ffffff
+            }
+
+            #topnav .navigation-menu>li>a {
+                color: white;
+            }
+        }
+    </style>
+@endif
+
 <style>
-    #topnav .navigation-menu>li.active>a,
-    #topnav .navigation-menu>li:hover>a {
-        color: #129d89 !important;
-    }
-
-    #topnav .has-submenu.active.active .menu-arrow {
-        border-color: #129d89;
-    }
-
-    #topnav .has-submenu.active .submenu li.active>a {
-        color: #129d89 !important;
-    }
-
-    #topnav .navigation-menu>li.active>a,
-    #topnav .navigation-menu>li:hover>a {
-        color: #129d89 !important;
-    }
-
-    #topnav .has-submenu.active.active .menu-arrow {
-        border-color: #129d89;
-    }
-
-    #topnav .has-submenu.active .submenu li.active>a {
-        color: #129d89 !important;
-    }
-
-    #topnav .navigation-menu .has-submenu .menu-arrow {
-        padding: 3px;
-    }
-
     .bg-overlay {
         background-color: rgba(22, 92, 125, 0.4);
         position: absolute;
@@ -41,24 +61,24 @@
     }
 
     .nav-pills {
-        --bs-nav-pills-link-active-bg: #222222;
+        /* --bs-nav-pills-link-active-bg: #222222; */
+        /* --bs-nav-pills-link-active-bg: #006a39; */
+        --bs-nav-pills-link-active-bg: #ffffff;
     }
 
     .bg-primary {
-        background-color: #222222 !important;
+        /* background-color: #222222 !important; */
+        /* background-color: #006a39 !important; */
+        background-color: #ffffff !important;
+    }
+
+    #topnav .navigation-menu.nav-light>li.active>a {
+        color: #05559e !important;
     }
 
     @media only screen and (min-width: 768px) {
         #navigation .navigation-menu>li>a {
             padding: 25px 10px !important;
-        }
-
-        #topnav {
-            background-color: #222222
-        }
-
-        #topnav .navigation-menu>li>a {
-            color: white;
         }
     }
 
@@ -94,12 +114,12 @@
         <!-- Logo container-->
         <a class="logo" href="{{ env('APP_URL') }}">
             <span class="logo-light-mode">
-                <img src="{{ asset('assets') }}/mobirise/images/channels4-profile-137x137.jpg" alt=""
-                    style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;" />
+                <img src="{{ asset('assets') }}/mobirise/images/logo-trans.png" alt=""
+                    style="width: 160px; object-fit: cover;" />
             </span>
-            <small class="txtheader d-none d-md-inline">
+            {{-- <small class="txtheader d-none d-md-inline">
                 PETERNAK MILENIAL
-            </small>
+            </small> --}}
         </a>
 
         <!-- End Logo container-->
@@ -121,7 +141,7 @@
                 <li class="list-inline-item mb-0">
                     <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
                         aria-controls="offcanvasRight">
-                        <a href="{{ route('login') }}" class="btn border-dark login">Login</a>
+                        <a href="{{ route('login') }}" class="btn border-dark login">Gabung</a>
                     </a>
                 </li>
             </ul>
@@ -138,6 +158,11 @@
                 <li>
                     <a href="{{ route('kontak') }}" class="sub-menu-item">
                         Kontak
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('galeri') }}" class="sub-menu-item">
+                        Galeri
                     </a>
                 </li>
                 <li>

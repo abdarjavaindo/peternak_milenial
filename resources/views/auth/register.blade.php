@@ -4,6 +4,28 @@
 <!-- Or for RTL support -->
 <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+<style>
+    .auth-background-col {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .auth-background-col img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* gambar menyesuaikan kolom */
+        object-position: center;
+    }
+
+    .auth-background-mask {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        /* opsional overlay */
+    }
+</style>
 <x-layouts.auth>
 
     <body class="app app-signup p-0">
@@ -225,7 +247,8 @@
                 </div>
             </div>
             <div class="col-12 col-md-5 col-lg-4 h-100 auth-background-col">
-                <div class="auth-background-holder"></div>
+                {{-- <div class="auth-background-holder"></div> --}}
+                <img src="{{ asset('assets') }}/images/background-loginrg.jpg" alt="" class="pl-4">
                 <div class="auth-background-mask"></div>
             </div>
         </div>

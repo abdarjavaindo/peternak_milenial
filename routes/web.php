@@ -48,6 +48,7 @@ Route::middleware(['auth', 'verified'])->post('/upload-image', function (Request
 #region Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
+Route::get('/galeri', [HomeController::class, 'galeri'])->name('galeri');
 
 Route::prefix('toko')->group(function () {
     Route::get('/', [TokoController::class, 'index'])->name('shop');

@@ -21,10 +21,22 @@
                                 <ul class="list-unstyled mt-4 mb-0 blog-categories">
                                     @foreach ($kategori_produk as $item)
                                         <li>
-                                            <a href="{{ route('shop') }}?slug={{ $item->slug_kategori }}"
-                                                class="{{ isset($current_kategori) && $current_kategori->id == $item->id ? 'text-primary fw-bold' : '' }}">
-                                                {{ $item->nama_kategori }}
-                                            </a>
+                                            <div class="card shop-list border-0 position-relative">
+                                                <div class="card-body content p-2">
+                                                    <div class="row">
+                                                        <div class="col-lg-2" align="center">
+                                                            <i class="uil uil-chart-line"></i>
+                                                        </div>
+                                                        <div class="col-lg-10">
+                                                            <a href="{{ route('shop') }}?slug={{ $item->slug_kategori }}"
+                                                                class="{{ isset($current_kategori) && $current_kategori->id == $item->id ? 'text-primary fw-bold' : '' }}">
+                                                                {{ $item->nama_kategori }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                         </li>
                                     @endforeach
                                     <li>
@@ -101,13 +113,13 @@
                         @foreach ($produks as $item)
                             <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
                                 <div class="card shop-list border-0 position-relative">
-                                    <ul class="label list-unstyled mb-0">
+                                    {{-- <ul class="label list-unstyled mb-0">
                                         <li>
                                             <span class="badge badge-link rounded-pill bg-success">
                                                 {{ $item->nama_kategori }}
                                             </span>
                                         </li>
-                                    </ul>
+                                    </ul> --}}
                                     <div class="shop-image position-relative overflow-hidden rounded shadow">
                                         <a href="{{ route('shop.detail', ['slug' => $item->slug]) }}">
                                             <img src="{{ asset('storage/produk/' . $item->thumbnail) }}"
@@ -118,7 +130,7 @@
                                         <a href="{{ route('shop.detail', ['slug' => $item->slug]) }}"
                                             class="text-dark product-name h6">
                                             <b>
-                                                {{ $item->nama_produk }}
+                                                {{ \Illuminate\Support\Str::limit($item->nama_produk, 22, '…') }}
                                             </b>
                                         </a>
                                         <div class="d-flex justify-content-between mt-1">

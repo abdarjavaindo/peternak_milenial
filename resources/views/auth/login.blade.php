@@ -1,3 +1,25 @@
+<style>
+    .auth-background-col {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .auth-background-col img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* gambar menyesuaikan kolom */
+        object-position: center;
+    }
+
+    .auth-background-mask {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        /* opsional overlay */
+    }
+</style>
 <x-layouts.auth>
 
     <body class="app app-login p-0">
@@ -8,9 +30,8 @@
 
                         <div class="app-auth-branding mb-4">
                             <a class="h1 app-logo" href="{{ env('APP_URL') }}">
-                                {{-- <img class="logo-icon me-2" src="{{ asset('assets') }}/images/app-logo.svg"
-                                    alt="logo"> --}}
-                                Dinas Peternakan
+                                <img style="width: 160px; object-fit: cover;"
+                                    src="{{ asset('assets') }}/mobirise/images/logo-trans.png" alt="logo">
                             </a>
                         </div>
 
@@ -98,8 +119,9 @@
                 {{-- change image below --}}
                 {{-- <div class="auth-background-holder"></div> --}}
                 {{-- <img src="https://static.promediateknologi.id/crop/0x0:0x0/750x500/photo/p2/77/2024/06/08/adhy-kurban-1453939168.jpg" --}}
-                <img src="https://nusantaraabadinews.com/wp-content/uploads/2025/11/IMG-20251117-WA0826.jpg"
-                    alt="" style="height: 100vh; width: 100%; object-fit: cover">
+                {{-- <img src="https://nusantaraabadinews.com/wp-content/uploads/2025/11/IMG-20251117-WA0826.jpg"
+                    alt="" style="height: 100vh; width: 100%; object-fit: cover"> --}}
+                <img src="{{ asset('assets') }}/images/background-login2.jpg" alt="" class="pl-4">
 
                 <div class="auth-background-mask"></div>
             </div><!--//auth-background-col-->
