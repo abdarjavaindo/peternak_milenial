@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Kategori Produk</h1>
+    <h1 class="app-page-title">Komuditas yang Dijual</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -19,7 +19,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">Nama Kategori Produk</th>
+                                    <th class="text-center" width="12%">Hewan</th>
+                                    <th class="text-center" width="12%">Komuditas</th>
                                     <th class="text-center" width="13%">Slug</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
@@ -58,6 +59,9 @@
                 data: 'DT_RowIndex'
             },
             {
+                data: 'hewan'
+            },
+            {
                 data: 'nama_kategori'
             },
             {
@@ -75,7 +79,7 @@
             zeroRecords: 'Data Tidak Ditemukan'
         },
         columnDefs: [{
-            "targets": [0, 3],
+            "targets": [0, 4],
             "className": "text-center",
         }],
     });

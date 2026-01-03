@@ -60,6 +60,8 @@ class UserProfileController extends Controller
             'kecamatan' => ['required', 'string', 'max:255'],
             'desa' => ['required', 'string', 'max:255'],
             'tgl_lahir' => ['required', 'date'],
+            'img_ktp' => 'mimes:jpg,jpeg,png|max:11000',
+            'gambar' => 'mimes:jpg,jpeg,png|max:11000',
         ]);
         $user = User::where('id', auth()->user()->id)->first();
         $user->email = $request->email;
@@ -70,6 +72,12 @@ class UserProfileController extends Controller
         $user->kecamatan = $request->kecamatan;
         $user->desa = $request->desa;
         $user->tgl_lahir = $request->tgl_lahir;
+        if ($request->hasFile('img_ktp')) {
+            $user->img_ktp = $request->file('img_ktp')->store('ktp', 'public');
+        }
+        if ($request->hasFile('gambar')) {
+            $user->gambar = $request->file('gambar')->store('foto-profil', 'public');
+        }
         $user->save();
 
         return Redirect::route('userprofile.edit')->with('status', 'profile-updated');

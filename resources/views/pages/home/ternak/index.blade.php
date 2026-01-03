@@ -5,19 +5,21 @@
                 <div class="col-lg-12">
                     <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded">
                         <li class="nav-item">
-                            <a class="nav-link rounded border border-1 border-dark {{ request()->segment(1) == 'userprofile' ? 'active' : 'bg-white' }}"
+                            <a class="nav-link rounded border border-1 border-dark {{ request()->segment(1) == 'userprofile' ? 'bg-dark' : 'bg-white' }}"
                                 href="{{ route('userprofile.edit') }}">
                                 <div class="text-center py-2">
-                                    <h6 class="mb-0">Profil Peternak</h6>
+                                    <h6 class="mb-0 {{ request()->segment(1) == 'userprofile' ? 'text-white' : '' }}">
+                                        Profil Peternak</h6>
                                 </div>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link rounded border border-1 border-dark {{ request()->segment(1) == 'daftar-ternak' ? 'active' : 'bg-white' }}"
+                            <a class="nav-link rounded border border-1 border-dark {{ request()->segment(1) == 'daftar-ternak' ? 'bg-dark' : 'bg-white' }}"
                                 href="{{ route('ternak') }}">
                                 <div class="text-center py-2">
-                                    <h6 class="mb-0">Ternak yang Dimiliki</h6>
+                                    <h6 class="mb-0 {{ request()->segment(1) == 'daftar-ternak' ? 'text-white' : '' }}">
+                                        Ternak yang Dimiliki</h6>
                                 </div>
                             </a>
                         </li>

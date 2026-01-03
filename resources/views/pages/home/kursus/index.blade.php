@@ -1,8 +1,10 @@
 <x-layouts.home>
-    <section class="section">
-        <div class="container mt-60">
+    <section class="section mt-60">
+        <div class="container">
+            <x-flash-message></x-flash-message>
+
             <!-- SEARCH -->
-            {{-- <div class="widget mt-4">
+            <div class="widget mt-4">
                 <form role="search" method="get">
                     <div class="input-group mb-3 border rounded">
                         <input type="text" id="s" name="s" class="form-control border-0"
@@ -12,47 +14,8 @@
                         </button>
                     </div>
                 </form>
-            </div> --}}
+            </div>
             <!-- SEARCH -->
-
-            {{-- <div class="row align-items-center">
-                <div class="col-lg-8 col-md-7">
-                </div>
-
-                <div class="col-lg-4 col-md-5 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                    <div class="d-flex justify-content-md-between align-items-center">
-                        <div class="form custom-form m-1">
-                            <div class="mb-0">
-                                <select class="form-select form-control" id="Sortbylist-job">
-                                    <option value="">Pilih Level ...</option>
-                                    <option value="pemula" {{ request('sort') == 'pemula' ? 'selected' : '' }}>
-                                        Pemula
-                                    </option>
-                                    <option value="menengah" {{ request('sort') == 'menengah' ? 'selected' : '' }}>
-                                        Menengah
-                                    </option>
-                                    <option value="ahli" {{ request('sort') == 'ahli' ? 'selected' : '' }}>
-                                        Ahli
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form custom-form m-1">
-                            <div class="mb-0">
-                                <select class="form-select form-control" id="Sortbylist-job">
-                                    <option value="">Pilih Kategori ...</option>
-                                    @foreach ($kategori as $item)
-                                        <option value="{{ $item->slug }}"
-                                            {{ request('sort') == 'terbaru' ? 'selected' : '' }}>
-                                            {{ $item->nama_kategori }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
 
             <div class="row">
                 @foreach ($pelatihan as $fas)

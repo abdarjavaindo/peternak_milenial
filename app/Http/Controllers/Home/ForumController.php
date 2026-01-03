@@ -34,7 +34,8 @@ class ForumController extends Controller
         }
         return view('pages.home.forum.form');
     }
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'judul' => ['required']
         ]);
@@ -83,7 +84,7 @@ class ForumController extends Controller
             'forum_id' => $forum->id,
             'komentar' => $request->komentar,
         ]);
-        return redirect()->route('forum')->with('sukses', 'Anda berhasil menambahkan memberi komentar');
+        return redirect()->route('forum')->with('sukses', 'Anda berhasil memberi komentar');
     }
     public function komentar_destroy(ForumKomentar $komentar)
     {

@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Produk</h1>
+    <h1 class="app-page-title">Marketplace</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>

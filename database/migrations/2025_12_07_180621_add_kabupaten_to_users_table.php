@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('kecamatan')->nullable();
             $table->string('desa')->nullable();
             $table->date('tgl_lahir')->nullable();
+            $table->string('img_ktp')->nullable();
         });
     }
 
@@ -31,6 +32,8 @@ return new class extends Migration
                 'kabupaten',
                 'kecamatan',
                 'desa',
+                'tgl_lahir',
+                'img_ktp',
             ]);
         });
     }

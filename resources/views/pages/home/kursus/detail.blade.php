@@ -21,7 +21,8 @@
 
                                 <li class="align-items-center justify-content-center list-inline-item mx-2">
                                     <i class="uil uil-clock fs-5 text-dark title-dark align-middle"></i>
-                                    <span class="text-dark-50 ms-1">Waktu pengerjaan {{ $pelatihan->hari }} Hari</span>
+                                    <span class="text-dark-50 ms-1">Waktu pengerjaan {{ $pelatihan->hari }}
+                                        Hari</span>
                                 </li>
 
                                 <li class="align-items-center justify-content-center list-inline-item mx-2">
@@ -30,7 +31,7 @@
                                 </li>
                             </ul>
 
-                            @if (isset($user_progress))
+                            @if (isset($user_progress) && $user_progress->status == 'progres')
                                 <p>
                                     Waktu anda tinggal: <span id="timer">Menghitung...</span>
                                 </p>
@@ -38,18 +39,23 @@
                             @if (!auth()->check())
                                 {{-- User belum login --}}
                                 <a class="btn btn-dark" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}"
-                                    onclick="return confirm('Apakah anda yakin ingin balajar kursus ini')">
+                                    onclick="return confirm('Apakah anda yakin ingin balajar pelatihan ini')">
                                     Belajar Sekarang
                                 </a>
                             @elseif (!$user_progress)
                                 {{-- User login tetapi belum mendaftar kursus --}}
                                 <a class="btn btn-dark" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}"
-                                    onclick="return confirm('Apakah anda yakin ingin balajar kursus ini')">
+                                    onclick="return confirm('Apakah anda yakin ingin balajar pelatihan ini')">
                                     Belajar Sekarang
                                 </a>
                             @else
                                 {{-- User sudah mulai kursus --}}
-                                @if ($next_materi)
+                                @if ($user_progress->status == 'do')
+                                    <a class="btn btn-danger" href="{{ route('pelatihan.reset', $pelatihan->slug) }}"
+                                        onclick="return confirm('Apakah anda yakin ingin memulai kembali, pelatihan ini')">
+                                        Anda sudah dinyatakan 'DO', mulai lagi?
+                                    </a>
+                                @elseif ($next_materi)
                                     <a class="btn btn-success" href="{{ route('pelatihan.materi', $next_materi->id) }}">
                                         Lanjutkan Materi: {{ $next_materi->judul }}
                                     </a>

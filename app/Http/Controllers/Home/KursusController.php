@@ -15,15 +15,41 @@ use Illuminate\Http\Request;
 
 class KursusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $data['kategori'] = Kategori_kursus::get();
-        $data['pelatihan'] = Kursus::when(auth()->check(), function ($q) {
-            $q->with('user_status'); // load progress user login
-        })->where('is_published', 1)->get();
-        if ($data['pelatihan']->count() < 1) {
-            return view('pages.home.kursus.kursus-kosong', $data);
-        }
+
+        // keyword search
+        $keyword = $request->get('s');
+
+        // ambil semua kategori_produk_id milik user login
+        $kategoriProdukUser = auth()->check()
+            ? UserTernak::where('user_id', auth()->user()->id)
+            ->pluck('kategori_produk_id')
+            ->toArray()
+            : [];
+
+        $data['pelatihan'] = Kursus::query()
+            ->where('is_published', 1)
+            // search
+            ->when($keyword, function ($q) use ($keyword) {
+                $q->where(function ($sub) use ($keyword) {
+                    $sub->where('judul', 'like', "%{$keyword}%")
+                        ->orWhere('deskripsi', 'like', "%{$keyword}%");
+                });
+            })
+            ->when(auth()->check(), function ($q) {
+                $q->with('user_status'); // progress user login
+            })
+            ->when(auth()->check(), function ($q) use ($kategoriProdukUser) {
+                $q->whereIn('kategori_produk_id', $kategoriProdukUser);
+            })
+            ->get();
+
+        // if ($data['pelatihan']->count() < 1) {
+        //     return view('pages.home.kursus.kursus-kosong', $data);
+        // }
+
         return view('pages.home.kursus.index', $data);
     }
 
@@ -34,8 +60,8 @@ class KursusController extends Controller
             'bagian',
             'bagian.materi'
         ])
-        ->where(['is_published' => 1, 'slug' => $slug])
-        ->firstOrFail();
+            ->where(['is_published' => 1, 'slug' => $slug])
+            ->firstOrFail();
 
         $user_progress = null;
         $materi_progress = [];
@@ -52,9 +78,9 @@ class KursusController extends Controller
 
             // Ambil progres per materi
             $materi_progress = KursusProgres::where('user_id', auth()->id())
-            ->where('kursus_id', $pelatihan->id)
-            ->get()
-            ->keyBy('materi_id');
+                ->where('kursus_id', $pelatihan->id)
+                ->get()
+                ->keyBy('materi_id');
 
             // CARI MATERI YANG BELUM SELESAI ATAU SEDANG PROGRES
             foreach ($pelatihan->bagian->sortBy('urutan') as $bagian) {
@@ -93,9 +119,97 @@ class KursusController extends Controller
             return redirect()->route('ternak');
         }
 
+        // Ambil kursus berdasarkan slug
         $kursus = Kursus::with(['pengajar', 'bagian'])
-            ->where(['is_published' => 1, 'slug' => $slug])
+            ->where('slug', $slug)
+            ->where('is_published', 1)
             ->firstOrFail();
+        // cek user apakah sudah punya ternak dengan kategori sesuai kursus
+        // Ambil kategori_produk_id milik user
+        $kategoriProdukUser = UserTernak::where('user_id', auth()->user()->id)
+            ->pluck('kategori_produk_id')
+            ->toArray();
+        // BLOKIR jika kategori ternak tidak sesuai kursus
+        if (!in_array($kursus->kategori_produk_id, $kategoriProdukUser)) {
+            return redirect()->route('pelatihan')->with('gagal', 'Kamu belum memiliki ternak yang sama dengan ternak dalam pelatihan tersebut');
+        }
+
+        $userLevel  = auth()->user()->level;
+        $courseLevel = $kursus->level;
+        // Urutkan level sesuai hierarchy
+        $hierarchy = [
+            'pemula'   => 1,
+            'menengah' => 2,
+            'ahli'     => 3,
+        ];
+        // Jika level user < level kursus → tidak boleh akses
+        if ($hierarchy[$userLevel] < $hierarchy[$courseLevel]) {
+            return redirect()->back()->with('gagal', 'Level anda belum cukup untuk mengakses kursus ini');
+        }
+
+        $ceksudahdaftar = UserKursusProgres::where(['user_id' => auth()->user()->id, 'kursus_id' => $kursus->id])->first();
+        if ($ceksudahdaftar) {
+            return redirect()->back()->with('gagal', 'Anda sudah terdaftar pada kursus ini, tidak perlu mendaftar lagi');
+        }
+
+        $user_kursus_progres = UserKursusProgres::create([
+            'user_id' => auth()->user()->id,
+            'kursus_id' => $kursus->id,
+            'harus_selesai_tgl' => Carbon::now()->addDays($kursus->hari),
+        ]);
+
+        $materiPertamaId = $kursus
+            ->bagian()
+            ->orderBy('id', 'asc')
+            ->first()
+            ?->materi()
+            ->orderBy('id', 'asc')
+            ->value('id');
+
+        KursusProgres::create([
+            'user_id' => auth()->user()->id,
+            'kursus_id' => $kursus->id,
+            'materi_id' => $materiPertamaId,
+            'user_kursus_progres_id' => $user_kursus_progres->id,
+        ]);
+        return redirect()->route('pelatihan.materi', $materiPertamaId);
+    }
+
+    public function reset($slug)
+    {
+        if (!auth()->user()) {
+            return redirect()->route('login');
+        }
+
+        if (UserTernak::where('user_id', auth()->user()->id)->count() < 1) {
+            return redirect()->route('ternak');
+        }
+
+        // Ambil kursus berdasarkan slug
+        $kursus = Kursus::with(['pengajar', 'bagian'])
+            ->where('slug', $slug)
+            ->where('is_published', 1)
+            ->firstOrFail();
+
+        //hapus data sebelumnya
+        UserKursusProgres::where([
+            'user_id' => auth()->user()->id,
+            'kursus_id' => $kursus->id,
+        ])->delete();
+        KursusProgres::where([
+            'user_id' => auth()->user()->id,
+            'kursus_id' => $kursus->id,
+        ])->delete();
+
+        // cek user apakah sudah punya ternak dengan kategori sesuai kursus
+        // Ambil kategori_produk_id milik user
+        $kategoriProdukUser = UserTernak::where('user_id', auth()->user()->id)
+            ->pluck('kategori_produk_id')
+            ->toArray();
+        // BLOKIR jika kategori ternak tidak sesuai kursus
+        if (!in_array($kursus->kategori_produk_id, $kategoriProdukUser)) {
+            return redirect()->route('pelatihan')->with('gagal', 'Kamu belum memiliki ternak yang sama dengan ternak dalam pelatihan tersebut');
+        }
 
         $userLevel  = auth()->user()->level;
         $courseLevel = $kursus->level;
@@ -352,7 +466,7 @@ class KursusController extends Controller
                     'Materi ini belum terbuka. Selesaikan materi sebelumnya terlebih dahulu.'
                 );
             }
-        }else {
+        } else {
             return redirect()->route('pelatihan.detail', $kursus->slug);
         }
     }
@@ -407,7 +521,7 @@ class KursusController extends Controller
                 'sukses',
                 'Selamat anda berhasil menyelesaikan kursus ini'
             );
-        }else {
+        } else {
             return redirect()->route('pelatihan.detail', $kursus->slug)->with(
                 'gagal',
                 'Terdapat kesalahan'

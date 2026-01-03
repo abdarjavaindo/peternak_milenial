@@ -19,6 +19,12 @@ use App\Http\Controllers\Home\TokokuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CronCrontroller;
+use App\Http\Controllers\Dashboard\FiturController;
+use App\Http\Controllers\Dashboard\GaleriController;
+use App\Http\Controllers\Dashboard\HewanController;
+use App\Http\Controllers\Dashboard\PengaturanController;
+use App\Http\Controllers\Dashboard\TestimoniController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,16 +51,28 @@ Route::middleware(['auth', 'verified'])->post('/upload-image', function (Request
     return response()->json(['error' => 'Gagal mengunggah gambar'], 400);
 })->name('upload.image');
 
+Route::get('/run-course-checker', function (Request $request) {
+    $token = $request->query('token');
+    if ($token !== env('CRON_JOB_TOKEN')) {
+        abort(403, 'Unauthorized');
+    }
+    // Redirect ke controller jika token valid
+    return app(CronCrontroller::class)->cek_kursus_progres();
+});
+
 #region Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
-Route::get('/galeri', [HomeController::class, 'galeri'])->name('galeri');
+Route::get('/albumgaleri', [HomeController::class, 'galeri'])->name('lihatgaleri');
 
 Route::prefix('toko')->group(function () {
     Route::get('/', [TokoController::class, 'index'])->name('shop');
     Route::get('/detail/{slug}', [TokoController::class, 'detail'])->name('shop.detail');
     Route::post('/user/loaddata', [TokoController::class, 'loaddata'])->name('shop.loaddata');
     Route::get('/user/{slug_user?}', [TokoController::class, 'toko'])->name('shop.user');
+    // komentar
+    Route::middleware(['auth', 'verified'])->post('/komentar/{produk}', [TokoController::class, 'komentar_store'])->name('shop.komentar.store');
+    Route::middleware(['auth', 'verified'])->get('/komentar/{komentar}', [TokoController::class, 'komentar_destroy'])->name('shop.komentar.destroy');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('tokoku')->group(function () {
@@ -74,6 +92,7 @@ Route::prefix('kursus')->group(function () {
     Route::get('/materi/{kursus_materi}', [KursusController::class, 'materi'])->name('pelatihan.materi');
     Route::get('/next/{kursus_materi}', [KursusController::class, 'next'])->name('pelatihan.next');
     Route::post('/selesai/{slug}/{kursus_materi}', [KursusController::class, 'selesai'])->name('pelatihan.selesai');
+    Route::get('/reset/{slug}', [KursusController::class, 'reset'])->name('pelatihan.reset');
 });
 
 Route::prefix('forum')->group(function () {
@@ -145,6 +164,56 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('pengajar')->group
     Route::delete('/{pengajar}', [PengajarController::class, 'destroy'])->name('pengajar.destroy');
 });
 
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('hewan')->group(function () {
+    Route::get('/', [HewanController::class, 'index'])->name('hewan');
+    Route::post('/loaddata', [HewanController::class, 'loaddata'])->name('hewan.loaddata');
+    Route::get('/edit/{hewan}', [HewanController::class, 'edit'])->name('hewan.edit');
+    Route::put('/{hewan}', [HewanController::class, 'update'])->name('hewan.update');
+    Route::get('/create', [HewanController::class, 'create'])->name('hewan.create');
+    Route::post('/', [HewanController::class, 'store'])->name('hewan.store');
+    Route::delete('/{hewan}', [HewanController::class, 'destroy'])->name('hewan.destroy');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('galeri')->group(function () {
+    Route::get('/', [GaleriController::class, 'index'])->name('galeri');
+    Route::post('/loaddata', [GaleriController::class, 'loaddata'])->name('galeri.loaddata');
+    Route::get('/edit/{galeri}', [GaleriController::class, 'edit'])->name('galeri.edit');
+    Route::put('/{galeri}', [GaleriController::class, 'update'])->name('galeri.update');
+    Route::get('/create', [GaleriController::class, 'create'])->name('galeri.create');
+    Route::post('/', [GaleriController::class, 'store'])->name('galeri.store');
+    Route::delete('/{galeri}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('pengaturan')->group(function () {
+    Route::get('/{pengaturan}', [PengaturanController::class, 'edit'])->name('pengaturan.edit');
+    Route::put('/{pengaturan}', [PengaturanController::class, 'update'])->name('pengaturan.update');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('pengaturan-kontak')->group(function () {
+    Route::get('/{pengaturan}', [PengaturanController::class, 'kontak_edit'])->name('pengaturan.kontak_edit');
+    Route::put('/{pengaturan}', [PengaturanController::class, 'kontak_update'])->name('pengaturan.kontak_update');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('testimoni')->group(function () {
+    Route::get('/', [TestimoniController::class, 'index'])->name('testimoni');
+    Route::post('/loaddata', [TestimoniController::class, 'loaddata'])->name('testimoni.loaddata');
+    Route::get('/edit/{testimoni}', [TestimoniController::class, 'edit'])->name('testimoni.edit');
+    Route::put('/{testimoni}', [TestimoniController::class, 'update'])->name('testimoni.update');
+    Route::get('/create', [TestimoniController::class, 'create'])->name('testimoni.create');
+    Route::post('/', [TestimoniController::class, 'store'])->name('testimoni.store');
+    Route::delete('/{testimoni}', [TestimoniController::class, 'destroy'])->name('testimoni.destroy');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('fitur')->group(function () {
+    Route::get('/', [FiturController::class, 'index'])->name('fitur');
+    Route::post('/loaddata', [FiturController::class, 'loaddata'])->name('fitur.loaddata');
+    Route::get('/edit/{fitur}', [FiturController::class, 'edit'])->name('fitur.edit');
+    Route::put('/{fitur}', [FiturController::class, 'update'])->name('fitur.update');
+    Route::get('/create', [FiturController::class, 'create'])->name('fitur.create');
+    Route::post('/', [FiturController::class, 'store'])->name('fitur.store');
+    Route::delete('/{fitur}', [FiturController::class, 'destroy'])->name('fitur.destroy');
+});
+
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('user');
     Route::post('/loaddata', [UserController::class, 'loaddata'])->name('user.loaddata');
@@ -156,6 +225,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('user')->group(fun
     Route::delete('/{user}', [UserController::class, 'destroy'])->name('user.destroy');
     Route::get('/level/{user}', [UserController::class, 'level'])->name('user.level');
     Route::post('/level/{user}', [UserController::class, 'levelstore'])->name('user.levelstore');
+    // komuditas
+    // Route::get('/komuditas/{user}', [UserController::class, 'komuditas'])->name('user.komuditas');
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('produk')->group(function () {

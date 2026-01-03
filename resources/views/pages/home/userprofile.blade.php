@@ -12,19 +12,21 @@
                 <div class="col-lg-12">
                     <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded">
                         <li class="nav-item">
-                            <a class="nav-link rounded border border-1 border-dark {{ request()->segment(1) == 'userprofile' ? 'active' : 'bg-white' }}"
+                            <a class="nav-link rounded border border-1 border-dark {{ request()->segment(1) == 'userprofile' ? 'bg-dark' : 'bg-white' }}"
                                 href="{{ route('userprofile.edit') }}">
                                 <div class="text-center py-2">
-                                    <h6 class="mb-0">Profil Peternak</h6>
+                                    <h6 class="mb-0 {{ request()->segment(1) == 'userprofile' ? 'text-white' : '' }}">
+                                        Profil Peternak</h6>
                                 </div>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link rounded border border-1 border-dark {{ request()->segment(1) == 'daftar-ternak' ? 'active' : 'bg-white' }}"
+                            <a class="nav-link rounded border border-1 border-dark {{ request()->segment(1) == 'daftar-ternak' ? 'bg-dark' : 'bg-white' }}"
                                 href="{{ route('ternak') }}">
                                 <div class="text-center py-2">
-                                    <h6 class="mb-0">Ternak yang Dimiliki</h6>
+                                    <h6 class="mb-0 {{ request()->segment(1) == 'daftar-ternak' ? 'text-white' : '' }}">
+                                        Ternak yang Dimiliki</h6>
                                 </div>
                             </a>
                         </li>
@@ -46,7 +48,8 @@
                     <div class="app-card app-card-settings shadow-sm p-4">
 
                         <div class="app-card-body">
-                            <form class="settings-form" method="post" action="{{ route('userprofile.update') }}">
+                            <form class="settings-form" method="post" action="{{ route('userprofile.update') }}"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('patch')
 
@@ -60,8 +63,49 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Nama <span
-                                            class="text-danger"><i>(required)</i></span></label>
+                                    <label for="gambar" class="form-label">
+                                        Foto Profil
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-lg-4 mt-1 mb-2">
+                                            @if ($user->gambar != null)
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <a href="{{ url('storage/' . $user->gambar) }}">
+                                                            <img src="{{ asset('storage/' . $user->gambar) }}"
+                                                                class="img-fluid" alt=""
+                                                                style="width: 100%; height: auto;">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <a class="pe-3" href="#">
+                                                    <img src="{{ asset('assets') }}/mobirise/images/user.png"
+                                                        class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                        alt="img" style="width: 100%; height: auto;">
+                                                </a>
+                                            @endif
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <input class="form-control bg-light border-black" type="file"
+                                                id="gambar" name="gambar">
+                                            <small><span class="text-danger">*</span> Besar Max 10 MB</small><br>
+                                            <small>
+                                                <span class="text-danger">*</span>
+                                                Tipe: jpeg, png, dan jpg
+                                            </small><br>
+                                            @error('gambar')
+                                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">
+                                        Nama
+                                        <span class="text-danger"><i>(required)</i></span>
+                                    </label>
                                     <input type="text" class="form-control" id="name" name="name"
                                         value="{{ old('name', $user->name) }}" required autofocus autocomplete="name">
                                     @error('name')
@@ -70,8 +114,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email <span
-                                            class="text-danger"><i>(required)</i></span></label>
+                                    <label for="email" class="form-label">
+                                        Email
+                                        <span class="text-danger"><i>(required)</i></span>
+                                    </label>
                                     <input type="email" class="form-control" id="email" name="email"
                                         value="{{ old('email', $user->email) }}" required autocomplete="username">
                                     @error('email')
@@ -80,8 +126,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="no_telp" class="form-label">No Telp (WA) <span
-                                            class="text-danger"><i>(required)</i></span></label><br>
+                                    <label for="no_telp" class="form-label">
+                                        No Telp (WA)
+                                        <span class="text-danger"><i>(required)</i></span>
+                                    </label><br>
                                     <small><i>*Pakai 62 awalan nomor telpon, jangan gunakan angka 0</i></small>
                                     <input type="number" class="form-control" id="no_telp" name="no_telp"
                                         value="{{ old('no_telp', $user->no_telp) }}" required autocomplete="no_telp">
@@ -91,7 +139,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="sr-only" for="nik">NIK</label>
+                                    <label class="sr-only" for="nik">
+                                        NIK
+                                        <span class="text-danger"><i>(required)</i></span>
+                                    </label>
                                     <input id="nik" name="nik" type="number" class="form-control"
                                         placeholder="NIK" required="required" value="{{ $user->nik }}">
                                     @error('nik')
@@ -100,21 +151,28 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="tgl_lahir">Tanggal Lahir</label>
+                                    <label for="tgl_lahir">
+                                        Tanggal Lahir
+                                        <span class="text-danger"><i>(required)</i></span>
+                                    </label>
                                     <input id="tgl_lahir" name="tgl_lahir" type="date" class="form-control"
-                                        placeholder="Tanggal Lahir" required="required" value="{{ $user->tgl_lahir }}">
+                                        placeholder="Tanggal Lahir" required="required"
+                                        value="{{ $user->tgl_lahir }}">
                                     @error('tgl_lahir')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="kabupaten">Kabupaten/Kota</label>
+                                    <label for="kabupaten">
+                                        Kabupaten/Kota
+                                        <span class="text-danger"><i>(required)</i></span>
+                                    </label>
                                     <select class="form-select" id="kabupaten" name="kabupaten" required>
                                         <option value="">Pilih Kabupaten ...</option>
                                         @foreach ($kabupaten as $kab)
                                             <option value="{{ $kab->nama }}"
-                                                {{ $user->kabupatan == $kab->nama ? 'selected' : '' }}>
+                                                {{ $user->kabupaten == $kab->nama ? 'selected' : '' }}>
                                                 {{ $kab->nama }}
                                             </option>
                                         @endforeach
@@ -125,7 +183,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="kecamatan">Kecamatan</label>
+                                    <label for="kecamatan">
+                                        Kecamatan
+                                        <span class="text-danger"><i>(required)</i></span>
+                                    </label>
                                     <select class="form-select" id="kecamatan" name="kecamatan" required>
                                         <option value="">Pilih Kecamatan ...</option>
                                         @foreach ($kecamatan as $kec)
@@ -141,7 +202,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="desa">Kelurahan/Desa</label>
+                                    <label for="desa">
+                                        Kelurahan/Desa
+                                        <span class="text-danger"><i>(required)</i></span>
+                                    </label>
                                     <select class="form-select" id="desa" name="desa" required>
                                         <option value="">Pilih Desa ...</option>
                                         @foreach ($desa as $des)
@@ -154,6 +218,37 @@
                                     @error('desa')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="img_ktp" class="form-label">
+                                        Foto Berkas KTP
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-lg-4 mt-1 mb-2">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <a href="{{ url('storage/' . $user->img_ktp) }}">
+                                                        <img src="{{ asset('storage/' . $user->img_ktp) }}"
+                                                            class="img-fluid" alt=""
+                                                            style="width: 100%; height: auto;">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <input class="form-control bg-light border-black" type="file"
+                                                id="img_ktp" name="img_ktp">
+                                            <small><span class="text-danger">*</span> Besar Max 10 MB</small><br>
+                                            <small>
+                                                <span class="text-danger">*</span>
+                                                Tipe: jpeg, png, dan jpg
+                                            </small><br>
+                                            @error('img_ktp')
+                                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="" align="right">

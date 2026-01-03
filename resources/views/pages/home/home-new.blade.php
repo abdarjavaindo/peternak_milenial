@@ -5,17 +5,17 @@
 
                 <div class="carousel-item active" data-bs-interval="3000">
                     <div class="bg-home d-flex align-items-center"
-                        style="background-image:url('{{ asset('assets') }}/landrick/images/course/bg06.jpg')">
+                        style="background-image:url('{{ asset('storage/' . $set_slider) }}')">
                         <div class="bg-overlay" style="background-color: rgba(0, 0, 0, 0.4);"></div>
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-12 text-center">
                                     <div class="title-heading text-white mt-4">
                                         <h1 class="display-4 text-white fw-bold mb-3">
-                                            Peternak Milenial & Gen Z
+                                            {{ $set_judul }}
                                         </h1>
                                         <p class="para-desc text-white-50 mx-auto">
-                                            Sinergi Membangun Negeri, "Nawabaktisatya", "Jer basuki mawa beya"
+                                            {{ $set_slogan }}
                                         </p>
                                         <div class="mt-4">
                                             <a href="{{ route('login') }}" class="btn btn-primary mt-2">
@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="card-body p-0 mt-4">
                                         <a href="javascript:void(0)" class="title h5 text-dark">
-                                            13.000
+                                            {{ number_format($set_inaugurasi, 0, ',', '.') }}
                                         </a>
                                         <p class="text-muted mt-2">
                                             Inaugurasi Peternak
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="card-body p-0 mt-4">
                                         <a href="javascript:void(0)" class="title h5 text-dark">
-                                            10.377
+                                            {{ number_format($set_aktif, 0, ',', '.') }}
                                         </a>
                                         <p class="text-muted mt-2">
                                             Peternak Aktif
@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="card-body p-0 mt-4">
                                         <a href="javascript:void(0)" class="title h5 text-dark">
-                                            8
+                                            {{ $set_komuditas }}
                                         </a>
                                         <p class="text-muted mt-2">
                                             Komuditas Peternak
@@ -103,68 +103,48 @@
                     <div class="row justify-content-center">
                         <div class="col-12 text-center">
                             <div class="section-title pb-2">
-                                <h4 class="title mb-4">3 Fitur Utama <span class="text-primary">Peternak Milenial</span>
+                                <h4 class="title mb-4">{{ $fitur }} Fitur Utama <span
+                                        class="text-primary">{{ $set_judul }}</span>
                                 </h4>
                             </div>
                         </div>
                     </div>
                     <div class="accordion" id="accordionExample">
-                        <div class="accordion-item rounded shadow">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button border-0 bg-light" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                                    aria-controls="collapseOne">
-                                    Marketplace
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse border-0 collapse show"
-                                aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                <div class="accordion-body text-muted">
-                                    Tempat jual beli kebutuhan peternak terpercaya
-                                    Mudah, aman, dan terjangkau untuk semua peternak
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="accordion-item rounded shadow mt-2">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button border-0 bg-light collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                                    aria-controls="collapseTwo">
-                                    Pelatihan
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse border-0 collapse"
-                                aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                <div class="accordion-body text-muted">
-                                    Tingkatkan skill beternak bersama ahli berpengalaman
-                                    Belajar praktis, modern, dan sesuai kebutuhan peternak
-                                </div>
+                        @if ($data_fitur->isEmpty())
+                            <div class="alert alert-danger" role="alert">
+                                <i>
+                                    Tidak ada data
+                                </i>
                             </div>
-                        </div>
+                        @else
+                            @foreach ($data_fitur as $item)
+                                <div class="accordion-item rounded shadow my-2">
+                                    <h2 class="accordion-header" id="heading{{ $item->id }}">
+                                        <button class="accordion-button border-0 bg-light" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapse{{ $item->id }}"
+                                            aria-expanded="true" aria-controls="collapse{{ $item->id }}">
+                                            {{ $item->judul }}
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{{ $item->id }}"
+                                        class="accordion-collapse border-0 collapse {{ $loop->first ? 'show' : '' }}"
+                                        aria-labelledby="heading{{ $item->id }}"
+                                        data-bs-parent="#accordionExample">
+                                        <div class="accordion-body text-muted">
+                                            {{ $item->deskripsi }}
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
 
-                        <div class="accordion-item rounded shadow mt-2">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button border-0 bg-light collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
-                                    aria-controls="collapseThree">
-                                    Forum Peternak
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse border-0 collapse"
-                                aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                <div class="accordion-body text-muted">
-                                    Ruang diskusi, berbagi pengalaman sesama peternak
-                                    Solusi masalah ternak dari peternak untuk peternak
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="col-lg-5 col-md-6 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                    <img src="{{ asset('assets') }}/landrick/images/illustrator/fitur-2.png" class="img-fluid"
-                        alt="" style="max-width: 100%; height: auto; object-fit: contain;">
+                    <img src="{{ asset('storage/' . $set_img_fitur) }}" class="img-fluid" alt=""
+                        style="max-width: 100%; height: auto; object-fit: contain;">
                 </div>
             </div>
         </div>
@@ -175,97 +155,63 @@
             <div class="row justify-content-center">
                 <div class="col-12 text-center">
                     <div class="section-title pb-2">
-                        <h4 class="title">Tertimoni Peternak</h4>
+                        <h4 class="title">Testimoni Peternak</h4>
                     </div>
                 </div><!--end col-->
             </div><!--end row-->
 
             <div class="row justify-content-center">
                 <div class="col-lg-12 mt-4">
-                    <div class="tiny-three-item">
-                        <div class="tiny-slide">
-                            <div class="d-flex client-testi m-2">
-                                <img src="assets/mobirise/images/user.png"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
-                                <div class="card flex-1 content p-3 shadow rounded position-relative">
-                                    <p class="text-muted mt-2">" It seems that only fragments of the original text
-                                        remain
-                                        in the Lorem Ipsum texts used today. "</p>
-                                    <h6 class="text-primary">- Thomas Doll <small class="text-muted">C.E.O</small>
-                                    </h6>
-                                </div>
-                            </div>
+                    @if ($data_testimoni->isEmpty())
+                        <div class="alert alert-danger" role="alert">
+                            <i>
+                                Tidak ada data
+                            </i>
                         </div>
+                    @else
+                        <div class="tiny-three-item">
 
-                        <div class="tiny-slide">
-                            <div class="d-flex client-testi m-2">
-                                <img src="assets/mobirise/images/user.png"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
-                                <div class="card flex-1 content p-3 shadow rounded position-relative">
-                                    <p class="text-muted mt-2">" One disadvantage of Lorum Ipsum is that in Latin
-                                        certain
-                                        letters appear more frequently than others. "</p>
-                                    <h6 class="text-primary">- Barbara McIntosh <small class="text-muted">M.D</small>
-                                    </h6>
-                                </div>
-                            </div>
-                        </div>
+                            @foreach ($data_testimoni as $item)
+                                <div class="tiny-slide">
+                                    <div class="d-flex client-testi m-2">
+                                        @if ($item->gambar)
+                                            <img src="{{ asset('storage/' . $item->gambar) }}"
+                                                class="avatar avatar-small client-image rounded shadow">
+                                        @else
+                                            <img src="{{ asset('assets') }}/mobirise/images/user.png"
+                                                class="avatar avatar-small client-image rounded shadow">
+                                        @endif
+                                        <div
+                                            class="card content p-3 shadow rounded position-relative h-100 d-flex flex-column">
+                                            <h6 class="text-primary">
+                                                - {{ $item->nama }}
+                                                <small class="text-muted">{{ $item->jabatan }}</small>
+                                            </h6>
 
-                        <div class="tiny-slide">
-                            <div class="d-flex client-testi m-2">
-                                <img src="assets/mobirise/images/user.png"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
-                                <div class="card flex-1 content p-3 shadow rounded position-relative">
-                                    <p class="text-muted mt-2">" The most well-known dummy text is the 'Lorem Ipsum',
-                                        which
-                                        is said to have originated in the 16th century. "</p>
-                                    <h6 class="text-primary">- Carl Oliver <small class="text-muted">P.A</small></h6>
-                                </div>
-                            </div>
-                        </div>
+                                            <p class="text-muted mt-2 mt-auto">
+                                                <span class="short-text">
+                                                    "{{ \Illuminate\Support\Str::limit($item->testimoni, 40) }}"
+                                                </span>
 
-                        <div class="tiny-slide">
-                            <div class="d-flex client-testi m-2">
-                                <img src="assets/mobirise/images/user.png"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
-                                <div class="card flex-1 content p-3 shadow rounded position-relative">
-                                    <p class="text-muted mt-2">" According to most sources, Lorum Ipsum can be traced
-                                        back
-                                        to a text composed by Cicero. "</p>
-                                    <h6 class="text-primary">- Christa Smith <small class="text-muted">Manager</small>
-                                    </h6>
-                                </div>
-                            </div>
-                        </div>
+                                                <span class="full-text d-none">
+                                                    "{{ $item->testimoni }}"
+                                                </span>
 
-                        <div class="tiny-slide">
-                            <div class="d-flex client-testi m-2">
-                                <img src="assets/mobirise/images/user.png"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
-                                <div class="card flex-1 content p-3 shadow rounded position-relative">
-                                    <p class="text-muted mt-2">" There is now an abundance of readable dummy texts.
-                                        These
-                                        are usually used when a text is required. "</p>
-                                    <h6 class="text-primary">- Dean Tolle <small class="text-muted">Developer</small>
-                                    </h6>
-                                </div>
-                            </div>
-                        </div>
+                                                @if (strlen($item->testimoni) > 40)
+                                                    <a href="javascript:void(0)" data-expanded="false"
+                                                        onclick="toggleTestimoni(this)">
+                                                        Selengkapnya
+                                                    </a>
+                                                @endif
+                                            </p>
+                                        </div>
 
-                        <div class="tiny-slide">
-                            <div class="d-flex client-testi m-2">
-                                <img src=assets/mobirise/images/user.png"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
-                                <div class="card flex-1 content p-3 shadow rounded position-relative">
-                                    <p class="text-muted mt-2">" Thus, Lorem Ipsum has only limited suitability as a
-                                        visual
-                                        filler for German texts. "</p>
-                                    <h6 class="text-primary">- Jill Webb <small class="text-muted">Designer</small>
-                                    </h6>
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
+
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -286,3 +232,16 @@
         </div>
     </section>
 </x-layouts.home>
+
+<script>
+    function toggleTestimoni(el) {
+        const parent = el.closest('p');
+        const shortText = parent.querySelector('.short-text');
+        const fullText = parent.querySelector('.full-text');
+        const expanded = el.dataset.expanded === 'true';
+        shortText.classList.toggle('d-none', !expanded);
+        fullText.classList.toggle('d-none', expanded);
+        el.textContent = expanded ? 'Selengkapnya' : 'Lebih sedikit';
+        el.dataset.expanded = (!expanded).toString();
+    }
+</script>

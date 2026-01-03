@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('kategori_produks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('hewan_id'); // seller
             $table->string('nama_kategori');
             $table->string('slug_kategori')->unique();
             $table->timestamps();
+
+            $table->foreign('hewan_id')->references('id')->on('hewans')->onDelete('cascade');
         });
     }
 

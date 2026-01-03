@@ -14,24 +14,45 @@ class KategoriProdukSeeder extends Seeder
      */
     public function run(): void
     {
-        $kategori = [
-            'Unggas Hidup',
-            'Ternak Hidup',
-            'Daging Segar',
-            'Olahan Daging',
-            'Telur',
-            'Produk Susu',
-            'Olahan Susu',
-            'Produk Non-Pangan',
-            'Produk Lebah',
-            'Pupuk & Limbah',
-        ];
-
-        foreach ($kategori as $item) {
-            Kategori_produk::create([
-                'nama_kategori' => $item,
-                'slug_kategori' => Str::slug($item),
-            ]);
-        }
+        Kategori_produk::create([
+            'hewan_id' => 1,
+            'nama_kategori' => "Sapi Potong",
+            'slug_kategori' => Str::slug("Sapi Potong"),
+        ]);
+        Kategori_produk::create([
+            'hewan_id' => 1,
+            'nama_kategori' => "Sapi Perah",
+            'slug_kategori' => Str::slug("Sapi Perah"),
+        ]);
+        Kategori_produk::create([
+            'hewan_id' => 2,
+            'nama_kategori' => "Kerbau",
+            'slug_kategori' => Str::slug("Kerbau"),
+        ]);
+        Kategori_produk::create([
+            'hewan_id' => 3,
+            'nama_kategori' => "Domba/Kambing",
+            'slug_kategori' => Str::slug("Domba/Kambing"),
+        ]);
+        Kategori_produk::create([
+            'hewan_id' => 4,
+            'nama_kategori' => "Babi",
+            'slug_kategori' => Str::slug("Babi"),
+        ]);
+        Kategori_produk::create([
+            'hewan_id' => 5,
+            'nama_kategori' => "Ayam Petelur",
+            'slug_kategori' => Str::slug("Ayam Petelur"),
+        ]);
+        Kategori_produk::create([
+            'hewan_id' => 5,
+            'nama_kategori' => "Ayam Pedaging",
+            'slug_kategori' => Str::slug("Ayam Pedaging"),
+        ]);
+        Kategori_produk::create([
+            'hewan_id' => 6,
+            'nama_kategori' => "Burung Puyuh",
+            'slug_kategori' => Str::slug("Burung Puyuh"),
+        ]);
     }
 }

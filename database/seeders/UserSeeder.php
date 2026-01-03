@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserTernak;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -18,22 +19,33 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
-            'slug' => Str::slug('admin')
+            'slug' => Str::slug('admin'),
+            'status' => '1',
         ]);
         $admin->assignRole('admin');
 
         $user = User::create([
             'name' => 'user',
-            'email' => 'user@gmail.com',
-            'password' => bcrypt('password'),
-            'nik' => '3573011001900001',
             'slug' => Str::slug('user 1234'),
+            'email' => 'user@gmail.com',
             'no_telp' => '6289695615256',
+            'nik' => '3573011001900001',
+            'tgl_lahir' => '2000-07-04',
             'kabupaten' => 'Kabupaten Sidoarjo',
             'kecamatan' => 'Candi',
             'desa' => 'Kendalpecabean',
-            'tgl_lahir' => '2000-07-04',
+            'password' => bcrypt('password'),
+            'status' => '1',
+            'img_ktp' => 'ktp.jpg',
+            'level' => 'pemula',
         ]);
         $user->assignRole('user');
+
+        UserTernak::create([
+            'user_id' => $user->id,
+            'kategori_produk_id' => 1,
+            'nama_ternak' => 'Sapi Potong',
+            'jumlah' => '90',
+        ]);
     }
 }

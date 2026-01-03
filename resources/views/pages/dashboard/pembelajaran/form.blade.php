@@ -7,7 +7,7 @@
 <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
 <x-layouts.dashboard>
-    <h1 class="app-page-title">{{ isset($kursus) ? 'Edit' : 'Tambah' }} Kursus</h1>
+    <h1 class="app-page-title">{{ isset($kursus) ? 'Edit' : 'Tambah' }} Pelatihan</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -24,7 +24,7 @@
 
                         <div class="mb-3">
                             <label for="judul" class="form-label">
-                                Judul Kursus
+                                Judul Pelatihan
                                 <span class="text-danger"><i>(required)</i></span>
                             </label>
                             <input type="text" class="form-control bg-light border-black" id="judul"
@@ -36,7 +36,7 @@
 
                         <div class="mb-3">
                             <label for="kategori_kursus_id" class="form-label">
-                                Kategori
+                                Kategori Pelatihan
                                 <span class="text-danger"><i>(required)</i></span>
                             </label>
                             <select type="text" class="form-select bg-light border-black" id="kategori_kursus_id"
@@ -49,6 +49,25 @@
                                 @endforeach
                             </select>
                             @error('kategori_kursus_id')
+                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="kategori_produk_id" class="form-label">
+                                Komuditas
+                                <span class="text-danger"><i>(required)</i></span>
+                            </label>
+                            <select type="text" class="form-select bg-light border-black" id="kategori_produk_id"
+                                name="kategori_produk_id" required>
+                                <option value="">Pilih ...</option>
+                                @foreach ($ketegori_produk as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ old('kategori_produk_id') == $item->id || @$kursus->kategori_produk_id == $item->id ? 'selected' : '' }}>
+                                        {{ $item->nama_kategori }}</option>
+                                @endforeach
+                            </select>
+                            @error('kategori_produk_id')
                                 <span class="text-danger" style="color:red">{{ $message }}</span>
                             @enderror
                         </div>
@@ -102,7 +121,7 @@
 
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label">
-                                Deskripsi Kursus
+                                Deskripsi Pelatihan
                                 <span class="text-danger"><i>(required)</i></span>
                             </label>
                             <textarea type="text" name="deskripsi" id="tinymce-editor" contenteditable="true">{!! isset($kursus) ? $kursus->deskripsi : old('deskripsi') !!}</textarea>
@@ -125,18 +144,6 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="harga" class="form-label">
-                                Harga
-                            </label>
-                            <input type="text" id="harga" name="harga"
-                                class="form-control bg-light border-black"
-                                value="{{ isset($kursus) ? number_format($kursus->harga, 0, ',', '.') : old('harga') }}">
-                            @error('harga')
-                                <span class="text-danger" style="color:red">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
                             <label for="hari" class="form-label">
                                 Waktu Yang Diberikan (hari)
                                 <span class="text-danger"><i>(required)</i></span>
@@ -149,28 +156,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="pengajar_id" class="form-label">
-                                Pengajar
-                                <span class="text-danger"><i>(required)</i></span>
-                            </label>
-                            <select class="form-select bg-light border-black" id="basic-usage" name="pengajar_id"
-                                required>
-                                <option value="">Pilih ..</option>
-                                @foreach ($pengajar as $v)
-                                    <option value="{{ $v->id }}"
-                                        {{ @$v->id == @$kursus->pengajar_id ? 'selected' : '' }}>
-                                        {{ $v->nama }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('walas')
-                                <span class="text-danger" style="color:red">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
                             <label for="gambar" class="form-label">
-                                Gambar
+                                Gambar Thumnail
                                 @if (isset($kursus))
                                 @else
                                     <span class="text-danger"><i>(required)</i></span>

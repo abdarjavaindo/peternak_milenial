@@ -114,12 +114,8 @@
         <!-- Logo container-->
         <a class="logo" href="{{ env('APP_URL') }}">
             <span class="logo-light-mode">
-                <img src="{{ asset('assets') }}/mobirise/images/logo-trans.png" alt=""
-                    style="width: 160px; object-fit: cover;" />
+                <img src="{{ asset('storage/' . $set_logo) }}" alt="" style="width: 160px; object-fit: cover;" />
             </span>
-            {{-- <small class="txtheader d-none d-md-inline">
-                PETERNAK MILENIAL
-            </small> --}}
         </a>
 
         <!-- End Logo container-->
@@ -161,13 +157,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('galeri') }}" class="sub-menu-item">
+                    <a href="{{ route('lihatgaleri') }}" class="sub-menu-item">
                         Galeri
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('shop') }}" class="sub-menu-item">
-                        Produk
+                        Marketplace
                     </a>
                 </li>
                 <li>
@@ -196,7 +192,7 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('shop.user', auth()->user()->slug) }}" class="sub-menu-item">
-                                        Tokoku
+                                        Etalaseku
                                     </a>
                                 </li>
                                 <li>

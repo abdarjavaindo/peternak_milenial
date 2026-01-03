@@ -70,14 +70,25 @@
 
                                             <!-- Kiri -->
                                             <div class="d-flex align-items-center">
-                                                <a class="pe-3" href="#">
-                                                    <img src="{{ asset('assets') }}/mobirise/images/user.png"
-                                                        class="img-fluid avatar avatar-md-sm rounded-circle shadow"
-                                                        alt="img">
-                                                </a>
+                                                @if ($item->user->gambar)
+                                                    <a class="pe-3"
+                                                        href="{{ route('shop.user', $item->user->slug) }}">
+                                                        <img src="{{ asset('storage/' . $item->user->gambar) }}"
+                                                            class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                            alt="img">
+                                                    </a>
+                                                @else
+                                                    <a class="pe-3"
+                                                        href="{{ route('shop.user', $item->user->slug) }}">
+                                                        <img src="{{ asset('assets') }}/mobirise/images/user.png"
+                                                            class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                            alt="img">
+                                                    </a>
+                                                @endif
                                                 <div class="flex-1 commentor-detail">
                                                     <h6 class="mb-0">
-                                                        <a href="javascript:void(0)" class="text-dark media-heading">
+                                                        <a href="{{ route('shop.user', $item->user->slug) }}"
+                                                            class="text-dark media-heading">
                                                             {{ $item->user->name }}
                                                         </a>
                                                     </h6>

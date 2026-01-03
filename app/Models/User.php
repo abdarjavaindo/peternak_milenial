@@ -32,6 +32,7 @@ class User extends Authenticatable
         'kecamatan',
         'desa',
         'tgl_lahir',
+        'img_ktp',
     ];
 
     /**

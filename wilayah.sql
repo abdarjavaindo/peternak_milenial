@@ -27,10 +27,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `wilayah`
 --
 
-CREATE TABLE `wilayah` (
-  `kode` varchar(13) NOT NULL,
-  `nama` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+-- CREATE TABLE `wilayah` (
+--   `kode` varchar(13) NOT NULL,
+--   `nama` varchar(100) NOT NULL
+-- ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `wilayah`

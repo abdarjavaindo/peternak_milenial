@@ -30,7 +30,7 @@
                                 d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
                         </svg>
                     </span>
-                    <span class="nav-link-text">Pembelajaran</span>
+                    <span class="nav-link-text">Pelatihan</span>
                 </a>
             </li>
 
@@ -44,7 +44,7 @@
                                 d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
                         </svg>
                     </span>
-                    <span class="nav-link-text">Produk</span>
+                    <span class="nav-link-text">Marketplace</span>
                 </a>
             </li>
 
@@ -57,7 +57,7 @@
                                 d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4" />
                         </svg>
                     </span>
-                    <span class="nav-link-text">User</span>
+                    <span class="nav-link-text">Peternak (User)</span>
                 </a>
             </li>
         @endif
@@ -65,7 +65,7 @@
 
         @if (auth()->user()->hasRole('admin'))
             <li class="nav-item has-submenu">
-                <a class="nav-link submenu-toggle {{ in_array(request()->segment(1), ['kpa', 'kegiatan']) ? 'active' : '' }}"
+                <a class="nav-link submenu-toggle {{ in_array(request()->segment(1), ['kategori-kursus', 'kategori-produk', 'hewan', 'galeri', 'pengaturan', 'pengaturan-kontak', 'testimoni', 'fitur']) ? 'active' : '' }}"
                     href="#" data-bs-toggle="collapse" data-bs-target="#submenu-1" aria-expanded="false"
                     aria-controls="submenu-1">
                     <span class="nav-icon">
@@ -87,7 +87,7 @@
                     </span>
                 </a>
                 <div id="submenu-1"
-                    class="collapse submenu submenu-1 {{ in_array(request()->segment(1), ['kategori-kursus', 'kategori-produk', 'pengajar']) ? 'show' : '' }}"
+                    class="collapse submenu submenu-1 {{ in_array(request()->segment(1), ['kategori-kursus', 'kategori-produk', 'hewan', 'galeri', 'pengaturan', 'pengaturan-kontak', 'testimoni', 'fitur']) ? 'show' : '' }}"
                     data-bs-parent="#menu-accordion">
                     <ul class="submenu-list list-unstyled">
                         <li class="submenu-item">
@@ -97,15 +97,45 @@
                             </a>
                         </li>
                         <li class="submenu-item">
-                            <a class="submenu-link {{ request()->segment(1) == 'kategori-produk' ? 'active' : '' }}"
-                                href="{{ route('kategori-produk') }}">
-                                Kategori Produk
+                            <a class="submenu-link {{ request()->segment(1) == 'hewan' ? 'active' : '' }}"
+                                href="{{ route('hewan') }}">
+                                Hewan
                             </a>
                         </li>
                         <li class="submenu-item">
-                            <a class="submenu-link {{ request()->segment(1) == 'pengajar' ? 'active' : '' }}"
-                                href="{{ route('pengajar') }}">
-                                Instruktur
+                            <a class="submenu-link {{ request()->segment(1) == 'kategori-produk' ? 'active' : '' }}"
+                                href="{{ route('kategori-produk') }}">
+                                Komuditas yang Dijual
+                            </a>
+                        </li>
+                        <li class="submenu-item">
+                            <a class="submenu-link {{ request()->segment(1) == 'galeri' ? 'active' : '' }}"
+                                href="{{ route('galeri') }}">
+                                Galeri
+                            </a>
+                        </li>
+                        <li class="submenu-item">
+                            <a class="submenu-link {{ request()->segment(1) == 'pengaturan' ? 'active' : '' }}"
+                                href="{{ route('pengaturan.edit', 1) }}">
+                                Pengaturan Website
+                            </a>
+                        </li>
+                        <li class="submenu-item">
+                            <a class="submenu-link {{ request()->segment(1) == 'pengaturan-kontak' ? 'active' : '' }}"
+                                href="{{ route('pengaturan.kontak_edit', 1) }}">
+                                Social Media dan Kontak
+                            </a>
+                        </li>
+                        <li class="submenu-item">
+                            <a class="submenu-link {{ request()->segment(1) == 'testimoni' ? 'active' : '' }}"
+                                href="{{ route('testimoni') }}">
+                                Testimoni (Home)
+                            </a>
+                        </li>
+                        <li class="submenu-item">
+                            <a class="submenu-link {{ request()->segment(1) == 'fitur' ? 'active' : '' }}"
+                                href="{{ route('fitur') }}">
+                                Fitur (Home)
                             </a>
                         </li>
                     </ul>
@@ -124,8 +154,8 @@
                 <a class="nav-link {{ request()->segment(1) == 'profile' ? 'active' : '' }}"
                     href="{{ route('profile.edit') }}">
                     <span class="nav-icon">
-                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-gear" fill="currentColor"
-                            xmlns="http://www.w3.org/2000/svg">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-gear"
+                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
                                 d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z" />
                             <path fill-rule="evenodd"

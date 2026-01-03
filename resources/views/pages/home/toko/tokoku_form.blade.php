@@ -34,7 +34,7 @@
 
                                 <div class="mb-3">
                                     <label for="kategori_produk_id" class="form-label">
-                                        Kategori
+                                        Komuditas
                                         <span class="text-danger"><i>(required)</i></span>
                                     </label>
                                     <select name="kategori_produk_id" id="kategori_produk_id"
@@ -107,7 +107,7 @@
                                         <span class="text-danger"><i>(required)</i></span>
                                     </label>
                                     <input type="text" id="satuan" name="satuan"
-                                        class="form-control border border-dark"
+                                        class="form-control border border-dark" placeholder="contoh: ekor, kg, dll"
                                         value="{{ isset($produk) ? $produk->satuan : old('satuan') }}" required>
                                     @error('satuan')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>

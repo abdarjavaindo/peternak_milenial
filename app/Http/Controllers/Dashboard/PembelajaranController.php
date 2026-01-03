@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kategori_kursus;
+use App\Models\Kategori_produk;
 use App\Models\Kursus;
 use App\Models\KursusBagian;
 use App\Models\KursusMateri;
@@ -18,7 +19,7 @@ class PembelajaranController extends Controller
     #region kursus
     public function loaddata()
     {
-        $data = Kursus::with(['user', 'pengajar', 'progres'])->orderBy('id', 'desc')->get();
+        $data = Kursus::with(['user', 'progres'])->orderBy('id', 'desc')->get();
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
                 $editUrl = route('pembelajaran.edit', $data->id);
@@ -30,7 +31,7 @@ class PembelajaranController extends Controller
                     </form>';
 
                 return $deleteForm . ' <a href="' . $editUrl . '" class="btn btn-sm btn-warning mb-1 btn-icon"><i class="fa fa-edit"></i></a>'
-                . ' <a href="' . $bagian . '" class="btn btn-sm btn-success text-white mb-1 btn-icon"><i class="fa fa-eye"></i></a>';
+                    . ' <a href="' . $bagian . '" class="btn btn-sm btn-success text-white mb-1 btn-icon"><i class="fa fa-eye"></i></a>';
             })
             ->addColumn('nama', function ($data) {
                 return $data->user->name;
@@ -40,9 +41,6 @@ class PembelajaranController extends Controller
             })
             ->addColumn('publish', function ($data) {
                 return $data->is_published == 0 ? 'tidak' : 'IYA';
-            })
-            ->addColumn('pengajar', function ($data) {
-                return $data->pengajar->nama;
             })
             ->addIndexColumn()
             ->rawColumns(['nama', 'aksi', 'jumlah_peserta', 'publish', 'pengajar'])
@@ -56,7 +54,7 @@ class PembelajaranController extends Controller
     public function create()
     {
         $data['kategori_kursus'] = Kategori_kursus::get();
-        $data['pengajar'] = Pengajar::get();
+        $data['ketegori_produk'] = Kategori_produk::get();
         return view('pages.dashboard.pembelajaran.form', $data);
     }
     public function store(Request $request)
@@ -64,26 +62,25 @@ class PembelajaranController extends Controller
         $request->validate([
             'judul' => ['required'],
             'kategori_kursus_id' => ['required'],
+            'kategori_produk_id' => ['required'],
             'level' => ['required'],
             'deskripsi' => ['required'],
             'youtube' => ['required'],
             'hari' => ['required'],
-            'pengajar_id' => ['required'],
             'gambar' => 'required|mimes:jpg,jpeg,png|max:11000'
         ]);
 
         $data = [
             'kategori_kursus_id' => $request->kategori_kursus_id,
+            'kategori_produk_id' => $request->kategori_produk_id,
             'user_id' => auth()->user()->id,
             'judul' => $request->judul,
             'slug' => $this->generateSlugWithRandom($request->judul),
             'deskripsi' => $request->deskripsi,
             'youtube' => $request->youtube,
             'level' => $request->level,
-            'harga' => str_replace('.', '', $request->harga),
             'hari' => $request->hari,
             'is_published' => $request->is_published,
-            'pengajar_id' => $request->pengajar_id,
         ];
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('kursus', 'public');
@@ -95,8 +92,8 @@ class PembelajaranController extends Controller
     public function edit(Kursus $kursus)
     {
         $data['kursus'] = $kursus;
-        $data['pengajar'] = Pengajar::get();
         $data['kategori_kursus'] = Kategori_kursus::get();
+        $data['ketegori_produk'] = Kategori_produk::get();
         return view('pages.dashboard.pembelajaran.form', $data);
     }
     public function update(Request $request, Kursus $kursus)
@@ -104,24 +101,23 @@ class PembelajaranController extends Controller
         $request->validate([
             'judul' => ['required'],
             'kategori_kursus_id' => ['required'],
+            'kategori_produk_id' => ['required'],
             'level' => ['required'],
             'deskripsi' => ['required'],
             'youtube' => ['required'],
             'hari' => ['required'],
-            'pengajar_id' => ['required'],
             'gambar' => 'mimes:jpg,jpeg,png|max:11000'
         ]);
 
         $data = [
             'kategori_kursus_id' => $request->kategori_kursus_id,
+            'kategori_produk_id' => $request->kategori_produk_id,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'youtube' => $request->youtube,
             'level' => $request->level,
-            'harga' => str_replace('.', '', $request->harga),
             'hari' => $request->hari,
             'is_published' => $request->is_published,
-            'pengajar_id' => $request->pengajar_id,
         ];
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('kursus', 'public');
@@ -188,7 +184,7 @@ class PembelajaranController extends Controller
                     </form>';
 
                 return $deleteForm . ' <a href="' . $editUrl . '" class="btn btn-sm btn-warning mb-1 btn-icon"><i class="fa fa-edit"></i></a>'
-                . ' <a href="' . $materi . '" class="badge bg-success text-white mb-1 btn-icon">materi</a>';
+                    . ' <a href="' . $materi . '" class="badge bg-success text-white mb-1 btn-icon">materi dan postest</a>';
             })
             ->addIndexColumn()
             ->rawColumns(['aksi'])

@@ -1,12 +1,12 @@
 <x-layouts.home>
     <!-- Start Products -->
-    <section class="section mt-4">
+    <section class="section mt-60">
         <div class="container">
             <x-flash-message></x-flash-message>
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-12">
                     <div class="card border-0 sidebar sticky-bar" style="background: #edefea;">
-                        <div class="card-body p-0 mt-4">
+                        <div class="card-body p-0">
                             @if (auth()->user())
                                 <h1 class="txtheader text-dark">
                                     {{ Str::upper(auth()->user()->name) }}
@@ -23,23 +23,46 @@
                             @endif
 
                             <!-- Categories -->
-                            <div class="widget mt-4 pt-2">
-                                <h5 class="widget-title">Kategori</h5>
+                            <div class="widget pt-2">
+                                <h5 class="widget-title">Komuditas</h5>
                                 <ul class="list-unstyled mt-4 mb-0 blog-categories">
                                     @foreach ($kategori_produk as $item)
                                         <li>
-                                            <a href="{{ route('shop.user', $slug_user) }}?slug={{ $item->slug_kategori }}"
-                                                class="{{ isset($current_kategori) && $current_kategori->id == $item->id ? 'text-primary fw-bold' : '' }}">
-                                                {{ $item->nama_kategori }}
-                                            </a>
+                                            <div class="card shop-list border-0 position-relative">
+                                                <div class="card-body content p-2">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-12 col-lg-2 text-center mb-2 mb-lg-0">
+                                                            @if ($item->ikon_komuditas)
+                                                                <img src="{{ asset('storage/' . $item->ikon_komuditas) }}"
+                                                                    height="30px" alt="{{ $item->nama_kategori }}">
+                                                            @else
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor" class="bi bi-ban"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0" />
+                                                                </svg>
+                                                            @endif
+                                                        </div>
+                                                        <div class="col-12 col-lg-10 text-center text-lg-start">
+                                                            <a href="{{ route('shop.user', $slug_user) }}?slug={{ $item->slug_kategori }}"
+                                                                class="{{ isset($current_kategori) && $current_kategori->id == $item->id ? 'text-primary fw-bold' : '' }}">
+                                                                {{ $item->nama_kategori }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </li>
                                     @endforeach
                                     <li>
-                                        <a href="{{ route('shop.user', $slug_user) }}" class="text-danger">
-                                            <i>
-                                                Tidak ada
-                                            </i>
-                                        </a>
+                                        <div class="card shop-list border-0 position-relative">
+                                            <div class="card-body content p-2">
+                                                <a href="{{ route('shop.user', $slug_user) }}" class="text-danger">
+                                                    <i>Hapus filter</i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -47,9 +70,9 @@
                     </div>
                 </div>
 
-                <div class="col-lg-9 col-md-8 col-12 mt-5 pt-2 mt-sm-0 pt-sm-0">
+                <div class="col-lg-9 col-md-8 col-12 pt-2 mt-sm-0 pt-sm-0">
                     <!-- SEARCH -->
-                    <div class="widget mt-4">
+                    <div class="widget">
                         <form role="search" method="get">
                             <div class="input-group mb-3 border rounded">
                                 <input type="text" id="s" name="s" class="form-control border-0"
@@ -65,7 +88,7 @@
 
                     <div class="row">
                         @foreach ($produks as $item)
-                            <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+                            <div class="col-lg-4 col-md-6 col-6 pt-2">
                                 <div class="card shop-list border-0 position-relative">
                                     <ul class="label list-unstyled mb-0">
                                         <li>
@@ -94,9 +117,9 @@
                                         </div>
                                         @if (auth()->check())
                                             @if ($item->aktif)
-                                                <p class="fw-light text-success mt-1 mb-0">Published</p>
+                                                <small class="fw-light text-success mt-1 mb-0">Published</small>
                                             @else
-                                                <p class="fw-light text-danger mt-1 mb-0">Suspend</p>
+                                                <small class="fw-light text-danger mt-1 mb-0">Suspend</small>
                                             @endif
                                         @endif
                                     </div>

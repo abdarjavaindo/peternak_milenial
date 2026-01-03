@@ -1,21 +1,28 @@
 <x-layouts.home>
-    <section class="section pb-0">
+    <style>
+        .nav-pills .nav-link.active {
+            color: #05559e !important;
+        }
+    </style>
+    <section class="section mt-60 pb-0">
         <div class="container">
+            <x-flash-message></x-flash-message>
+            <br>
             <div class="row align-items-center">
                 <div class="col-md-5">
                     <div class="tiny-single-item">
                         @foreach ($produk->gambar as $item)
                             <div class="tiny-slide">
                                 <a href="{{ asset('storage/produk/' . $item->nama_file) }}">
-                                    <img src="{{ asset('storage/produk/' . $item->nama_file) }}" class="img-fluid rounded"
-                                        alt="" style="width: 100%; height: 500px;">
+                                    <img src="{{ asset('storage/produk/' . $item->nama_file) }}"
+                                        class="img-fluid rounded-5" alt="" style="width: 100%; height: 500px;">
                                 </a>
                             </div>
                         @endforeach
                     </div>
                 </div>
 
-                <div class="col-md-7 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                <div class="col-md-7 mt-sm-0 pt-2 pt-sm-0">
                     <div class="section-title ms-md-4">
                         <h4 class="title">
                             {{ $produk->nama_produk }}
@@ -24,30 +31,17 @@
                             {{ 'Rp ' . number_format($produk->harga, 0, ',', '.') . " Per $produk->satuan" }} (Stok
                             {{ $produk->stok }})
                         </h5>
-                        {{-- <p class="fw-light mt-1 mb-0">
-                            <i>
-                                Dijual oleh: <a
-                                    href="{{ route('shop.user', $produk->user->slug) }}">{{ $produk->user->name }}</a>
-                            </i>
-                        </p> --}}
-                        {{-- <ul class="list-unstyled text-warning h5 mb-0">
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                        </ul> --}}
 
-                        <h5 class="mt-4 py-2">Overview :</h5>
+                        <h5 class="mt-4">Overview :</h5>
                         <p class="text-muted">{{ $produk->deskripsi_singkat }}</p>
 
                         @if (!auth()->check() || $produk->user_id != auth()->user()->id)
                         @else
                             <div class="mt-4 pt-2">
-                                <a href="{{ route('tokoku.edit', $produk->id) }}" class="btn btn-warning">
+                                <a href="{{ route('tokoku.edit', $produk->id) }}" class="btn btn-warning btn-sm">
                                     Edit
                                 </a>
-                                <a href="{{ route('tokoku.destroy', $produk->id) }}" class="btn btn-danger"
+                                <a href="{{ route('tokoku.destroy', $produk->id) }}" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Apakah anda yakin akan ingin menghapus data ini')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -61,41 +55,51 @@
                             </div>
                         @endif
 
-                        <div class="card mt-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <a class="pe-3" href="#">
-                                            <img src="{{ asset('assets') }}/mobirise/images/user.png"
-                                                class="img-fluid avatar avatar-md-sm rounded-circle shadow"
-                                                alt="img">
-                                        </a>
-                                        <div class="flex-1 commentor-detail">
-                                            <h6 class="mb-0">
-                                                <a
-                                                    href="{{ route('shop.user', $produk->user->slug) }}">{{ $produk->user->name }}</a>
-                                            </h6>
+                        <div class="row mt-2">
+                            <div class="col-lg-12">
+                                <div class="card public-profile border-0 rounded shadow" style="z-index: 1;">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-2 col-md-3 text-md-start text-center">
+                                                @if ($produk->user->gambar)
+                                                    <img src="{{ asset('storage/' . $produk->user->gambar) }}"
+                                                        class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                        alt="{{ \Illuminate\Support\Str::title($produk->user->name) }}">
+                                                @else
+                                                    <img src="{{ asset('assets') }}/mobirise/images/user.png"
+                                                        class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                        alt="{{ \Illuminate\Support\Str::title($produk->user->name) }}">
+                                                @endif
+                                            </div>
 
+                                            <div class="col-lg-10 col-md-9">
+                                                <div class="row align-items-end">
+                                                    <div class="col-md-6 text-md-start text-center mt-4 mt-sm-0">
+                                                        <h5 class="mb-0">
+                                                            {{ \Illuminate\Support\Str::title($produk->user->name) }}
+                                                        </h5>
+                                                        <small class="text-muted h6 me-2">
+                                                            Peternak {{ ucfirst($produk->user->level) }}
+                                                        </small>
+                                                    </div>
+                                                    <div class="col-md-6 text-md-end text-center d-sm-flex">
+                                                        <a href="https://wa.me/{{ $produk->user->no_telp }}"
+                                                            class="btn btn-sm btn-primary mt-2">Kontak WA</a>
+                                                        <a href="{{ route('shop.user', $produk->user->slug) }}"
+                                                            class="btn btn-sm btn-outline-primary mt-2 ms-2">Kunjungi
+                                                            Etalase</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="mt-4 pt-2">
-                                        <a href="{{ 'https://wa.me/' . @$produk->user->no_telp }}"
-                                            class="btn btn-primary">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd"
-                                                    d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-                                            </svg>
-                                            Kontak WA
-                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
-                </div><!--end col-->
-            </div><!--end row-->
+                </div>
+            </div>
         </div><!--end container-->
 
         <div class="container mt-100 mt-60 mb-4">
@@ -106,166 +110,170 @@
                             <ul class="nav nav-pills shadow flex-column flex-sm-row d-md-inline-flex mb-0 p-1 rounded position-relative overflow-hidden"
                                 id="pills-tab" role="tablist">
                                 <li class="nav-item m-1">
-                                    <a class="nav-link py-2 px-5 active rounded" id="description-data"
-                                        data-bs-toggle="pill" href="#description" role="tab"
-                                        aria-controls="description" aria-selected="false">
+                                    <a class="nav-link py-2 px-5 {{ $v == 'deskripsi' || $v == '' ? 'active' : '' }} rounded"
+                                        id="description-data"
+                                        href="{{ route('shop.detail', ['slug' => $slug, 'v' => 'deskripsi']) }}">
                                         <div class="text-center">
-                                            <h6 class="mb-0">Description</h6>
+                                            <h6 class="mb-0">Deskripsi</h6>
                                         </div>
                                     </a>
                                 </li>
 
-                                {{-- <li class="nav-item m-1">
-                                <a class="nav-link py-2 px-5 rounded" id="additional-info" data-bs-toggle="pill"
-                                    href="#additional" role="tab" aria-controls="additional" aria-selected="false">
-                                    <div class="text-center">
-                                        <h6 class="mb-0">Additional Information</h6>
-                                    </div>
-                                </a>
-                            </li> --}}
-
                                 <li class="nav-item m-1">
-                                    <a class="nav-link py-2 px-5 rounded" id="review-comments" data-bs-toggle="pill"
-                                        href="#review" role="tab" aria-controls="review" aria-selected="false">
+                                    <a class="nav-link py-2 px-5 {{ $v == 'komentar' ? 'active' : '' }} rounded"
+                                        id="review-comments"
+                                        href="{{ route('shop.detail', ['slug' => $slug, 'v' => 'komentar']) }}">
                                         <div class="text-center">
-                                            <h6 class="mb-0">Review</h6>
+                                            <h6 class="mb-0">Komentar</h6>
                                         </div>
                                     </a>
                                 </li>
                             </ul>
 
                             <div class="tab-content mt-5" id="pills-tabContent">
-                                <div class="card border-0 tab-pane fade show active" id="description" role="tabpanel"
-                                    aria-labelledby="description-data">
+                                <div class="card border-0 tab-pane fade {{ $v == 'deskripsi' || $v == '' ? 'show active' : '' }}"
+                                    id="description" role="tabpanel" aria-labelledby="description-data">
                                     <p class="text-muted mb-0">{!! $produk->deskripsi !!}</p>
                                 </div>
 
-                                <div class="card border-0 tab-pane fade" id="additional" role="tabpanel"
-                                    aria-labelledby="additional-info">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <td style="width: 100px;">Color</td>
-                                                <td class="text-muted">Red, White, Black, Orange</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>Material</td>
-                                                <td class="text-muted">Cotton</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>Size</td>
-                                                <td class="text-muted">S, M, L, XL, XXL</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="card border-0 tab-pane fade" id="review" role="tabpanel"
-                                    aria-labelledby="review-comments">
+                                <div class="card border-0 tab-pane fade {{ $v == 'komentar' ? 'show active' : '' }}"
+                                    id="review" role="tabpanel" aria-labelledby="review-comments">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <ul class="media-list list-unstyled mb-0">
-                                                <li>
-                                                    <div class="d-flex justify-content-between">
-                                                        <div class="d-flex align-items-center">
-                                                            <a class="pe-3" href="#">
-                                                                <img src="{{ asset('assets') }}/mobirise/images/user.png"
-                                                                    class="img-fluid avatar avatar-md-sm rounded-circle shadow"
-                                                                    alt="img">
-                                                            </a>
-                                                            <div class="flex-1 commentor-detail">
-                                                                <h6 class="mb-0"><a href="javascript:void(0)"
-                                                                        class="text-dark media-heading">User 1</a>
-                                                                </h6>
-                                                                <small class="text-muted">15 Agustus 2026 13:25</small>
+                                            @if (isset($produk->komentar) && $produk->komentar->count() > 0)
+                                                @foreach ($produk->komentar as $item)
+                                                    <ul class="media-list list-unstyled mb-0">
+                                                        <li>
+                                                            <div class="d-flex justify-content-between">
+                                                                <div class="d-flex align-items-center">
+                                                                    @if ($item->user->gambar)
+                                                                        <a class="pe-3"
+                                                                            href="{{ route('shop.user', $item->user->slug) }}">
+                                                                            <img src="{{ asset('storage/' . $item->user->gambar) }}"
+                                                                                class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                                                alt="img">
+                                                                        </a>
+                                                                    @else
+                                                                        <a class="pe-3"
+                                                                            href="{{ route('shop.user', $item->user->slug) }}">
+                                                                            <img src="{{ asset('assets') }}/mobirise/images/user.png"
+                                                                                class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                                                alt="img">
+                                                                        </a>
+                                                                    @endif
+                                                                    <div class="flex-1 commentor-detail">
+                                                                        <h6 class="mb-0">
+                                                                            <a href="{{ route('shop.user', $item->user->slug) }}"
+                                                                                class="text-dark media-heading">
+                                                                                {{ $item->user->name }}
+                                                                            </a>
+                                                                        </h6>
+                                                                        <small class="text-muted">
+                                                                            {{ $item->created_at }}
+                                                                        </small>
+                                                                    </div>
+                                                                </div>
+                                                                @if (auth()->user())
+                                                                    @if ($item->user_id == auth()->user()->id)
+                                                                        <a href="{{ route('shop.komentar.destroy', $item->id) }}"
+                                                                            class="btn btn-sm btn-danger ms-3"
+                                                                            onclick="return confirm('Apakah anda yakin ingin menghapus data ini')">
+                                                                            Hapus
+                                                                        </a>
+                                                                    @elseif(auth()->user()->hasRole('admin'))
+                                                                        <a href="{{ route('shop.komentar.destroy', $item->id) }}"
+                                                                            class="btn btn-sm btn-danger ms-3"
+                                                                            onclick="return confirm('Apakah anda yakin ingin menghapus data ini')">
+                                                                            Hapus
+                                                                        </a>
+                                                                    @endif
+                                                                @endif
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mt-3">
-                                                        <p class="text-muted fst-italic p-3 bg-light rounded">" Awesome
-                                                            product
-                                                            "</p>
-                                                    </div>
-                                                </li>
 
-                                                <li class="mt-4">
-                                                    <div class="d-flex justify-content-between">
-                                                        <div class="d-flex align-items-center">
-                                                            <a class="pe-3" href="#">
-                                                                <img src="{{ asset('assets') }}/mobirise/images/user.png"
-                                                                    class="img-fluid avatar avatar-md-sm rounded-circle shadow"
-                                                                    alt="img">
-                                                            </a>
-                                                            <div class="flex-1 commentor-detail">
-                                                                <h6 class="mb-0"><a href="javascript:void(0)"
-                                                                        class="media-heading text-dark">User 2</a></h6>
-                                                                <small class="text-muted">15 Agustus 2026 17:25</small>
+                                                            <div class="mt-3">
+                                                                <p class="text-muted fst-italic p-3 bg-light rounded">
+                                                                    {{ $item->komentar }}
+                                                                </p>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mt-3">
-                                                        <p class="text-muted fst-italic p-3 bg-light rounded mb-0">"
-                                                            Good "
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                @endforeach
+                                            @else
+                                                <div class="alert alert-secondary text-center" role="alert">
+                                                    Belum ada komentar
+                                                </div>
+                                            @endif
                                         </div>
 
                                         <div class="col-lg-6 mt-4 mt-lg-0 pt-2 pt-lg-0">
-                                            <form class="ms-lg-4">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <h5>Add your review:</h5>
+                                            @if (auth()->user())
+                                                @if ($jumlahternak < 1)
+                                                    <div class="alert alert-warning" role="alert">
+                                                        Anda harus melengkapi daftar ternak yang anda miliki terlebih
+                                                        dahulu sebelum menulis
+                                                        komentar <a href="{{ route('ternak') }}"
+                                                            class="text-dark"><u>(Menuju Daftar
+                                                                Ternak)</u></a>
                                                     </div>
-                                                    <div class="col-md-12 mt-3">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Your Review:</label>
-                                                            <div class="form-icon position-relative">
-                                                                <i data-feather="message-circle"
-                                                                    class="fea icon-sm icons"></i>
-                                                                <textarea id="message" placeholder="Your Comment" rows="5" name="message" class="form-control ps-5"
-                                                                    required=""></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                @else
+                                                    <div
+                                                        class="card border-0 sidebar sticky-bar rounded shadow bg-light p-2">
+                                                        <form class="ms-lg-4" method="POST"
+                                                            action="{{ route('shop.komentar.store', $produk->id) }}">
+                                                            @csrf
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <h5>Tambahkan Komentar</h5>
+                                                                </div>
+                                                                <div class="col-md-12 mt-3">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">
+                                                                            Komentar:
+                                                                            <span
+                                                                                class="text-danger"><i>(required)</i></span>
+                                                                        </label>
+                                                                        <div class="form-icon position-relative">
+                                                                            <i data-feather="message-circle"
+                                                                                class="fea icon-sm icons"></i>
+                                                                            <textarea id="komentar" placeholder="Komentar Anda" rows="5" name="komentar" class="form-control ps-5"
+                                                                                required=""></textarea>
+                                                                            @error('komentar')
+                                                                                <span class="text-danger"
+                                                                                    style="color:red">{{ $message }}</span>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                                    <div class="col-lg-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Name <span
-                                                                    class="text-danger">*</span></label>
-                                                            <div class="form-icon position-relative">
-                                                                <i data-feather="user" class="fea icon-sm icons"></i>
-                                                                <input id="name" name="name" type="text"
-                                                                    placeholder="Name" class="form-control ps-5"
-                                                                    required="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                                <div class="col-lg-12">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">
+                                                                            Nama:
+                                                                            <span
+                                                                                class="text-warning"><i>(readonly)</i></span>
+                                                                        </label>
+                                                                        <div class="form-icon position-relative">
+                                                                            <i data-feather="user"
+                                                                                class="fea icon-sm icons"></i>
+                                                                            <input id="name" name="name"
+                                                                                type="text"
+                                                                                class="form-control ps-5" readonly
+                                                                                value="{{ auth()->user()->name }}">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                                    <div class="col-lg-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Your Email <span
-                                                                    class="text-danger">*</span></label>
-                                                            <div class="form-icon position-relative">
-                                                                <i data-feather="mail" class="fea icon-sm icons"></i>
-                                                                <input id="email" type="email"
-                                                                    placeholder="Email" name="email"
-                                                                    class="form-control ps-5" required="">
+                                                                <div class="col-md-12">
+                                                                    <div class="send d-grid">
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Submit</button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        </form>
                                                     </div>
-
-                                                    <div class="col-md-12">
-                                                        <div class="send d-grid">
-                                                            <button type="submit"
-                                                                class="btn btn-primary">Submit</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                                @endif
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

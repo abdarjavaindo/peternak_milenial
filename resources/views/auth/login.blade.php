@@ -30,8 +30,8 @@
 
                         <div class="app-auth-branding mb-4">
                             <a class="h1 app-logo" href="{{ env('APP_URL') }}">
-                                <img style="width: 160px; object-fit: cover;"
-                                    src="{{ asset('assets') }}/mobirise/images/logo-trans.png" alt="logo">
+                                <img style="width: 160px; object-fit: cover;" src="{{ asset('storage/' . $set_logo) }}"
+                                    alt="logo">
                             </a>
                         </div>
 
@@ -42,6 +42,8 @@
                                 {{ session('status') }}
                             </div>
                         @endif
+
+                        <x-flash-message></x-flash-message>
 
                         <div class="auth-form-container text-start">
                             <form class="auth-form login-form" method="POST" action="{{ route('login') }}">
@@ -94,38 +96,33 @@
                                 </div> --}}
 
                                 <div class="text-center">
-                                    <button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto">
+                                    <button type="submit" class="btn w-100 mx-auto btn-info text-white">
                                         Log In
                                     </button>
                                 </div>
                             </form>
 
                             <div class="auth-option text-center pt-5">No Account? Sign up
-                                <a class="text-link" href="{{ route('register') }}">here</a>.
+                                <a class="text-info" href="{{ route('register') }}">
+                                    <u>here</u>
+                                </a>.
                             </div>
-                        </div><!--//auth-form-container-->
+                        </div>
 
-                    </div><!--//auth-body-->
+                    </div>
 
                     <footer class="app-auth-footer">
                         <x-footer></x-footer>
                     </footer>
-                    <!--//app-auth-footer-->
-
-                </div><!--//flex-column-->
-            </div><!--//auth-main-col-->
+                </div>
+            </div>
 
             <div class="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
-                {{-- change image below --}}
                 {{-- <div class="auth-background-holder"></div> --}}
-                {{-- <img src="https://static.promediateknologi.id/crop/0x0:0x0/750x500/photo/p2/77/2024/06/08/adhy-kurban-1453939168.jpg" --}}
-                {{-- <img src="https://nusantaraabadinews.com/wp-content/uploads/2025/11/IMG-20251117-WA0826.jpg"
-                    alt="" style="height: 100vh; width: 100%; object-fit: cover"> --}}
                 <img src="{{ asset('assets') }}/images/background-login2.jpg" alt="" class="pl-4">
-
                 <div class="auth-background-mask"></div>
-            </div><!--//auth-background-col-->
-        </div><!--//row-->
-
+            </div>
+        </div>
     </body>
+
 </x-layouts.auth>

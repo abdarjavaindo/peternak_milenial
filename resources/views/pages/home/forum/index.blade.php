@@ -1,5 +1,5 @@
 <x-layouts.home>
-    <section class="section">
+    <section class="section mt-60">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">

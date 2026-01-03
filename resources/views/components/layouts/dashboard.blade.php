@@ -8,11 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <meta name="description" content="PT Abdar Java Indo">
-    <meta name="author" content="PT Abdar Java Indo">
-    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="author" content="{{ $set_instansi }}">
+    <meta name="description" content="{{ $set_deskripsi }}">
+    <meta name="keywords" content="{{ $set_keyword }}">
+    <link rel="shortcut icon" href="{{ asset('storage/' . $set_ikon) }}">
 
-    <title>{{ config('app.name', 'Laravel Starter Kit') }}</title>
+    <title>{{ $set_judul }}</title>
 
     <!-- FontAwesome JS-->
     <script defer src="{{ asset('assets') }}/plugins/fontawesome/js/all.min.js"></script>
@@ -40,8 +41,9 @@
                 <a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
                 <div class="app-branding">
                     <a class="app-logo" href="{{ env('APP_URL') }}">
-                        {{-- <img class="logo-icon me-2" src="{{ asset('assets') }}/images/app-logo.svg" alt="logo"> --}}
-                        <span class="logo-text">PETERNAK MILENIAL</span>
+                        <img style="width: 130px; object-fit: cover;"
+                            src="{{ asset('assets') }}/mobirise/images/logo-trans.png" alt="logo">
+                        {{-- <span class="logo-text">PETERNAK MILENIAL</span> --}}
                     </a>
                 </div>
                 <x-sidebar></x-sidebar>

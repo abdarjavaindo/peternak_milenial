@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Pembelajaran</h1>
+    <h1 class="app-page-title">Pelatihan</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -9,7 +9,7 @@
                     <div class="card-description" align="right">
                         <a href="{{ route('pembelajaran.create') }}" class="btn text-white"
                             style="background-color: #165d7d"><i class="fa fa-plus"></i>
-                            Tambah Kursus
+                            Tambah Pelatihan
                         </a>
                     </div>
                     <hr>
@@ -18,11 +18,10 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">Nama Kursus</th>
+                                    <th class="text-center" width="30%">Nama Pelatihan</th>
                                     <th class="text-center" width="13%">publish</th>
                                     <th class="text-center" width="13%">Level</th>
                                     <th class="text-center" width="13%">Jumlah Peserta</th>
-                                    <th class="text-center" width="13%">Pengajar</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -70,9 +69,6 @@
             },
             {
                 data: 'jumlah_peserta'
-            },
-            {
-                data: 'pengajar'
             },
             {
                 data: 'aksi',

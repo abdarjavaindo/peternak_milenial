@@ -1,6 +1,6 @@
 <x-layouts.home>
     <!-- Start -->
-    <section class="section">
+    <section class="section mt-60">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">

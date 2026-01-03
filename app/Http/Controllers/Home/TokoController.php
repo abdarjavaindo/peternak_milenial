@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori_produk;
 use App\Models\Produk;
+use App\Models\Produk_komentar;
 use App\Models\User;
+use App\Models\UserTernak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -14,7 +16,7 @@ class TokoController extends Controller
 {
     public function index(Request $request)
     {
-        $kategori_produk = Kategori_produk::orderBy('id', 'desc')->get();
+        $kategori_produk = Kategori_produk::orderBy('id', 'asc')->get();
         $search = $request->s; // keyword pencarian
         $slug = $request->slug; // kategori slug
         $sort = $request->sort;
@@ -77,17 +79,51 @@ class TokoController extends Controller
         ]);
     }
 
-    public function detail($slug)
+    public function detail(Request $request, $slug)
     {
+        $v = $request->v;
         $produk = Produk::with([
             'kategori',
             'user',
-            'gambar'
+            'gambar',
+            'komentar',
         ])->where('slug', $slug)->firstOrFail();
+
+        if (auth()->user()) {
+            $data['jumlahternak'] = UserTernak::where('user_id', auth()->user()->id)->count();
+        }
 
         return view('pages.home.toko.detail_produk', [
             'produk' => $produk,
+            'slug' => $slug,
+            'v' => $v,
+            'jumlahternak' => $data['jumlahternak'],
         ]);
+    }
+    public function komentar_store(Request $request, Produk $produk)
+    {
+        $request->validate([
+            'komentar' => ['required']
+        ]);
+        Produk_komentar::create([
+            'user_id' => auth()->user()->id,
+            'produk_id' => $produk->id,
+            'komentar' => $request->komentar,
+        ]);
+        return redirect()->back()->with('sukses', 'Anda berhasil memberi komentar');
+    }
+    public function komentar_destroy(Produk_komentar $komentar)
+    {
+        if (auth()->user()->hasRole('admin')) {
+            $komentar->delete();
+            return redirect()->back()->with('sukses', 'Anda berhasil menghapus data');
+        }
+
+        if ($komentar->user_id !== auth()->user()->id) {
+            abort(403, 'Anda tidak memiliki izin untuk menghapus komentar ini');
+        }
+        $komentar->delete();
+        return redirect()->back()->with('sukses', 'Komentar berhasil dihapus');
     }
 
     public function loaddata()

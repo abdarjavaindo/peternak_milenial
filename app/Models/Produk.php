@@ -26,4 +26,11 @@ class Produk extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function komentar()
+    {
+        return $this->hasMany(Produk_komentar::class)
+            ->whereNull('parent_id')
+            ->orderBy('created_at', 'asc');
+    }
 }

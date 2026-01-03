@@ -1,6 +1,6 @@
 <x-layouts.home>
     <!-- Start Products -->
-    <section class="section mt-4">
+    <section class="section mt-60">
         <div class="container">
             <x-flash-message></x-flash-message>
             <div class="card">

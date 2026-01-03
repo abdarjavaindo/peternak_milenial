@@ -21,7 +21,7 @@
 
                                 <div class="mb-3">
                                     <label for="nama_ternak" class="form-label">
-                                        Hewan
+                                        Komuditas Hewan Ternak yang Dimiliki
                                         @if (isset($ternak))
                                             <span class="text-warning"><i>(readonly)</i></span>
                                         @else
@@ -31,67 +31,14 @@
                                     <select type="text" class="form-select border border-dark" id="nama_ternak"
                                         name="nama_ternak" required {{ isset($ternak) ? 'disabled' : '' }}>
                                         <option value="">Pilih ...</option>
-                                        <!-- Ternak Besar -->
-                                        <option value="Sapi Potong"
-                                            {{ old('nama_ternak') == 'Sapi Potong' || @$ternak->nama_ternak == 'Sapi Potong' ? 'selected' : '' }}>
-                                            Sapi Potong
-                                        </option>
-                                        <option value="Sapi Perah"
-                                            {{ old('nama_ternak') == 'Sapi Perah' || @$ternak->nama_ternak == 'Sapi Perah' ? 'selected' : '' }}>
-                                            Sapi Perah
-                                        </option>
-                                        <option value="Kerbau"
-                                            {{ old('nama_ternak') == 'Kerbau' || @$ternak->nama_ternak == 'Kerbau' ? 'selected' : '' }}>
-                                            Kerbau
-                                        </option>
-                                        <!-- Ternak Kecil -->
-                                        <option value="Domba/Kambing"
-                                            {{ old('nama_ternak') == 'Domba/Kambing' || @$ternak->nama_ternak == 'Domba/Kambing' ? 'selected' : '' }}>
-                                            Domba/Kambing
-                                        </option>
-                                        <option value="Babi"
-                                            {{ old('nama_ternak') == 'Babi' || @$ternak->nama_ternak == 'Babi' ? 'selected' : '' }}>
-                                            Babi
-                                        </option>
-                                        <!-- Ternak Unggas -->
-                                        <option value="Ayam Petelur"
-                                            {{ old('nama_ternak') == 'Ayam Petelur' || @$ternak->nama_ternak == 'Ayam Petelur' ? 'selected' : '' }}>
-                                            Ayam Petelur
-                                        </option>
-                                        <option value="Ayam Pedaging"
-                                            {{ old('nama_ternak') == 'Ayam Pedaging' || @$ternak->nama_ternak == 'Ayam Pedaging' ? 'selected' : '' }}>
-                                            Ayam Pedaging
-                                        </option>
-                                        <option value="Burung Puyuh"
-                                            {{ old('nama_ternak') == 'Burung Puyuh' || @$ternak->nama_ternak == 'Burung Puyuh' ? 'selected' : '' }}>
-                                            Burung Puyuh
-                                        </option>
-                                    </select>
-                                    @error('nama_ternak')
-                                        <span class="text-danger" style="color:red">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="kategori_produk_id" class="form-label">
-                                        Kategori
-                                        @if (isset($ternak))
-                                            <span class="text-warning"><i>(readonly)</i></span>
-                                        @else
-                                            <span class="text-danger"><i>(required)</i></span>
-                                        @endif
-                                    </label>
-                                    <select type="text" class="form-select border border-dark"
-                                        id="kategori_produk_id" name="kategori_produk_id" required
-                                        {{ isset($ternak) ? 'disabled' : '' }}>
-                                        <option value="">Pilih ...</option>
                                         @foreach ($kategori_produk as $item)
-                                            <option value="{{ $item->id }}"
-                                                {{ old('kategori_produk_id') == $item->id || @$ternak->kategori_produk_id == $item->id ? 'selected' : '' }}>
-                                                {{ $item->nama_kategori }}</option>
+                                            <option value="{{ $item->nama_kategori }}"
+                                                {{ old('nama_ternak') == $item->nama_kategori || @$ternak->nama_ternak == $item->nama_kategori ? 'selected' : '' }}>
+                                                {{ $item->nama_kategori }}
+                                            </option>
                                         @endforeach
                                     </select>
-                                    @error('kategori_produk_id')
+                                    @error('nama_ternak')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>

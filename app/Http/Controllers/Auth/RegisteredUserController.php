@@ -107,9 +107,10 @@ class RegisteredUserController extends Controller
             'kecamatan' => ['required'],
             'desa' => ['required'],
             'tgl_lahir' => ['required', 'date'],
-            'kategori_produk_id' => ['required'],
+            // 'kategori_produk_id' => ['required'],
             'nama_ternak' => ['required'],
             'jumlah' => ['required'],
+            'img_ktp' => 'required|mimes:jpg,jpeg,png|max:11000'
         ]);
 
         $umur = \Carbon\Carbon::parse($request->tgl_lahir)->age;
@@ -127,98 +128,38 @@ class RegisteredUserController extends Controller
             ->where('kode', $request->desa)
             ->first();
 
-        $user = User::create([
+        $data = [
             'name' => $request->name,
             'slug' => $this->generateSlugWithRandom($request->name, 4),
             'nik' => $request->nik,
             'email' => $request->email,
             'no_telp' => $request->no_telp,
+            'status' => '1',
             'kabupaten' => $kabupaten->nama,
             'kecamatan' => $kecamatan->nama,
             'desa' => $desa->nama,
             'tgl_lahir' => $request->tgl_lahir,
             'password' => Hash::make($request->password),
-        ]);
+        ];
+        if ($request->hasFile('img_ktp')) {
+            $data['img_ktp'] = $request->file('img_ktp')->store('ktp', 'public');
+        }
+        $user = User::create($data);
         $user->assignRole('user');
 
         event(new Registered($user));
 
         Auth::login($user);
 
+        $kategori_produk = Kategori_produk::where('nama_kategori', $request->nama_ternak)->first();
         UserTernak::create([
             'user_id' => $user->id,
-            'kategori_produk_id' => $request->kategori_produk_id,
+            'kategori_produk_id' => $kategori_produk->id,
             'nama_ternak' => $request->nama_ternak,
             'jumlah' => str_replace('.', '', $request->jumlah),
         ]);
         $this->hitungLevelUser($user);
 
         return redirect()->route('tokoku');
-    }
-
-    private function hitungLevelUser(User $user)
-    {
-        // Ambil seluruh ternak milik user
-        $ternaks = $user->ternak; // pastikan relasi: User hasMany Ternak
-        $total = 0;
-        foreach ($ternaks as $t) {
-            $jenis = $t->nama_ternak;
-            $jumlah = $t->jumlah;
-            switch ($jenis) {
-                case 'Sapi Potong':
-                    if ($jumlah >= 100) $total += 3;
-                    elseif ($jumlah >= 5) $total += 2;
-                    elseif ($jumlah >= 1) $total += 1;
-                    break;
-                case 'Sapi Perah':
-                    if ($jumlah >= 20) $total += 3;
-                    elseif ($jumlah >= 5) $total += 2;
-                    elseif ($jumlah >= 1) $total += 1;
-                    break;
-                case 'Kerbau':
-                    if ($jumlah >= 75) $total += 3;
-                    elseif ($jumlah >= 5) $total += 2;
-                    elseif ($jumlah >= 1) $total += 1;
-                    break;
-                case 'Kambing':
-                case 'Domba':
-                    if ($jumlah >= 300) $total += 3;
-                    elseif ($jumlah >= 15) $total += 2;
-                    elseif ($jumlah >= 1) $total += 1;
-                    break;
-                case 'Babi':
-                    if ($jumlah >= 125) $total += 3;
-                    elseif ($jumlah >= 5) $total += 2;
-                    elseif ($jumlah >= 1) $total += 1;
-                    break;
-                case 'Ayam Petelur':
-                    if ($jumlah >= 10000) $total += 3;
-                    elseif ($jumlah >= 100) $total += 2;
-                    elseif ($jumlah >= 1) $total += 1;
-                    break;
-                case 'Ayam Pedaging':
-                    if ($jumlah >= 15000) $total += 3;
-                    elseif ($jumlah >= 100) $total += 2;
-                    elseif ($jumlah >= 1) $total += 1;
-                    break;
-                case 'Burung Puyuh':
-                    if ($jumlah >= 25000) $total += 3;
-                    elseif ($jumlah >= 5000) $total += 2;
-                    elseif ($jumlah >= 1) $total += 1;
-                    break;
-            }
-        }
-        // Tentukan level berdasarkan total skor
-        if ($total >= 3) {
-            $level = 'ahli';
-        } elseif ($total == 2) {
-            $level = 'menengah';
-        } else {
-            $level = 'pemula';
-        }
-        // Update ke database
-        $user->update([
-            'level' => $level,
-        ]);
     }
 }

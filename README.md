@@ -57,12 +57,14 @@ _After creating the new permissions use the following commands to update cashed 
 
 11. Upload file mysql `wilayah.sql` ke tabel wilayah
 
+## Yang perlu diperhatikan
+
+-   Menu Kursus = Pelatihan
+-   Menu Tokoku = Etalaseku
+-   Tabel kategori_produks = Komuditas
+-   Cronjob = http://peternak-milenial.test/run-course-checker?token=NnbQGG6KBptT2001
+
 ## Yang perlu dibenahi
 
--   gambar profil (menyusul) > pendukung
 -   Peta jatim dengan jumlah komuditasnya (menyusul) > pendukung
--   Komentar pada produk (menyusul) > pendukung
--   Fitur pencarian dan sorting pada kursus (menyusul) > pendukung
 -   Postest pada kursus (menyusul) > Major
--   Buat cronjob untuk cek kondisi progress kursus user per 15 menit (menyusul) > Major
--   Testing internal (menyusul) > Major

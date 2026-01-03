@@ -4,11 +4,11 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
             <li class="breadcrumb-item"><a href="{{ route('bagian', $bagian->kursus->id) }}">Section</a></li>
-            <li class="breadcrumb-item active">Materi</li>
+            <li class="breadcrumb-item active">Materi dan Postest</li>
         </ol>
     </nav>
 
-    <h1 class="app-page-title">Materi</h1>
+    <h1 class="app-page-title">Materi dan Postest</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -18,7 +18,7 @@
                     <div class="card-description" align="right">
                         <a href="{{ route('materi.create', $bagian->id) }}" class="btn text-white"
                             style="background-color: #165d7d"><i class="fa fa-plus"></i>
-                            Tambah Materi
+                            Tambah Materi dan Postest
                         </a>
                     </div>
                     <hr>
@@ -27,7 +27,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="12%">Judul Materi</th>
+                                    <th class="text-center" width="12%">Judul</th>
                                     <th class="text-center" width="13%">Type</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
