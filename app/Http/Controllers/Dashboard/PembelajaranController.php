@@ -249,7 +249,7 @@ class PembelajaranController extends Controller
                         <button type="button" class="btn btn-danger delete-button mb-1"><i class="fa fa-trash"></i></button>
                     </form>';
 
-                return $deleteForm . ' <a href="' . $editUrl . '" class="btn btn-sm btn-warning mb-1 btn-icon"><i class="fa fa-edit"></i></a>';
+                return $deleteForm . ' <a href="' . $editUrl . '" class="btn btn-sm btn-success text-white mb-1 btn-icon"><i class="fa fa-eye"></i></a>';
             })
             ->addIndexColumn()
             ->rawColumns(['aksi'])
@@ -275,6 +275,8 @@ class PembelajaranController extends Controller
             'judul' => $request->judul,
             'konten' => $request->konten,
             'jenis' => $request->jenis,
+            'durasi_postest' => $request->durasi_postest,
+            'nilai_lulus_postest' => $request->nilai_lulus_postest,
         ]);
         return redirect()->route('materi', $bagian->id)->with('sukses', 'Anda berhasil menambahkan data');
     }
@@ -292,6 +294,8 @@ class PembelajaranController extends Controller
         $materi->judul = $request->judul;
         $materi->jenis = $request->jenis;
         $materi->konten = $request->konten;
+        $materi->durasi_postest = $request->durasi_postest;
+        $materi->nilai_lulus_postest = $request->nilai_lulus_postest;
         $materi->save();
         return redirect()->route('materi', $materi->bagian->id)->with('sukses', 'Anda berhasil mengubah data');
     }

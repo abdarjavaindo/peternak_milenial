@@ -1,5 +1,25 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">{{ isset($materi) ? 'Edit' : 'Tambah' }} Materi</h1>
+    {{-- <h1 class="app-page-title">{{ isset($materi) ? 'Edit' : 'Tambah' }} Materi</h1> --}}
+
+    @if (request()->segment(2) == 'materi-edit')
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('bagian', $materi->bagian->kursus->id) }}">Section</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('materi', $materi->bagian->id) }}">Materi dan
+                        Postest</a>
+                </li>
+                <li class="breadcrumb-item active">Edit Pertanyaan</li>
+            </ol>
+        </nav>
+
+        <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+            <a class="flex-sm-fill text-sm-center nav-link active" href="{{ route('materi.edit', $materi->id) }}">Edit
+                Materi</a>
+            <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('pertanyaan', $materi->id) }}">Pertanyaan</a>
+            <a class="flex-sm-fill text-sm-center nav-link" href="#">Peserta</a>
+        </nav>
+    @endif
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -49,12 +69,36 @@
                                     Materi
                                 </option>
                                 <option value="postest"
-                                    {{ old('jenis') == 'postest' || @$materi->jenis == 'postest' ? 'selected' : '' }}
-                                    disabled>
-                                    Postest (Comming soon)
+                                    {{ old('jenis') == 'postest' || @$materi->jenis == 'postest' ? 'selected' : '' }}>
+                                    Postest
                                 </option>
                             </select>
                             @error('jenis')
+                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="durasi_postest" class="form-label">
+                                Durasi (Menit)
+                            </label>
+                            <small>*isi jika tipe materi postest</small>
+                            <input type="number" class="form-control" id="durasi_postest" name="durasi_postest"
+                                value="{{ isset($materi) ? $materi->durasi_postest : old('durasi_postest') }}">
+                            @error('durasi_postest')
+                                <span class="text-danger" style="color:red">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nilai_lulus_postest" class="form-label">
+                                KKM
+                            </label>
+                            <small>*isi jika tipe materi postest</small>
+                            <input type="number" class="form-control" id="nilai_lulus_postest"
+                                name="nilai_lulus_postest"
+                                value="{{ isset($materi) ? $materi->nilai_lulus_postest : old('nilai_lulus_postest') }}">
+                            @error('nilai_lulus_postest')
                                 <span class="text-danger" style="color:red">{{ $message }}</span>
                             @enderror
                         </div>

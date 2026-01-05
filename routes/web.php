@@ -24,6 +24,7 @@ use App\Http\Controllers\Dashboard\FiturController;
 use App\Http\Controllers\Dashboard\GaleriController;
 use App\Http\Controllers\Dashboard\HewanController;
 use App\Http\Controllers\Dashboard\PengaturanController;
+use App\Http\Controllers\Dashboard\PostestController;
 use App\Http\Controllers\Dashboard\TestimoniController;
 
 /*
@@ -269,6 +270,22 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('pembelajaran')->g
     Route::get('/materi-edit/{materi}', [PembelajaranController::class, 'materi_edit'])->name('materi.edit');
     Route::put('/materi/{materi}', [PembelajaranController::class, 'materi_update'])->name('materi.update');
     Route::delete('/materi/{materi}', [PembelajaranController::class, 'materi_destroy'])->name('materi.destroy');
+    //bagian postest
+    Route::get('/pertanyaan/{materi}', [PostestController::class, 'pertanyaan'])->name('pertanyaan');
+    Route::post('/pertanyaan-loaddata/{materi}', [PostestController::class, 'pertanyaan_loaddata'])->name('pertanyaan_loaddata');
+    Route::get('/pertanyaan-create/{materi}', [PostestController::class, 'pertanyaan_create'])->name('pertanyaan.create');
+    Route::post('/pertanyaan/{materi}', [PostestController::class, 'pertanyaan_store'])->name('pertanyaan.store');
+    Route::get('/pertanyaan-edit/{pertanyaan}', [PostestController::class, 'pertanyaan_edit'])->name('pertanyaan.edit');
+    Route::put('/pertanyaan/{pertanyaan}', [PostestController::class, 'pertanyaan_update'])->name('pertanyaan.update');
+    Route::delete('/pertanyaan/{pertanyaan}', [PostestController::class, 'pertanyaan_destroy'])->name('pertanyaan.destroy');
+    //bagian pilihan jawaban postest
+    Route::get('/jawaban/{pertanyaan}', [PostestController::class, 'jawaban'])->name('jawaban');
+    Route::post('/jawaban-loaddata/{pertanyaan}', [PostestController::class, 'jawaban_loaddata'])->name('jawaban_loaddata');
+    Route::get('/jawaban-create/{pertanyaan}', [PostestController::class, 'jawaban_create'])->name('jawaban.create');
+    Route::post('/jawaban/{pertanyaan}', [PostestController::class, 'jawaban_store'])->name('jawaban.store');
+    Route::get('/jawaban-edit/{jawaban}', [PostestController::class, 'jawaban_edit'])->name('jawaban.edit');
+    Route::put('/jawaban/{jawaban}', [PostestController::class, 'jawaban_update'])->name('jawaban.update');
+    Route::delete('/jawaban/{jawaban}', [PostestController::class, 'jawaban_destroy'])->name('jawaban.destroy');
 });
 #endregion
 
