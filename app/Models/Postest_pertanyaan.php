@@ -16,4 +16,12 @@ class Postest_pertanyaan extends Model
     {
         return $this->belongsTo(KursusMateri::class, 'kursus_materi_id');
     }
+
+    /**
+     * Get answer options for this question
+     */
+    public function pilihans()
+    {
+        return $this->hasMany(Postest_pilihan_jawaban::class, 'postest_pertanyaan_id');
+    }
 }

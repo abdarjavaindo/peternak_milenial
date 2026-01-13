@@ -55,7 +55,7 @@ class WilayahKomuditasSeeder extends Seeder
         ];
 
         foreach ($data as $kabupaten) {
-            WilayahKomuditas::create([
+            WilayahKomuditas::firstOrCreate([
                 'kabupaten' => $kabupaten,
             ]);
         }

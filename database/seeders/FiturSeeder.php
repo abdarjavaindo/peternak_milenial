@@ -13,17 +13,17 @@ class FiturSeeder extends Seeder
      */
     public function run(): void
     {
-        Fitur::create([
-            'judul' => 'Marketplace',
-            'deskripsi' => 'Tempat jual beli kebutuhan peternak terpercaya Mudah, aman, dan terjangkau untuk semua peternak'
-        ]);
-        Fitur::create([
-            'judul' => 'Pelatihan',
-            'deskripsi' => 'Tingkatkan skill beternak bersama ahli berpengalaman Belajar praktis, modern, dan sesuai kebutuhan peternak'
-        ]);
-        Fitur::create([
-            'judul' => 'Forum Peternak',
-            'deskripsi' => 'Ruang diskusi, berbagi pengalaman sesama peternak Solusi masalah ternak dari peternak untuk peternak'
-        ]);
+        Fitur::firstOrCreate(
+            ['judul' => 'Marketplace'],
+            ['deskripsi' => 'Tempat jual beli kebutuhan peternak terpercaya Mudah, aman, dan terjangkau untuk semua peternak']
+        );
+        Fitur::firstOrCreate(
+            ['judul' => 'Pelatihan'],
+            ['deskripsi' => 'Tingkatkan skill beternak bersama ahli berpengalaman Belajar praktis, modern, dan sesuai kebutuhan peternak']
+        );
+        Fitur::firstOrCreate(
+            ['judul' => 'Forum Peternak'],
+            ['deskripsi' => 'Ruang diskusi, berbagi pengalaman sesama peternak Solusi masalah ternak dari peternak untuk peternak']
+        );
     }
 }

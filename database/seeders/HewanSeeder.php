@@ -13,27 +13,27 @@ class HewanSeeder extends Seeder
      */
     public function run(): void
     {
-        Hewan::create([
+        Hewan::firstOrCreate([
             // 1
             'nama_hewan' => 'Sapi'
         ]);
-        Hewan::create([
+        Hewan::firstOrCreate([
             // 2
             'nama_hewan' => 'Kerbau'
         ]);
-        Hewan::create([
+        Hewan::firstOrCreate([
             // 3
             'nama_hewan' => 'Kambing'
         ]);
-        Hewan::create([
+        Hewan::firstOrCreate([
             // 4
             'nama_hewan' => 'Babi'
         ]);
-        Hewan::create([
+        Hewan::firstOrCreate([
             // 5
             'nama_hewan' => 'Ayam'
         ]);
-        Hewan::create([
+        Hewan::firstOrCreate([
             // 6
             'nama_hewan' => 'Burung'
         ]);

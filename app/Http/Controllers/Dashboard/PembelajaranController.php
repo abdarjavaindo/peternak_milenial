@@ -11,15 +11,18 @@ use App\Models\KursusMateri;
 use App\Models\Pengajar;
 use App\Models\User;
 use App\Models\UserKursusProgres;
+use App\Models\User_postest;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class PembelajaranController extends Controller
 {
+    use LogsActivity;
     #region kursus
     public function loaddata()
     {
-        $data = Kursus::with(['user', 'progres'])->orderBy('id', 'desc')->get();
+        $data = Kursus::with(['user', 'peserta'])->orderBy('id', 'desc')->get();
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
                 $editUrl = route('pembelajaran.edit', $data->id);
@@ -37,7 +40,7 @@ class PembelajaranController extends Controller
                 return $data->user->name;
             })
             ->addColumn('jumlah_peserta', function ($data) {
-                return $data->progres->count();
+                return $data->peserta->count();
             })
             ->addColumn('publish', function ($data) {
                 return $data->is_published == 0 ? 'tidak' : 'IYA';
@@ -128,6 +131,23 @@ class PembelajaranController extends Controller
 
     public function destroy(Kursus $kursus)
     {
+        // Check for active participants before deletion
+        $pesertaCount = UserKursusProgres::where('kursus_id', $kursus->id)->count();
+
+        if ($pesertaCount > 0) {
+            return redirect()->back()->with(
+                'gagal',
+                "Tidak dapat menghapus pelatihan \"{$kursus->judul}\" " .
+                    "karena masih memiliki {$pesertaCount} peserta. " .
+                    "Hapus semua peserta terlebih dahulu."
+            );
+        }
+
+        // Log before delete
+        $this->logActivity('delete_kursus', 'Kursus', $kursus->id, [
+            'judul' => $kursus->judul,
+        ]);
+
         $kursus->delete();
         return redirect()->route('pembelajaran')->with('sukses', 'Anda berhasil menghapus data');
     }
@@ -142,7 +162,7 @@ class PembelajaranController extends Controller
                 $deleteForm = '<form method="POST" action="' . route('peserta.destroy', ['kursus' => $data->kursus_id, 'user' => $data->user_id]) . '" class="delete-form" style="display:inline;">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
-                        <button type="button" class="btn btn-danger delete-button mb-1"><i class="fa fa-trash"></i></button>
+                        <button type="button" class="btn btn-danger delete-button mb-1">Reset</button>
                     </form>';
 
                 return $deleteForm;
@@ -160,12 +180,56 @@ class PembelajaranController extends Controller
     }
     public function peserta_destroy(Kursus $kursus, User $user)
     {
+        // Get user enrollment first for proper cleanup
         $userkursus = UserKursusProgres::where([
             'user_id' => $user->id,
             'kursus_id' => $kursus->id,
         ])->firstOrFail();
+
+        // CLEANUP 1: Delete KursusProgres (per-material progress)
+        $progressCount = \App\Models\KursusProgres::where('user_kursus_progres_id', $userkursus->id)->count();
+        \App\Models\KursusProgres::where('user_kursus_progres_id', $userkursus->id)->delete();
+
+        // CLEANUP 2: Delete postest data via FK (primary method - more reliable)
+        $postestCount = User_postest::where('user_kursus_progres_id', $userkursus->id)->count();
+        User_postest::where('user_kursus_progres_id', $userkursus->id)
+            ->each(function ($attempt) {
+                $attempt->jawabans()->delete();
+                $attempt->delete();
+            });
+
+        // CLEANUP 2b: Fallback - Delete any orphaned postest via materi IDs (for legacy records without FK)
+        $materiIds = $kursus->bagian()
+            ->with('materi')
+            ->get()
+            ->pluck('materi')
+            ->flatten()
+            ->pluck('id')
+            ->toArray();
+
+        if (!empty($materiIds)) {
+            User_postest::where('user_id', $user->id)
+                ->whereIn('postest_id', $materiIds)
+                ->each(function ($attempt) use (&$postestCount) {
+                    $attempt->jawabans()->delete();
+                    $attempt->delete();
+                    $postestCount++;
+                });
+        }
+
+        // CLEANUP 3: Delete enrollment
         $userkursus->delete();
-        return redirect()->back()->with('sukses', 'Anda berhasil menghapus data');
+
+        // Audit trail: log deletion activity with complete counts
+        $this->logActivity('delete_peserta', 'UserKursusProgres', $userkursus->id, [
+            'user_name' => $user->name,
+            'user_email' => $user->email,
+            'kursus_judul' => $kursus->judul,
+            'progress_deleted_count' => $progressCount,
+            'postest_deleted_count' => $postestCount,
+        ]);
+
+        return redirect()->back()->with('sukses', 'Anda berhasil menghapus data kepesertaan lengkap (progress, postest, dan jawaban)');
     }
     #endregion
 
@@ -231,6 +295,25 @@ class PembelajaranController extends Controller
 
     public function bagian_destroy(KursusBagian $bagian)
     {
+        // Check if any materi in this bagian has postest attempts
+        $materiIds = $bagian->materi()->pluck('id')->toArray();
+        $hasPostestData = User_postest::whereIn('postest_id', $materiIds)->exists();
+
+        if ($hasPostestData) {
+            return redirect()->back()->with(
+                'gagal',
+                "Tidak dapat menghapus bagian \"{$bagian->judul}\" " .
+                    "karena ada data postest peserta. " .
+                    "Hapus peserta terlebih dahulu."
+            );
+        }
+
+        // Log before delete
+        $this->logActivity('delete_bagian', 'KursusBagian', $bagian->id, [
+            'judul' => $bagian->judul,
+            'kursus' => $bagian->kursus->judul ?? 'Unknown',
+        ]);
+
         $bagian->delete();
         return redirect()->back()->with('sukses', 'Anda berhasil menghapus data');
     }
@@ -302,7 +385,30 @@ class PembelajaranController extends Controller
 
     public function materi_destroy(KursusMateri $materi)
     {
+        // Check if this materi has postest attempts
+        $hasPostestData = User_postest::where('postest_id', $materi->id)->exists();
+
+        if ($hasPostestData) {
+            return redirect()->back()->with(
+                'gagal',
+                "Tidak dapat menghapus materi \"{$materi->judul}\" " .
+                    "karena ada data postest peserta."
+            );
+        }
+
+        // Capture data before deletion
+        $materiId = $materi->id;
+        $materiJudul = $materi->judul;
+        $bagianJudul = $materi->bagian->judul ?? 'Unknown';
+
         $materi->delete();
+
+        // Log activity
+        $this->logActivity('delete_materi', 'KursusMateri', $materiId, [
+            'materi_judul' => $materiJudul,
+            'bagian_judul' => $bagianJudul,
+        ]);
+
         return redirect()->back()->with('sukses', 'Anda berhasil menghapus data');
     }
     #endregion

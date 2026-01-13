@@ -38,21 +38,18 @@
                             @endif
                             @if (!auth()->check())
                                 {{-- User belum login --}}
-                                <a class="btn btn-dark" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}"
-                                    onclick="return confirm('Apakah anda yakin ingin balajar pelatihan ini')">
+                                <a class="btn btn-dark btn-daftar-pelatihan" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}">
                                     Belajar Sekarang
                                 </a>
                             @elseif (!$user_progress)
                                 {{-- User login tetapi belum mendaftar kursus --}}
-                                <a class="btn btn-dark" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}"
-                                    onclick="return confirm('Apakah anda yakin ingin balajar pelatihan ini')">
+                                <a class="btn btn-dark btn-daftar-pelatihan" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}">
                                     Belajar Sekarang
                                 </a>
                             @else
                                 {{-- User sudah mulai kursus --}}
                                 @if ($user_progress->status == 'do')
-                                    <a class="btn btn-danger" href="{{ route('pelatihan.reset', $pelatihan->slug) }}"
-                                        onclick="return confirm('Apakah anda yakin ingin memulai kembali, pelatihan ini')">
+                                    <a class="btn btn-danger btn-reset-pelatihan" href="{{ route('pelatihan.reset', $pelatihan->slug) }}">
                                         Anda sudah dinyatakan 'DO', mulai lagi?
                                     </a>
                                 @elseif ($next_materi)
@@ -60,8 +57,19 @@
                                         Lanjutkan Materi: {{ $next_materi->judul }}
                                     </a>
                                 @else
-                                    <a class="btn btn-primary" href="#">
-                                        Semua materi telah selesai 🎉
+                                    <span class="badge bg-soft-success text-success fs-6 py-2 px-3 me-2">
+                                        <i class="uil uil-check-circle me-1"></i> Semua materi telah selesai
+                                    </span>
+                                    @php
+                                        $materiPertama = $pelatihan->bagian->sortBy('urutan')->first()?->materi->sortBy('urutan')->first();
+                                    @endphp
+                                    @if($materiPertama)
+                                        <a class="btn btn-outline-success" href="{{ route('pelatihan.materi', $materiPertama->id) }}">
+                                            <i class="uil uil-book-open me-1"></i> Review Materi
+                                        </a>
+                                    @endif
+                                    <a class="btn btn-outline-primary ms-2" href="{{ route('pelatihan') }}">
+                                        Lihat Pelatihan Lainnya
                                     </a>
                                 @endif
                             @endif
@@ -156,7 +164,8 @@
                                     class="avatar avatar-medium rounded-pill" alt="">
 
                                 <div class="ms-md-3 mt-4 mt-sm-0">
-                                    <a href="javascript:void(0)" class="text-dark h5">{{ $pelatihan->pengajar->nama }}</a>
+                                    <a href="javascript:void(0)" class="text-dark h5">{{ $pelatihan->pengajar->nama
+                                        }}</a>
                                     <p class="text-muted mb-0 mt-2">{{ $pelatihan->pengajar->title }}</p>
                                 </div>
                             </div>
@@ -171,7 +180,7 @@
 @if (isset($user_progress))
     <script>
         // ini buat timer
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Tentukan durasi berdasarkan status
             const waktuPelunasan = new Date("{{ $user_progress->harus_selesai_tgl }}");
 
@@ -200,3 +209,54 @@
         });
     </script>
 @endif
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Daftar Pelatihan confirmation
+    document.querySelectorAll('.btn-daftar-pelatihan').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var href = this.getAttribute('href');
+            Swal.fire({
+                title: 'Daftar Pelatihan?',
+                html: '<p>Apakah anda yakin ingin mengikuti pelatihan ini?</p>' +
+                      '<p class="text-muted small">Anda akan memiliki waktu {{ $pelatihan->hari }} hari untuk menyelesaikan pelatihan.</p>',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Daftar!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Reset Pelatihan (DO) confirmation
+    document.querySelectorAll('.btn-reset-pelatihan').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var href = this.getAttribute('href');
+            Swal.fire({
+                title: 'Mulai Ulang Pelatihan?',
+                html: '<p>Apakah anda yakin ingin memulai kembali pelatihan ini?</p>' +
+                      '<p class="text-warning"><strong>⚠️ Perhatian:</strong> Progress sebelumnya akan direset.</p>',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Mulai Ulang!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+});
+</script>

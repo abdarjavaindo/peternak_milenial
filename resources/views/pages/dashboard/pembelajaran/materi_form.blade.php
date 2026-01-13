@@ -4,7 +4,7 @@
     @if (request()->segment(2) == 'materi-edit')
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pelatihan</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('bagian', $materi->bagian->kursus->id) }}">Section</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('materi', $materi->bagian->id) }}">Materi dan
                         Postest</a>
@@ -17,7 +17,7 @@
             <a class="flex-sm-fill text-sm-center nav-link active" href="{{ route('materi.edit', $materi->id) }}">Edit
                 Materi</a>
             <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('pertanyaan', $materi->id) }}">Pertanyaan</a>
-            <a class="flex-sm-fill text-sm-center nav-link" href="#">Peserta</a>
+            <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('hasil', $materi->id) }}">Hasil Peserta</a>
         </nav>
     @endif
 

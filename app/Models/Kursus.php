@@ -43,4 +43,12 @@ class Kursus extends Model
     {
         return $this->hasOne(UserKursusProgres::class, 'kursus_id')->where('user_id', auth()->id());
     }
+
+    /**
+     * Relationship to get all enrolled users (peserta)
+     */
+    public function peserta()
+    {
+        return $this->hasMany(UserKursusProgres::class, 'kursus_id');
+    }
 }

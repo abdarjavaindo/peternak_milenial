@@ -72,7 +72,7 @@ class KursusController extends Controller
 
             // Ambil progres utama
             $user_progress = UserKursusProgres::where([
-                'user_id'   => auth()->id(),
+                'user_id' => auth()->id(),
                 'kursus_id' => $pelatihan->id,
             ])->first();
 
@@ -134,13 +134,13 @@ class KursusController extends Controller
             return redirect()->route('pelatihan')->with('gagal', 'Kamu belum memiliki ternak yang sama dengan ternak dalam pelatihan tersebut');
         }
 
-        $userLevel  = auth()->user()->level;
+        $userLevel = auth()->user()->level;
         $courseLevel = $kursus->level;
         // Urutkan level sesuai hierarchy
         $hierarchy = [
-            'pemula'   => 1,
+            'pemula' => 1,
             'menengah' => 2,
-            'ahli'     => 3,
+            'ahli' => 3,
         ];
         // Jika level user < level kursus → tidak boleh akses
         if ($hierarchy[$userLevel] < $hierarchy[$courseLevel]) {
@@ -211,13 +211,13 @@ class KursusController extends Controller
             return redirect()->route('pelatihan')->with('gagal', 'Kamu belum memiliki ternak yang sama dengan ternak dalam pelatihan tersebut');
         }
 
-        $userLevel  = auth()->user()->level;
+        $userLevel = auth()->user()->level;
         $courseLevel = $kursus->level;
         // Urutkan level sesuai hierarchy
         $hierarchy = [
-            'pemula'   => 1,
+            'pemula' => 1,
             'menengah' => 2,
-            'ahli'     => 3,
+            'ahli' => 3,
         ];
         // Jika level user < level kursus → tidak boleh akses
         if ($hierarchy[$userLevel] < $hierarchy[$courseLevel]) {
@@ -264,7 +264,7 @@ class KursusController extends Controller
 
         // 2. CEK APAKAH USER SUDAH MENDAFTAR KURSUS INI
         $pendaftaran = UserKursusProgres::where([
-            'user_id'   => $user->id,
+            'user_id' => $user->id,
             'kursus_id' => $kursus->id
         ])->first();
         if (!$pendaftaran) {
@@ -274,6 +274,19 @@ class KursusController extends Controller
         // 3. CEK STATUS "do" (misal: sedang ongoing atau belum diperbolehkan)
         if ($pendaftaran->status === 'do') {
             return redirect()->route('pelatihan.detail', $kursus->slug);
+        }
+
+        // 3b. CEK WAKTU PELATIHAN HABIS (realtime check)
+        if (
+            $pendaftaran->harus_selesai_tgl &&
+            Carbon::now()->greaterThanOrEqualTo($pendaftaran->harus_selesai_tgl)
+        ) {
+            // Auto-mark as 'do' if not already done by cron
+            if ($pendaftaran->status !== 'do') {
+                $pendaftaran->update(['status' => 'do']);
+            }
+            return redirect()->route('pelatihan.detail', $kursus->slug)
+                ->with('gagal', 'Waktu pelatihan telah habis. Silakan daftar ulang untuk mengikuti pelatihan ini.');
         }
 
         // -----------------------------------------
@@ -351,7 +364,7 @@ class KursusController extends Controller
 
             // Ambil progres utama
             $user_progress = UserKursusProgres::where([
-                'user_id'   => auth()->id(),
+                'user_id' => auth()->id(),
                 'kursus_id' => $pelatihan->id,
             ])->first();
 
@@ -380,10 +393,11 @@ class KursusController extends Controller
         }
 
         return view('pages.home.kursus.materi', [
-            'kursus_materi'   => $kursus_materi,
+            'kursus_materi' => $kursus_materi,
             'materiSebelumnya' => $materiSebelumnya,
             'materiSelanjutnya' => $materiSelanjutnya,
             'materiProgress' => $materiProgress,
+            'pendaftaran' => $pendaftaran,
 
             'pelatihan' => $pelatihan,
             'user_progress' => $user_progress,
@@ -405,7 +419,7 @@ class KursusController extends Controller
 
         // 2. CEK APAKAH USER SUDAH MENDAFTAR KURSUS INI
         $pendaftaran = UserKursusProgres::where([
-            'user_id'   => $user->id,
+            'user_id' => $user->id,
             'kursus_id' => $kursus->id
         ])->first();
         if (!$pendaftaran) {
@@ -415,6 +429,18 @@ class KursusController extends Controller
         // 3. CEK STATUS "do" (misal: sedang ongoing atau belum diperbolehkan)
         if ($pendaftaran->status === 'do') {
             return redirect()->route('pelatihan.detail', $kursus->slug);
+        }
+
+        // 3b. CEK WAKTU PELATIHAN HABIS (realtime check)
+        if (
+            $pendaftaran->harus_selesai_tgl &&
+            Carbon::now()->greaterThanOrEqualTo($pendaftaran->harus_selesai_tgl)
+        ) {
+            if ($pendaftaran->status !== 'do') {
+                $pendaftaran->update(['status' => 'do']);
+            }
+            return redirect()->route('pelatihan.detail', $kursus->slug)
+                ->with('gagal', 'Waktu pelatihan telah habis. Silakan daftar ulang untuk mengikuti pelatihan ini.');
         }
 
         // -----------------------------------------
@@ -481,7 +507,7 @@ class KursusController extends Controller
 
         // 2. CEK APAKAH USER SUDAH MENDAFTAR KURSUS INI
         $pendaftaran = UserKursusProgres::where([
-            'user_id'   => auth()->user()->id,
+            'user_id' => auth()->user()->id,
             'kursus_id' => $kursus->id
         ])->first();
         if (!$pendaftaran) {
@@ -493,24 +519,49 @@ class KursusController extends Controller
             return redirect()->route('pelatihan.detail', $kursus->slug);
         }
 
+        // 3b. CEK WAKTU PELATIHAN HABIS (realtime check)
+        if (
+            $pendaftaran->harus_selesai_tgl &&
+            Carbon::now()->greaterThanOrEqualTo($pendaftaran->harus_selesai_tgl)
+        ) {
+            if ($pendaftaran->status !== 'do') {
+                $pendaftaran->update(['status' => 'do']);
+            }
+            return redirect()->route('pelatihan.detail', $kursus->slug)
+                ->with('gagal', 'Waktu pelatihan telah habis. Silakan daftar ulang untuk mengikuti pelatihan ini.');
+        }
+
         $jumlahMateri = KursusMateri::whereIn('kursus_bagian_id', function ($q) use ($kursus) {
             $q->select('id')
                 ->from('kursus_bagians')
                 ->where('kursus_id', $kursus->id);
         })->count();
 
-        $jumlahProgressUser = KursusProgres::where([
+        // Cek status materi saat ini
+        $currentMateriProgress = KursusProgres::where([
+            'user_id' => auth()->user()->id,
+            'kursus_id' => $kursus->id,
+            'materi_id' => $kursus_materi->id,
+        ])->first();
+
+        // Hitung total progress yang sudah selesai
+        $jumlahProgressSelesai = KursusProgres::where([
             'user_id' => auth()->user()->id,
             'kursus_id' => $kursus->id,
             'status' => 'selesai',
-        ])->count() + 1;
+        ])->count();
+
+        // Tambah 1 hanya jika materi saat ini belum selesai (masih 'progres')
+        $jumlahProgressUser = $jumlahProgressSelesai;
+        if ($currentMateriProgress && $currentMateriProgress->status !== 'selesai') {
+            $jumlahProgressUser += 1;
+        }
 
         if ($jumlahMateri == $jumlahProgressUser) {
-            KursusProgres::where([
-                'user_id' => auth()->user()->id,
-                'kursus_id' => $kursus->id,
-                'materi_id' => $kursus_materi->id,
-            ])->update(['status' => 'selesai']);
+            // Mark current materi as completed (only if not already)
+            if ($currentMateriProgress && $currentMateriProgress->status !== 'selesai') {
+                $currentMateriProgress->update(['status' => 'selesai']);
+            }
 
             UserKursusProgres::where([
                 'user_id' => auth()->user()->id,

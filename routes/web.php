@@ -26,6 +26,7 @@ use App\Http\Controllers\Dashboard\HewanController;
 use App\Http\Controllers\Dashboard\PengaturanController;
 use App\Http\Controllers\Dashboard\PostestController;
 use App\Http\Controllers\Dashboard\TestimoniController;
+use App\Http\Controllers\Home\PostestUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +97,15 @@ Route::prefix('kursus')->group(function () {
     Route::get('/reset/{slug}', [KursusController::class, 'reset'])->name('pelatihan.reset');
 });
 
+// Postest User Routes
+Route::middleware(['auth', 'verified'])->prefix('postest')->group(function () {
+    Route::get('/mulai/{materi}', [PostestUserController::class, 'mulai'])->name('postest.mulai');
+    Route::get('/soal/{attempt}/{nomor?}', [PostestUserController::class, 'soal'])->name('postest.soal');
+    Route::post('/simpan/{attempt}', [PostestUserController::class, 'simpanJawaban'])->name('postest.simpan');
+    Route::post('/submit/{attempt}', [PostestUserController::class, 'submit'])->name('postest.submit');
+    Route::get('/hasil/{attempt}', [PostestUserController::class, 'hasil'])->name('postest.hasil');
+});
+
 Route::prefix('forum')->group(function () {
     Route::get('/', [ForumController::class, 'index'])->name('forum');
     Route::middleware(['auth', 'verified'])->get('/create', [ForumController::class, 'create'])->name('forum.create');
@@ -110,6 +120,7 @@ Route::prefix('forum')->group(function () {
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/userprofile', [UserProfileController::class, 'edit'])->name('userprofile.edit');
     Route::patch('/userprofile', [UserProfileController::class, 'update'])->name('userprofile.update');
+    Route::get('/riwayat-pelatihan', [UserProfileController::class, 'riwayat'])->name('riwayat.pelatihan');
 });
 
 Route::middleware(['auth', 'verified', 'role:user'])->prefix('daftar-ternak')->group(function () {
@@ -286,6 +297,11 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('pembelajaran')->g
     Route::get('/jawaban-edit/{jawaban}', [PostestController::class, 'jawaban_edit'])->name('jawaban.edit');
     Route::put('/jawaban/{jawaban}', [PostestController::class, 'jawaban_update'])->name('jawaban.update');
     Route::delete('/jawaban/{jawaban}', [PostestController::class, 'jawaban_destroy'])->name('jawaban.destroy');
+    //bagian hasil postest
+    Route::get('/hasil/{materi}', [PostestController::class, 'hasil'])->name('hasil');
+    Route::post('/hasil-loaddata/{materi}', [PostestController::class, 'hasil_loaddata'])->name('hasil.loaddata');
+    Route::get('/hasil-detail/{attempt}', [PostestController::class, 'hasil_detail'])->name('hasil.detail');
+    Route::delete('/hasil-reset/{attempt}', [PostestController::class, 'hasil_reset'])->name('hasil.reset');
 });
 #endregion
 

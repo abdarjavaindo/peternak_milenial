@@ -67,4 +67,3 @@ _After creating the new permissions use the following commands to update cashed 
 ## Yang perlu dibenahi
 
 -   Peta jatim dengan jumlah komuditasnya (menyusul) > pendukung
--   Postest pada kursus (menyusul) > Major

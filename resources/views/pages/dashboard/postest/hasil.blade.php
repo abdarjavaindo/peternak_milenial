@@ -1,12 +1,10 @@
 <x-layouts.dashboard>
-    {{-- <h1 class="app-page-title">Pertanyaan</h1> --}}
-
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
             <li class="breadcrumb-item"><a href="{{ route('bagian', $materi->bagian->kursus->id) }}">Section</a></li>
             <li class="breadcrumb-item"><a href="{{ route('materi', $materi->bagian->id) }}">Materi dan Postest</a></li>
-            <li class="breadcrumb-item active">Pertanyaan</li>
+            <li class="breadcrumb-item active">Hasil Postest</li>
         </ol>
     </nav>
 
@@ -14,10 +12,10 @@
         <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('materi.edit', $materi->id) }}">
             Edit Materi
         </a>
-        <a class="flex-sm-fill text-sm-center nav-link active" href="{{ route('pertanyaan', $materi->id) }}">
+        <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('pertanyaan', $materi->id) }}">
             Pertanyaan
         </a>
-        <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('hasil', $materi->id) }}">
+        <a class="flex-sm-fill text-sm-center nav-link active" href="{{ route('hasil', $materi->id) }}">
             Hasil Peserta
         </a>
     </nav>
@@ -27,11 +25,12 @@
         <div class="grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-description" align="right">
-                        <a href="{{ route('pertanyaan.create', $materi->id) }}" class="btn text-white"
-                            style="background-color: #165d7d"><i class="fa fa-plus"></i>
-                            Tambah Pertanyaan
-                        </a>
+                    <div class="card-description">
+                        <h5 class="mb-0">Hasil Postest: {{ $materi->judul }}</h5>
+                        <p class="text-muted">
+                            KKM: {{ $materi->nilai_lulus_postest ?? 70 }} |
+                            Durasi: {{ $materi->durasi_postest ?? '-' }} menit
+                        </p>
                     </div>
                     <hr>
                     <div class="table-responsive">
@@ -39,8 +38,13 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
-                                    <th class="text-center" width="75%">Pertanyaan</th>
-                                    <th class="text-center" width="20%">Rincian</th>
+                                    <th class="text-center">Nama User</th>
+                                    <th class="text-center">Email</th>
+                                    <th class="text-center" width="10%">Nilai</th>
+                                    <th class="text-center" width="12%">Status</th>
+                                    <th class="text-center" width="10%">Waktu</th>
+                                    <th class="text-center" width="15%">Tanggal Ujian</th>
+                                    <th class="text-center" width="12%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,7 +72,7 @@
         processing: true,
         stateSave: true,
         ajax: {
-            url: "{{ route('pertanyaan_loaddata', $materi->id) }}",
+            url: "{{ route('hasil.loaddata', $materi->id) }}",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -78,7 +82,27 @@
             data: 'DT_RowIndex'
         },
         {
-            data: 'pertanyaan'
+            data: 'nama_user'
+        },
+        {
+            data: 'email'
+        },
+        {
+            data: 'nilai_format',
+            className: 'text-center'
+        },
+        {
+            data: 'status_format',
+            className: 'text-center',
+            orderable: false
+        },
+        {
+            data: 'waktu',
+            className: 'text-center'
+        },
+        {
+            data: 'tgl_ujian',
+            className: 'text-center'
         },
         {
             data: 'aksi',
@@ -88,11 +112,11 @@
         }
         ],
         language: {
-            emptyTable: 'Data Kosong',
+            emptyTable: 'Belum ada peserta yang mengerjakan postest ini',
             zeroRecords: 'Data Tidak Ditemukan'
         },
         columnDefs: [{
-            "targets": [0, 2],
+            "targets": [0],
             "className": "text-center",
         }],
     });
@@ -101,8 +125,9 @@
         e.preventDefault();
         var form = $(this).closest('form');
         Swal.fire({
-            title: 'Hapus Pertanyaan?',
-            text: 'Apakah Anda yakin ingin menghapus pertanyaan ini?',
+            title: 'Hapus Hasil Postest?',
+            html: '<p>Apakah Anda yakin ingin menghapus hasil postest ini?</p>' +
+                '<p class="text-warning"><strong>ℹ️ Info:</strong> User akan dapat mengulang postest.</p>',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',

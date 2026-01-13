@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Kursus;
 use App\Models\Produk;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -19,6 +18,8 @@ class DashboardController extends Controller
 
         $data['produk'] = Produk::count();
         $data['kursus'] = Kursus::count();
+
         return view('dashboard', $data);
     }
 }
+

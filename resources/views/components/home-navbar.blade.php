@@ -110,7 +110,7 @@
 </style>
 
 <header id="topnav" class="defaultscroll sticky">
-    <div class="container px-5">
+    <div class="container-fluid px-5">
         <!-- Logo container-->
         <a class="logo" href="{{ env('APP_URL') }}">
             <span class="logo-light-mode">

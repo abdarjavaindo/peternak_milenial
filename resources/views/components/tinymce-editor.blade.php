@@ -4,7 +4,7 @@
     tinymce.init({
         selector: "#tinymce-editor",
         plugins: "media code table link",
-        toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code table link image_upload",
+        toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | media code table link image_upload",
         menubar: false,
         statusbar: false,
         urlconverter_callback: 'myCustomURLConverter',

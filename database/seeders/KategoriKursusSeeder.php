@@ -20,10 +20,10 @@ class KategoriKursusSeeder extends Seeder
         ];
 
         foreach ($kategori as $item) {
-            Kategori_kursus::create([
-                'nama_kategori' => $item,
-                'slug_kategori' => Str::slug($item),
-            ]);
+            Kategori_kursus::firstOrCreate(
+                ['slug_kategori' => Str::slug($item)],
+                ['nama_kategori' => $item]
+            );
         }
     }
 }

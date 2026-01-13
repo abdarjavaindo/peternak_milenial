@@ -2,7 +2,7 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pelatihan</a></li>
             <li class="breadcrumb-item"><a href="{{ route('bagian', $bagian->kursus->id) }}">Section</a></li>
             <li class="breadcrumb-item active">Materi dan Postest</li>
         </ol>
@@ -48,6 +48,7 @@
 <script src="{{ asset('assets') }}/customs/js/jquery.validate.js"></script>
 <script src="{{ asset('assets') }}/customs/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('assets') }}/customs/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="text/javascript">
     var table = $('#_table').DataTable({
@@ -88,9 +89,22 @@
         }],
     });
 
-    $(document).on('click', '.delete-button', function() {
-        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-            $(this).closest('form').submit(); // Submit form penghapusan
-        }
+    $(document).on('click', '.delete-button', function(e) {
+        e.preventDefault();
+        var form = $(this).closest('form');
+        Swal.fire({
+            title: 'Hapus Materi?',
+            text: 'Apakah Anda yakin ingin menghapus materi ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
     });
 </script>

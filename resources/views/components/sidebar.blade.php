@@ -166,8 +166,8 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+            <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="{{ url('/license') }}">
                     <span class="nav-icon">
                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-person"
@@ -179,7 +179,7 @@
                     </span>
                     <span class="nav-link-text">License</span>
                 </a>
-            </li>
+            </li> --}}
 
         </ul>
     </nav>

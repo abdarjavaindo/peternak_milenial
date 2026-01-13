@@ -30,6 +30,16 @@
                                 </div>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link rounded border border-1 border-dark {{ request()->segment(1) == 'riwayat-pelatihan' ? 'bg-dark' : 'bg-white' }}"
+                                href="{{ route('riwayat.pelatihan') }}">
+                                <div class="text-center py-2">
+                                    <h6 class="mb-0 {{ request()->segment(1) == 'riwayat-pelatihan' ? 'text-white' : '' }}">
+                                        Riwayat Pelatihan</h6>
+                                </div>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

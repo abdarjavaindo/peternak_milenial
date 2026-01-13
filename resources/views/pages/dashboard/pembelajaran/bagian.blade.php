@@ -2,7 +2,7 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pelatihan</a></li>
             <li class="breadcrumb-item active">Section</li>
         </ol>
     </nav>
@@ -50,6 +50,7 @@
 <script src="{{ asset('assets') }}/customs/js/jquery.validate.js"></script>
 <script src="{{ asset('assets') }}/customs/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('assets') }}/customs/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="text/javascript">
     var table = $('#_table').DataTable({
@@ -57,6 +58,9 @@
         serverSide: true,
         processing: true,
         stateSave: true,
+        order: [
+            [2, 'asc']
+        ], // Default sort by Urutan column
         ajax: {
             url: "{{ route('bagian.loaddata', $kursus->id) }}",
             type: "POST",
@@ -90,9 +94,22 @@
         }],
     });
 
-    $(document).on('click', '.delete-button', function() {
-        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-            $(this).closest('form').submit(); // Submit form penghapusan
-        }
+    $(document).on('click', '.delete-button', function(e) {
+        e.preventDefault();
+        var form = $(this).closest('form');
+        Swal.fire({
+            title: 'Hapus Section?',
+            text: 'Apakah Anda yakin ingin menghapus section ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
     });
 </script>

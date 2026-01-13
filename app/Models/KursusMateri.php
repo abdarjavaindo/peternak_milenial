@@ -21,4 +21,20 @@ class KursusMateri extends Model
     {
         return $this->belongsTo(KursusProgres::class, 'materi_id');
     }
+
+    /**
+     * Get postest questions for this materi
+     */
+    public function pertanyaans()
+    {
+        return $this->hasMany(Postest_pertanyaan::class, 'kursus_materi_id');
+    }
+
+    /**
+     * Check if this materi is a postest type
+     */
+    public function isPostest(): bool
+    {
+        return $this->jenis === 'postest';
+    }
 }

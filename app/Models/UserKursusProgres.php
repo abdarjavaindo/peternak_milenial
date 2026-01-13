@@ -24,6 +24,12 @@ class UserKursusProgres extends Model
         return $this->belongsTo(Kursus::class);
     }
 
+    // Relasi ke user_postest
+    public function user_postest()
+    {
+        return $this->belongsTo(User_postest::class);
+    }
+
     // Relasi ke detail progres (materi-materi)
     public function progresMateri()
     {

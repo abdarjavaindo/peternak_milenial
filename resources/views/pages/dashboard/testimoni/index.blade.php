@@ -7,7 +7,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-description" align="right">
-                        <a href="{{ route('testimoni.create') }}" class="btn text-white" style="background-color: #222222">
+                        <a href="{{ route('testimoni.create') }}" class="btn text-white"
+                            style="background-color: #222222">
                             <i class="fa fa-plus"></i>
                             Tambah
                         </a>
@@ -39,6 +40,7 @@
 <script src="{{ asset('assets') }}/customs/js/jquery.validate.js"></script>
 <script src="{{ asset('assets') }}/customs/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('assets') }}/customs/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="text/javascript">
     var table = $('#_table').DataTable({
@@ -54,20 +56,20 @@
             }
         },
         columns: [{
-                data: 'DT_RowIndex'
-            },
-            {
-                data: 'nama'
-            },
-            {
-                data: 'jabatan'
-            },
-            {
-                data: 'aksi',
-                className: 'text-center',
-                orderable: false,
-                searchable: false
-            }
+            data: 'DT_RowIndex'
+        },
+        {
+            data: 'nama'
+        },
+        {
+            data: 'jabatan'
+        },
+        {
+            data: 'aksi',
+            className: 'text-center',
+            orderable: false,
+            searchable: false
+        }
         ],
         language: {
             emptyTable: 'Data Kosong',
@@ -79,9 +81,22 @@
         }],
     });
 
-    $(document).on('click', '.delete-button', function() {
-        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-            $(this).closest('form').submit(); // Submit form penghapusan
-        }
+    $(document).on('click', '.delete-button', function (e) {
+        e.preventDefault();
+        var form = $(this).closest('form');
+        Swal.fire({
+            title: 'Hapus Testimoni?',
+            text: 'Apakah Anda yakin ingin menghapus testimoni ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
     });
 </script>

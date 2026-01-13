@@ -82,4 +82,17 @@ class UserProfileController extends Controller
 
         return Redirect::route('userprofile.edit')->with('status', 'profile-updated');
     }
+
+    /**
+     * Display user's training history
+     */
+    public function riwayat(): View
+    {
+        $riwayat = \App\Models\UserKursusProgres::with(['kursus', 'progresMateri'])
+            ->where('user_id', auth()->id())
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);
+
+        return view('pages.home.profile.riwayat', compact('riwayat'));
+    }
 }
