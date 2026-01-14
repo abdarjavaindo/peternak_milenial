@@ -42,11 +42,15 @@
                             <select type="text" class="form-select bg-light border-black" id="kategori_kursus_id"
                                 name="kategori_kursus_id" required>
                                 <option value="">Pilih ...</option>
-                                @foreach ($kategori_kursus as $item)
+                                <option value="1"
+                                    {{ old('kategori_kursus_id') == '1' || @$kursus->kategori_kursus_id == '1' ? 'selected' : '' }}>
+                                    Kursus Online
+                                </option>
+                                {{-- @foreach ($kategori_kursus as $item)
                                     <option value="{{ $item->id }}"
                                         {{ old('kategori_kursus_id') == $item->id || @$kursus->kategori_kursus_id == $item->id ? 'selected' : '' }}>
                                         {{ $item->nama_kategori }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                             @error('kategori_kursus_id')
                                 <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -107,7 +111,7 @@
                                 name="is_published" required>
                                 <option value="">Pilih ...</option>
                                 <option value="1" {{ @$kursus->is_published == '1' ? 'selected' : '' }}>
-                                    IYA
+                                    Iya
                                 </option>
                                 <option value="0" {{ @$kursus->is_published == '0' ? 'selected' : '' }}>
                                     Tidak

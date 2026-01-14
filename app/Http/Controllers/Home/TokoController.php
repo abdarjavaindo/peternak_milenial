@@ -97,7 +97,7 @@ class TokoController extends Controller
             'produk' => $produk,
             'slug' => $slug,
             'v' => $v,
-            'jumlahternak' => $data['jumlahternak'],
+            'jumlahternak' => $data['jumlahternak'] ?? NULL,
         ]);
     }
     public function komentar_store(Request $request, Produk $produk)

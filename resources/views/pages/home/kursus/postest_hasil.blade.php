@@ -8,7 +8,7 @@
                     <div class="card rounded shadow border-0">
                         <div class="card-body p-5 text-center">
                             <!-- Status Icon -->
-                            @if($attempt->status === 'lulus')
+                            @if ($attempt->status === 'lulus')
                                 <div class="mb-4">
                                     <div class="avatar avatar-xl-large bg-soft-success rounded-circle mx-auto d-flex align-items-center justify-content-center"
                                         style="width: 120px; height: 120px;">
@@ -64,7 +64,7 @@
                                     <div class="col-6 mb-2">
                                         <small class="text-muted">Status:</small>
                                         <p class="mb-0">
-                                            @if($attempt->status === 'lulus')
+                                            @if ($attempt->status === 'lulus')
                                                 <span class="badge bg-success">LULUS</span>
                                             @else
                                                 <span class="badge bg-danger">TIDAK LULUS</span>
@@ -84,7 +84,7 @@
 
                             <!-- Actions -->
                             <div class="mt-4">
-                                @if($attempt->status === 'lulus' && isset($nextMateri))
+                                @if ($attempt->status === 'lulus' && isset($nextMateri))
                                     {{-- User passed and there's next material --}}
                                     <a href="{{ route('pelatihan.materi', $nextMateri->id) }}"
                                         class="btn btn-success btn-lg">
@@ -99,7 +99,8 @@
                                     {{-- User passed and course is complete --}}
                                     <div class="alert alert-success mb-3">
                                         <i class="uil uil-trophy me-1"></i>
-                                        <strong>Selamat!</strong> Anda telah menyelesaikan semua materi dalam pelatihan ini!
+                                        <strong>Selamat!</strong> Anda telah menyelesaikan semua materi dalam pelatihan
+                                        ini!
                                     </div>
                                     <a href="{{ route('pelatihan.detail', $materi->bagian->kursus->slug) }}"
                                         class="btn btn-success btn-lg">
@@ -117,7 +118,7 @@
                                 @endif
                             </div>
 
-                            @if($attempt->status !== 'lulus')
+                            @if ($attempt->status !== 'lulus')
                                 <div class="mt-3">
                                     <a href="{{ route('postest.mulai', $materi) }}" class="btn btn-warning">
                                         <i class="uil uil-redo me-1"></i> Ulangi Postest
@@ -131,3 +132,11 @@
         </div>
     </section>
 </x-layouts.home>
+<script>
+    (function() {
+        history.pushState(null, null, location.href);
+        window.addEventListener('popstate', function() {
+            location.replace("{{ route('postest.hasil', $attempt->id) }}");
+        });
+    })();
+</script>

@@ -28,14 +28,14 @@
                 <div class="d-flex flex-column align-content-end">
                     <div class="app-auth-body mx-auto">
 
-                        <div class="app-auth-branding mb-4">
+                        <div class="app-auth-branding">
                             <a class="h1 app-logo" href="{{ env('APP_URL') }}">
                                 <img style="width: 160px; object-fit: cover;" src="{{ asset('storage/' . $set_logo) }}"
                                     alt="logo">
                             </a>
                         </div>
 
-                        <h2 class="auth-heading text-center mb-5">Log in</h2>
+                        <h2 class="auth-heading text-center mb-1">Log in</h2>
 
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -50,20 +50,42 @@
                                 @csrf
 
                                 <div class="email mb-3">
-                                    <label class="sr-only" for="email">Email</label>
+                                    <label for="email">Email<span class="text-danger">*</span></label>
                                     <input id="email" name="email" type="email"
-                                        class="form-control signin-email" placeholder="Email address"
-                                        required="required" value="{{ old('email') }}">
+                                        class="form-control signin-email border border-1 border-secondary"
+                                        placeholder="" required="required" value="{{ old('email') }}">
                                     @error('email')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="password mb-3">
-                                    <label class="sr-only" for="password">Password</label>
-                                    <input id="password" name="password" type="password"
-                                        class="form-control signin-password" placeholder="Password" required="required"
-                                        autocomplete="current-password">
+                                    <label for="password">Password<span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input id="password" name="password" type="password"
+                                            class="form-control signin-password border border-1 border-secondary"
+                                            placeholder="" required="required" autocomplete="current-password">
+
+                                        <span class="input-group-text toggle-password" data-target="password"
+                                            style="cursor:pointer">
+                                            <!-- EYE OPEN -->
+                                            <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24">
+                                                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" fill="none"
+                                                    stroke="currentColor" stroke-width="2" />
+                                                <circle cx="12" cy="12" r="3" fill="none"
+                                                    stroke="currentColor" stroke-width="2" />
+                                            </svg>
+
+                                            <!-- EYE CLOSED -->
+                                            <svg class="eye-close d-none" width="20" height="20"
+                                                viewBox="0 0 24 24">
+                                                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7
+                 a21.87 21.87 0 0 1 5.06-5.94M9.9 4.24
+                 A9.77 9.77 0 0 1 12 4c7 0 11 7 11 7
+                 a21.87 21.87 0 0 1-2.88 4.19M1 1l22 22" fill="none" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </span>
+                                    </div>
                                     @error('password')
                                         <span class="text-danger" style="color:red">{{ $message }}</span>
                                     @enderror
@@ -96,7 +118,8 @@
                                 </div> --}}
 
                                 <div class="text-center">
-                                    <button type="submit" class="btn w-100 mx-auto btn-info text-white">
+                                    <button type="submit" class="btn w-100 mx-auto text-white"
+                                        style="background-color: #052e70">
                                         Log In
                                     </button>
                                 </div>
@@ -126,3 +149,21 @@
     </body>
 
 </x-layouts.auth>
+<script>
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = document.getElementById(this.dataset.target);
+            if (!input) return;
+
+            const eyeOpen = this.querySelector('.eye-open');
+            const eyeClose = this.querySelector('.eye-close');
+
+            const isHidden = input.type === 'password';
+
+            input.type = isHidden ? 'text' : 'password';
+
+            eyeOpen.classList.toggle('d-none', isHidden);
+            eyeClose.classList.toggle('d-none', !isHidden);
+        });
+    });
+</script>

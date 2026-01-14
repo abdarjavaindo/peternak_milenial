@@ -90,12 +90,12 @@
                     class="collapse submenu submenu-1 {{ in_array(request()->segment(1), ['kategori-kursus', 'kategori-produk', 'hewan', 'galeri', 'pengaturan', 'pengaturan-kontak', 'testimoni', 'fitur']) ? 'show' : '' }}"
                     data-bs-parent="#menu-accordion">
                     <ul class="submenu-list list-unstyled">
-                        <li class="submenu-item">
+                        {{-- <li class="submenu-item">
                             <a class="submenu-link {{ request()->segment(1) == 'kategori-kursus' ? 'active' : '' }}"
                                 href="{{ route('kategori-kursus') }}">
                                 Kategori Kursus
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="submenu-item">
                             <a class="submenu-link {{ request()->segment(1) == 'hewan' ? 'active' : '' }}"
                                 href="{{ route('hewan') }}">

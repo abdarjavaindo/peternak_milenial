@@ -80,7 +80,7 @@
                             <h5 class="footer-head">Link Terkait</h5>
                             <ul class="list-unstyled footer-list mt-4">
                                 <li>
-                                    <a href="{{ route('galeri') }}" class="text-foot">
+                                    <a href="{{ route('lihatgaleri') }}" class="text-foot">
                                         <i class="uil uil-angle-right-b me-1"></i> Galeri
                                     </a>
                                 </li>

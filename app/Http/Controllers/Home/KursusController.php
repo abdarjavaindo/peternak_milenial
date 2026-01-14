@@ -31,6 +31,7 @@ class KursusController extends Controller
 
         $data['pelatihan'] = Kursus::query()
             ->where('is_published', 1)
+            ->has('semua_materi')
             // search
             ->when($keyword, function ($q) use ($keyword) {
                 $q->where(function ($sub) use ($keyword) {

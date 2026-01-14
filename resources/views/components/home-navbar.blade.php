@@ -94,6 +94,18 @@
         .txtheader {
             color: white;
         }
+
+        /* Pastikan parent jadi acuan posisi */
+        #topnav .parent-menu-item {
+            position: relative;
+        }
+
+        /* Geser dropdown ke kiri (nempel ke kanan parent) */
+        #topnav .submenu {
+            left: auto !important;
+            right: 0;
+            min-width: 200px;
+        }
     }
 
     /* Add `text-white` and custom background for mobile mode */

@@ -42,8 +42,11 @@ class PembelajaranController extends Controller
             ->addColumn('jumlah_peserta', function ($data) {
                 return $data->peserta->count();
             })
+            ->addColumn('jumlah_materi', function ($data) {
+                return $data->semua_materi->count();
+            })
             ->addColumn('publish', function ($data) {
-                return $data->is_published == 0 ? 'tidak' : 'IYA';
+                return $data->is_published == 0 ? 'Tidak' : 'Iya';
             })
             ->addIndexColumn()
             ->rawColumns(['nama', 'aksi', 'jumlah_peserta', 'publish', 'pengajar'])

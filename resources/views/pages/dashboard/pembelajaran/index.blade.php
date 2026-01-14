@@ -13,6 +13,9 @@
                         </a>
                     </div>
                     <hr>
+                    <div class="alert alert-warning" role="alert">
+                        Jika materi tidak ada, maka kursus tidak akan ditampilkan
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" id="_table" width="100%">
                             <thead>
@@ -22,6 +25,7 @@
                                     <th class="text-center" width="13%">publish</th>
                                     <th class="text-center" width="13%">Level</th>
                                     <th class="text-center" width="13%">Jumlah Peserta</th>
+                                    <th class="text-center" width="13%">Jumlah Materi</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -57,26 +61,29 @@
             }
         },
         columns: [{
-            data: 'DT_RowIndex'
-        },
-        {
-            data: 'judul'
-        },
-        {
-            data: 'publish'
-        },
-        {
-            data: 'level'
-        },
-        {
-            data: 'jumlah_peserta'
-        },
-        {
-            data: 'aksi',
-            className: 'text-center',
-            orderable: false,
-            searchable: false
-        }
+                data: 'DT_RowIndex'
+            },
+            {
+                data: 'judul'
+            },
+            {
+                data: 'publish'
+            },
+            {
+                data: 'level'
+            },
+            {
+                data: 'jumlah_peserta'
+            },
+            {
+                data: 'jumlah_materi'
+            },
+            {
+                data: 'aksi',
+                className: 'text-center',
+                orderable: false,
+                searchable: false
+            }
         ],
         language: {
             emptyTable: 'Data Kosong',
@@ -88,7 +95,7 @@
         }],
     });
 
-    $(document).on('click', '.delete-button', function (e) {
+    $(document).on('click', '.delete-button', function(e) {
         e.preventDefault();
         var form = $(this).closest('form');
         Swal.fire({

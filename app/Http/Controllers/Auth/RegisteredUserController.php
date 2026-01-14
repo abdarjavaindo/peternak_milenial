@@ -29,6 +29,24 @@ class RegisteredUserController extends Controller
         return view('auth.register', compact('kategori_produk'));
     }
 
+    public function checkEmail(Request $request)
+    {
+        $email = $request->email;
+        $exists = User::where('email', $email)->exists();
+        return response()->json([
+            'exists' => $exists
+        ]);
+    }
+
+    public function checkNik(Request $request)
+    {
+        $nik = $request->nik;
+        $exists = User::where('nik', $nik)->exists();
+        return response()->json([
+            'exists' => $exists
+        ]);
+    }
+
     public function info($namakabupaten)
     {
         $wilayah = WilayahKomuditas::where('kabupaten', $namakabupaten)->first();

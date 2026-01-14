@@ -51,4 +51,16 @@ class Kursus extends Model
     {
         return $this->hasMany(UserKursusProgres::class, 'kursus_id');
     }
+
+    public function semua_materi()
+    {
+        return $this->hasManyThrough(
+            KursusMateri::class,
+            KursusBagian::class,
+            'kursus_id',          // FK di KursusBagian
+            'kursus_bagian_id',   // FK di KursusMateri
+            'id',                 // PK Kursus
+            'id'                  // PK KursusBagian
+        );
+    }
 }
