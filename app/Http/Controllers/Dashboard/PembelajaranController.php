@@ -22,7 +22,7 @@ class PembelajaranController extends Controller
     #region kursus
     public function loaddata()
     {
-        $data = Kursus::with(['user', 'peserta'])->orderBy('id', 'desc')->get();
+        $data = Kursus::with(['user', 'peserta', 'kategori'])->orderBy('id', 'desc')->get();
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
                 $editUrl = route('pembelajaran.edit', $data->id);
@@ -48,8 +48,11 @@ class PembelajaranController extends Controller
             ->addColumn('publish', function ($data) {
                 return $data->is_published == 0 ? 'Tidak' : 'Iya';
             })
+            ->addColumn('kategori_kursus', function ($data) {
+                return $data->kategori_kursus_id == 1 ? 'Online' : 'Offline';
+            })
             ->addIndexColumn()
-            ->rawColumns(['nama', 'aksi', 'jumlah_peserta', 'publish', 'pengajar'])
+            ->rawColumns(['nama', 'aksi', 'jumlah_peserta', 'publish', 'pengajar', 'kategori_kursus'])
             ->make(true);
     }
     public function index()
@@ -159,22 +162,49 @@ class PembelajaranController extends Controller
     #region peserta
     public function peserta_loaddata(Kursus $kursus)
     {
-        $data = UserKursusProgres::with('user')->where('kursus_id', $kursus->id)->orderBy('id', 'desc')->get();
+        $data = UserKursusProgres::with(['user', 'kursus'])->where('kursus_id', $kursus->id)->orderBy('id', 'desc')->get();
         return DataTables::of($data)
             ->addColumn('aksi', function ($data) {
-                $deleteForm = '<form method="POST" action="' . route('peserta.destroy', ['kursus' => $data->kursus_id, 'user' => $data->user_id]) . '" class="delete-form" style="display:inline;">
+                if ($data->kursus->kategori_kursus_id == 2) {
+                    $deleteForm = '<form method="POST" action="' . route('peserta.destroy', ['kursus' => $data->kursus_id, 'user' => $data->user_id]) . '" class="delete-form" style="display:inline;">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
                         <button type="button" class="btn btn-danger delete-button mb-1">Reset</button>
                     </form>';
-
-                return $deleteForm;
+                    $lulus = route('peserta.lulus', ['kursus' => $data->kursus_id, 'user' => $data->user_id]);
+                    $batal = route('peserta.batallulus', ['kursus' => $data->kursus_id, 'user' => $data->user_id]);
+                    $do = route('peserta.do', ['kursus' => $data->kursus_id, 'user' => $data->user_id]);
+                    if ($data->status == 'progres') {
+                        return $deleteForm . ' <a href="' . $lulus . '" class="btn btn-sm btn-success lulus-button text-white mb-1 btn-icon">Lulus</a>'
+                            . ' <a href="' . $do . '" class="btn btn-sm btn-secondary do-button text-white mb-1 btn-icon">Keluar</a>';
+                    } elseif ($data->status == 'do') {
+                        return $deleteForm . ' <a href="' . $lulus . '" class="btn btn-sm btn-success lulus-button text-white mb-1 btn-icon">Lulus</a>' .
+                            ' <a href="' . $batal . '" class="btn btn-sm btn-warning batal-do-button text-white mb-1 btn-icon">Batal Keluar</a>';
+                    } else {
+                        return $deleteForm . ' <a href="' . $batal . '" class="btn btn-sm btn-warning batal-lulus-button text-white mb-1 btn-icon">Batalkan Lulus</a>' .
+                            ' <a href="' . $do . '" class="btn btn-sm btn-secondary do-button text-white mb-1 btn-icon">Keluar</a>';
+                    }
+                } else {
+                    $deleteForm = '<form method="POST" action="' . route('peserta.destroy', ['kursus' => $data->kursus_id, 'user' => $data->user_id]) . '" class="delete-form" style="display:inline;">
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+                            <button type="button" class="btn btn-danger delete-button mb-1">Reset</button>
+                        </form>';
+                    return $deleteForm;
+                }
             })
             ->addColumn('nama', function ($data) {
                 return $data->user->name;
             })
+            ->addColumn('status_now', function ($data) {
+                if ($data->status == 'do') {
+                    return "tidak lulus";
+                } else {
+                    return $data->status;
+                }
+            })
             ->addIndexColumn()
-            ->rawColumns(['aksi', 'nama'])
+            ->rawColumns(['aksi', 'nama', 'status_now'])
             ->make(true);
     }
     public function peserta(Kursus $kursus)
@@ -234,6 +264,39 @@ class PembelajaranController extends Controller
 
         return redirect()->back()->with('sukses', 'Anda berhasil menghapus data kepesertaan lengkap (progress, postest, dan jawaban)');
     }
+
+    public function peserta_lulus(Kursus $kursus, User $user)
+    {
+        $progres = UserKursusProgres::where([
+            'user_id' => $user->id,
+            'kursus_id' => $kursus->id,
+        ])->update([
+            'status' => 'selesai'
+        ]);
+        return redirect()->back()->with('sukses', 'Anda berhasil mengubah data peserta');
+    }
+
+    public function peserta_batallulus(Kursus $kursus, User $user)
+    {
+        $progres = UserKursusProgres::where([
+            'user_id' => $user->id,
+            'kursus_id' => $kursus->id,
+        ])->update([
+            'status' => 'progres'
+        ]);
+        return redirect()->back()->with('sukses', 'Anda berhasil mengubah data peserta');
+    }
+
+    public function peserta_do(Kursus $kursus, User $user)
+    {
+        $progres = UserKursusProgres::where([
+            'user_id' => $user->id,
+            'kursus_id' => $kursus->id,
+        ])->update([
+            'status' => 'do'
+        ]);
+        return redirect()->back()->with('sukses', 'Anda berhasil mengubah data peserta');
+    }
     #endregion
 
     #region bagian
@@ -259,6 +322,9 @@ class PembelajaranController extends Controller
     }
     public function bagian(Kursus $kursus)
     {
+        if ($kursus->kategori_kursus_id == 2) {
+            return redirect()->route('peserta', $kursus->id);
+        }
         return view('pages.dashboard.pembelajaran.bagian', compact('kursus'));
     }
 

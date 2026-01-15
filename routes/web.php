@@ -265,6 +265,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('pembelajaran')->g
     Route::get('/peserta/{kursus}', [PembelajaranController::class, 'peserta'])->name('peserta');
     Route::post('/peserta-loaddata/{kursus}', [PembelajaranController::class, 'peserta_loaddata'])->name('peserta.loaddata');
     Route::delete('/peserta/{kursus}/{user}', [PembelajaranController::class, 'peserta_destroy'])->name('peserta.destroy');
+    Route::get('/peserta-lulus/{kursus}/{user}', [PembelajaranController::class, 'peserta_lulus'])->name('peserta.lulus');
+    Route::get('/peserta-batal-lulus/{kursus}/{user}', [PembelajaranController::class, 'peserta_batallulus'])->name('peserta.batallulus');
+    Route::get('/peserta-do/{kursus}/{user}', [PembelajaranController::class, 'peserta_do'])->name('peserta.do');
     //bagian kursus
     Route::get('/bagian/{kursus}', [PembelajaranController::class, 'bagian'])->name('bagian');
     Route::post('/bagian-loaddata/{kursus}', [PembelajaranController::class, 'bagian_loaddata'])->name('bagian.loaddata');

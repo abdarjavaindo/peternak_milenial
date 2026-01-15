@@ -36,7 +36,7 @@ class Kursus extends Model
     // Relasi ke kategori
     public function kategori()
     {
-        return $this->belongsTo(KategoriKursus::class, 'kategori_kursus_id');
+        return $this->belongsTo(Kategori_kursus::class, 'kategori_kursus_id');
     }
 
     public function user_status()

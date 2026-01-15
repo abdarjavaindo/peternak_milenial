@@ -44,7 +44,11 @@
                                 <option value="">Pilih ...</option>
                                 <option value="1"
                                     {{ old('kategori_kursus_id') == '1' || @$kursus->kategori_kursus_id == '1' ? 'selected' : '' }}>
-                                    Kursus Online
+                                    Pelatihan Online
+                                </option>
+                                <option value="2"
+                                    {{ old('kategori_kursus_id') == '2' || @$kursus->kategori_kursus_id == '2' ? 'selected' : '' }}>
+                                    Pelatihan Offline
                                 </option>
                                 {{-- @foreach ($kategori_kursus as $item)
                                     <option value="{{ $item->id }}"
@@ -128,6 +132,10 @@
                                 Deskripsi Pelatihan
                                 <span class="text-danger"><i>(required)</i></span>
                             </label>
+                            <div class="alert alert-warning" id="peringatan-kursus" role="alert" style="display:none">
+                                Jika anda memilih pelatihan offline, tulis tanggal, waktu, tempat dan peraturan di dalam
+                                deskripsi pelatihan dibawah ini
+                            </div>
                             <textarea type="text" name="deskripsi" id="tinymce-editor" contenteditable="true">{!! isset($kursus) ? $kursus->deskripsi : old('deskripsi') !!}</textarea>
                             @error('deskripsi')
                                 <span class="text-danger" style="color:red">{{ $message }}</span>
@@ -238,4 +246,23 @@
         rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
         return prefix == undefined ? rupiah : rupiah ? rupiah : "";
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectKategori = document.getElementById('kategori_kursus_id');
+        const peringatan = document.getElementById('peringatan-kursus');
+
+        function togglePeringatan() {
+            if (selectKategori.value === '2') {
+                peringatan.style.display = 'block';
+            } else {
+                peringatan.style.display = 'none';
+            }
+        }
+        // cek saat halaman pertama kali load (edit / old value)
+        togglePeringatan();
+        // cek saat value berubah
+        selectKategori.addEventListener('change', togglePeringatan);
+    });
 </script>

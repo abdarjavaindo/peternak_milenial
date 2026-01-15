@@ -14,7 +14,7 @@
                     </div>
                     <hr>
                     <div class="alert alert-warning" role="alert">
-                        Jika materi tidak ada, maka kursus tidak akan ditampilkan
+                        Khusus pelatihan online, Jika materi tidak ada maka pelatihan tidak akan ditampilkan
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover" id="_table" width="100%">
@@ -22,10 +22,11 @@
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
                                     <th class="text-center" width="30%">Nama Pelatihan</th>
-                                    <th class="text-center" width="13%">publish</th>
-                                    <th class="text-center" width="13%">Level</th>
-                                    <th class="text-center" width="13%">Jumlah Peserta</th>
-                                    <th class="text-center" width="13%">Jumlah Materi</th>
+                                    <th class="text-center" width="5%">publish</th>
+                                    <th class="text-center" width="10%">Level</th>
+                                    <th class="text-center" width="10%">Jumlah Peserta</th>
+                                    <th class="text-center" width="10%">Jumlah Materi</th>
+                                    <th class="text-center" width="10%">Pelatihan</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
                             </thead>
@@ -77,6 +78,9 @@
             },
             {
                 data: 'jumlah_materi'
+            },
+            {
+                data: 'kategori_kursus'
             },
             {
                 data: 'aksi',

@@ -31,7 +31,10 @@ class KursusController extends Controller
 
         $data['pelatihan'] = Kursus::query()
             ->where('is_published', 1)
-            ->has('semua_materi')
+            ->where(function ($q) {
+                $q->where('kategori_kursus_id', 2) // offline → tampil meskipun tanpa materi
+                    ->orWhereHas('semua_materi'); // online → wajib punya materi
+            })
             // search
             ->when($keyword, function ($q) use ($keyword) {
                 $q->where(function ($sub) use ($keyword) {
@@ -153,27 +156,38 @@ class KursusController extends Controller
             return redirect()->back()->with('gagal', 'Anda sudah terdaftar pada kursus ini, tidak perlu mendaftar lagi');
         }
 
-        $user_kursus_progres = UserKursusProgres::create([
-            'user_id' => auth()->user()->id,
-            'kursus_id' => $kursus->id,
-            'harus_selesai_tgl' => Carbon::now()->addDays($kursus->hari),
-        ]);
+        if ($kursus->kategori_kursus_id == 1) {
+            // pelatihan online
+            $user_kursus_progres = UserKursusProgres::create([
+                'user_id' => auth()->user()->id,
+                'kursus_id' => $kursus->id,
+                'harus_selesai_tgl' => Carbon::now()->addDays($kursus->hari),
+            ]);
 
-        $materiPertamaId = $kursus
-            ->bagian()
-            ->orderBy('id', 'asc')
-            ->first()
-            ?->materi()
-            ->orderBy('id', 'asc')
-            ->value('id');
+            $materiPertamaId = $kursus
+                ->bagian()
+                ->orderBy('id', 'asc')
+                ->first()
+                ?->materi()
+                ->orderBy('id', 'asc')
+                ->value('id');
 
-        KursusProgres::create([
-            'user_id' => auth()->user()->id,
-            'kursus_id' => $kursus->id,
-            'materi_id' => $materiPertamaId,
-            'user_kursus_progres_id' => $user_kursus_progres->id,
-        ]);
-        return redirect()->route('pelatihan.materi', $materiPertamaId);
+            KursusProgres::create([
+                'user_id' => auth()->user()->id,
+                'kursus_id' => $kursus->id,
+                'materi_id' => $materiPertamaId,
+                'user_kursus_progres_id' => $user_kursus_progres->id,
+            ]);
+            return redirect()->route('pelatihan.materi', $materiPertamaId);
+        } else {
+            // pelatihan offline
+            $user_kursus_progres = UserKursusProgres::create([
+                'user_id' => auth()->user()->id,
+                'kursus_id' => $kursus->id,
+            ]);
+
+            return redirect()->route('pelatihan.detail', $kursus->slug);
+        }
     }
 
     public function reset($slug)

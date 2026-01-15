@@ -19,58 +19,97 @@
                                         {{ Str::ucfirst($pelatihan->level) }}</span>
                                 </li>
 
-                                <li class="align-items-center justify-content-center list-inline-item mx-2">
-                                    <i class="uil uil-clock fs-5 text-dark title-dark align-middle"></i>
-                                    <span class="text-dark-50 ms-1">Waktu pengerjaan {{ $pelatihan->hari }}
-                                        Hari</span>
-                                </li>
+                                @if ($pelatihan->kategori_kursus_id == 1)
+                                    <li class="align-items-center justify-content-center list-inline-item mx-2">
+                                        <i class="uil uil-clock fs-5 text-dark title-dark align-middle"></i>
+                                        <span class="text-dark-50 ms-1">Waktu pengerjaan {{ $pelatihan->hari }}
+                                            Hari</span>
+                                    </li>
+                                @endif
 
                                 <li class="align-items-center justify-content-center list-inline-item mx-2">
                                     <i class="uil uil-book-reader fs-5 text-dark title-dark align-middle"></i>
                                     <span class="text-dark-50 ms-1">Di ikuti oleh {{ $jumlahpeserta }} peserta</span>
                                 </li>
+
+                                <li class="align-items-center justify-content-center list-inline-item mx-2">
+                                    <i class="uil uil-book fs-5 text-dark title-dark align-middle"></i>
+                                    <span
+                                        class="text-dark-50 ms-1">{{ $pelatihan->kategori_kursus_id == 1 ? 'Pelatihan Online' : 'Pelatihan Offline' }}</span>
+                                </li>
                             </ul>
 
-                            @if (isset($user_progress) && $user_progress->status == 'progres')
-                                <p>
-                                    Waktu anda tinggal: <span id="timer">Menghitung...</span>
-                                </p>
+                            @if ($pelatihan->kategori_kursus_id == 1)
+                                @if (isset($user_progress) && $user_progress->status == 'progres')
+                                    <p>
+                                        Waktu anda tinggal: <span id="timer">Menghitung...</span>
+                                    </p>
+                                @endif
                             @endif
+
                             @if (!auth()->check())
                                 {{-- User belum login --}}
-                                <a class="btn btn-dark btn-daftar-pelatihan" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}">
+                                <a class="btn btn-dark btn-daftar-pelatihan"
+                                    href="{{ route('pelatihan.daftar', $pelatihan->slug) }}">
                                     Belajar Sekarang
                                 </a>
                             @elseif (!$user_progress)
                                 {{-- User login tetapi belum mendaftar kursus --}}
-                                <a class="btn btn-dark btn-daftar-pelatihan" href="{{ route('pelatihan.daftar', $pelatihan->slug) }}">
+                                <a class="btn btn-dark btn-daftar-pelatihan"
+                                    href="{{ route('pelatihan.daftar', $pelatihan->slug) }}">
                                     Belajar Sekarang
                                 </a>
                             @else
-                                {{-- User sudah mulai kursus --}}
-                                @if ($user_progress->status == 'do')
-                                    <a class="btn btn-danger btn-reset-pelatihan" href="{{ route('pelatihan.reset', $pelatihan->slug) }}">
-                                        Anda sudah dinyatakan 'DO', mulai lagi?
-                                    </a>
-                                @elseif ($next_materi)
-                                    <a class="btn btn-success" href="{{ route('pelatihan.materi', $next_materi->id) }}">
-                                        Lanjutkan Materi: {{ $next_materi->judul }}
-                                    </a>
-                                @else
-                                    <span class="badge bg-soft-success text-success fs-6 py-2 px-3 me-2">
-                                        <i class="uil uil-check-circle me-1"></i> Semua materi telah selesai
-                                    </span>
-                                    @php
-                                        $materiPertama = $pelatihan->bagian->sortBy('urutan')->first()?->materi->sortBy('urutan')->first();
-                                    @endphp
-                                    @if($materiPertama)
-                                        <a class="btn btn-outline-success" href="{{ route('pelatihan.materi', $materiPertama->id) }}">
-                                            <i class="uil uil-book-open me-1"></i> Review Materi
+                                @if ($pelatihan->kategori_kursus_id == 1)
+                                    {{-- User sudah mulai kursus --}}
+                                    @if ($user_progress->status == 'do')
+                                        <a class="btn btn-danger btn-reset-pelatihan"
+                                            href="{{ route('pelatihan.reset', $pelatihan->slug) }}">
+                                            Anda sudah dinyatakan 'DO', mulai lagi?
+                                        </a>
+                                    @elseif ($next_materi)
+                                        <a class="btn btn-success"
+                                            href="{{ route('pelatihan.materi', $next_materi->id) }}">
+                                            Lanjutkan Materi: {{ $next_materi->judul }}
+                                        </a>
+                                    @else
+                                        <span class="badge bg-soft-success text-success fs-6 py-2 px-3 me-2">
+                                            <i class="uil uil-check-circle me-1"></i> Semua materi telah selesai
+                                        </span>
+                                        @php
+                                            $materiPertama = $pelatihan->bagian
+                                                ->sortBy('urutan')
+                                                ->first()
+                                                ?->materi->sortBy('urutan')
+                                                ->first();
+                                        @endphp
+                                        @if ($materiPertama)
+                                            <a class="btn btn-outline-success"
+                                                href="{{ route('pelatihan.materi', $materiPertama->id) }}">
+                                                <i class="uil uil-book-open me-1"></i> Review Materi
+                                            </a>
+                                        @endif
+                                        <a class="btn btn-outline-primary ms-2" href="{{ route('pelatihan') }}">
+                                            Lihat Pelatihan Lainnya
                                         </a>
                                     @endif
-                                    <a class="btn btn-outline-primary ms-2" href="{{ route('pelatihan') }}">
-                                        Lihat Pelatihan Lainnya
-                                    </a>
+                                @else
+                                    @if ($user_progress->status == 'do')
+                                        <button class="btn btn-danger" href="#" disabled>
+                                            Pelatihan selesai, anda dinyatakan tidak lulus
+                                        </button>
+                                    @elseif ($user_progress->status == 'progres')
+                                        <button class="btn btn-warning" href="#" disabled>
+                                            Anda sudah terdaftar
+                                        </button>
+                                    @else
+                                        <span class="badge bg-soft-success text-success fs-6 py-2 px-3 me-2">
+                                            <i class="uil uil-check-circle me-1"></i> Pelatihan telah selesai
+                                        </span>
+                                        <a class="btn btn-outline-primary ms-2" href="{{ route('pelatihan') }}">
+                                            Lihat Pelatihan Lainnya
+                                        </a>
+                                    @endif
                                 @endif
                             @endif
 
@@ -180,7 +219,7 @@
 @if (isset($user_progress))
     <script>
         // ini buat timer
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             // Tentukan durasi berdasarkan status
             const waktuPelunasan = new Date("{{ $user_progress->harus_selesai_tgl }}");
 
@@ -212,51 +251,50 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Daftar Pelatihan confirmation
-    document.querySelectorAll('.btn-daftar-pelatihan').forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            var href = this.getAttribute('href');
-            Swal.fire({
-                title: 'Daftar Pelatihan?',
-                html: '<p>Apakah anda yakin ingin mengikuti pelatihan ini?</p>' +
-                      '<p class="text-muted small">Anda akan memiliki waktu {{ $pelatihan->hari }} hari untuk menyelesaikan pelatihan.</p>',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#28a745',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, Daftar!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = href;
-                }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Daftar Pelatihan confirmation
+        document.querySelectorAll('.btn-daftar-pelatihan').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var href = this.getAttribute('href');
+                Swal.fire({
+                    title: 'Daftar Pelatihan?',
+                    html: '<p>Apakah anda yakin ingin mengikuti pelatihan ini?</p>',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Daftar!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = href;
+                    }
+                });
             });
         });
-    });
 
-    // Reset Pelatihan (DO) confirmation
-    document.querySelectorAll('.btn-reset-pelatihan').forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            var href = this.getAttribute('href');
-            Swal.fire({
-                title: 'Mulai Ulang Pelatihan?',
-                html: '<p>Apakah anda yakin ingin memulai kembali pelatihan ini?</p>' +
-                      '<p class="text-warning"><strong>⚠️ Perhatian:</strong> Progress sebelumnya akan direset.</p>',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, Mulai Ulang!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = href;
-                }
+        // Reset Pelatihan (DO) confirmation
+        document.querySelectorAll('.btn-reset-pelatihan').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var href = this.getAttribute('href');
+                Swal.fire({
+                    title: 'Mulai Ulang Pelatihan?',
+                    html: '<p>Apakah anda yakin ingin memulai kembali pelatihan ini?</p>' +
+                        '<p class="text-warning"><strong>⚠️ Perhatian:</strong> Progress sebelumnya akan direset.</p>',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Mulai Ulang!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = href;
+                    }
+                });
             });
         });
     });
-});
 </script>

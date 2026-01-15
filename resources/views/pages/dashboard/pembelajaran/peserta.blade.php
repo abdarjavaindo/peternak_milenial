@@ -8,7 +8,9 @@
     </nav>
 
     <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-        <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('bagian', $kursus->id) }}">Section</a>
+        @if ($kursus->kategori_kursus_id == 1)
+            <a class="flex-sm-fill text-sm-center nav-link" href="{{ route('bagian', $kursus->id) }}">Section</a>
+        @endif
         <a class="flex-sm-fill text-sm-center nav-link active" href="{{ route('peserta', $kursus->id) }}">Peserta</a>
     </nav>
 
@@ -66,7 +68,7 @@
                 data: 'nama'
             },
             {
-                data: 'status'
+                data: 'status_now'
             },
             {
                 data: 'harus_selesai_tgl'
@@ -104,6 +106,70 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 form.submit();
+            }
+        });
+    });
+
+    $(document).on('click', '.lulus-button', function(e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        Swal.fire({
+            title: 'Nyatakan Lulus?',
+            html: '<p>Apakah anda yakin ingin meluluskan peserta ini?</p>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+
+    $(document).on('click', '.batal-lulus-button', function(e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        Swal.fire({
+            title: 'Batalkan kelulusan?',
+            html: '<p>Apakah anda yakin ingin membatalkan kelulusan peserta ini?</p>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+
+    $(document).on('click', '.do-button', function(e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        Swal.fire({
+            title: 'Nyatakan keluar?',
+            html: '<p>Apakah anda yakin ingin mengeluarkan peserta ini?</p>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+
+    $(document).on('click', '.batal-do-button', function(e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        Swal.fire({
+            title: 'Batal Mengeluarkan Peserta?',
+            html: '<p>Apakah anda yakin ingin batalkan mengeluarkan paserta?</p>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
             }
         });
     });
