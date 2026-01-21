@@ -20,11 +20,21 @@ Pass: password
 
 ```
 
+## Technologies used
+-   Laravel Framework 10.48.11
+-   Laravel/breeze 1.29.1
+-   Yajra/laravel-datatables 10.1.0
+-   Spatie/laravel-permission 6.7.0
+-   Bootstrap 5.3.0
+-   Landrick template 4.4.0
+-   Portal theme template 1.0.0
+
 ## Prerequisites
 
 -   PHP 8.1 ke atas
 -   Node 14.16
 -   Composer 2.7
+-   Mysql 5.7 keatas
 
 ## Installation
 
