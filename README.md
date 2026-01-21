@@ -22,7 +22,7 @@ Pass: password
 
 ## Prerequisites
 
--   PHP 8.1
+-   PHP 8.1 ke atas
 -   Node 14.16
 -   Composer 2.7
 
