@@ -65,5 +65,3 @@ _After creating the new permissions use the following commands to update cashed 
 -   Cronjob = http://peternak-milenial.test/run-course-checker?token=NnbQGG6KBptT2001
 
 ## Yang perlu dibenahi
-
--   Peta jatim dengan jumlah komuditasnya (menyusul) > pendukung
