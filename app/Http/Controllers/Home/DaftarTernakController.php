@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kategori_produk;
 use App\Models\User;
 use App\Models\UserTernak;
+use App\Models\WilayahKomuditas;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -60,6 +61,34 @@ class DaftarTernakController extends Controller
             'jumlah' => str_replace('.', '', $request->jumlah),
         ]);
         $this->hitungLevelUser(auth()->user());
+
+        $wilayah_komuditas = WilayahKomuditas::where('kabupaten', auth()->user()->kabupaten)->first();
+        if ($kategori_produk->id == '1') {
+            $wilayah_komuditas->jml_sapi_potong = $wilayah_komuditas->jml_sapi_potong + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '2') {
+            $wilayah_komuditas->jml_sapi_perah = $wilayah_komuditas->jml_sapi_perah + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '3') {
+            $wilayah_komuditas->jml_kerbau = $wilayah_komuditas->jml_kerbau + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '4') {
+            $wilayah_komuditas->jml_dombakambing = $wilayah_komuditas->jml_dombakambing + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '5') {
+            $wilayah_komuditas->jml_babi = $wilayah_komuditas->jml_babi + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '6') {
+            $wilayah_komuditas->jml_ayam_petelur = $wilayah_komuditas->jml_ayam_petelur + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '7') {
+            $wilayah_komuditas->jml_ayam_pedaging = $wilayah_komuditas->jml_ayam_pedaging + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '8') {
+            $wilayah_komuditas->jml_burung_puyuh = $wilayah_komuditas->jml_burung_puyuh + str_replace('.', '', $request->jumlah);
+        }
+        $wilayah_komuditas->save();
+
         return redirect()->route('ternak')->with('sukses', 'Anda berhasil menambahkan data');
     }
 
@@ -80,6 +109,43 @@ class DaftarTernakController extends Controller
             'jumlah' => str_replace('.', '', $request->jumlah),
         ]);
         $this->hitungLevelUser(auth()->user());
+        $wilayah_komuditas = WilayahKomuditas::where('kabupaten', auth()->user()->kabupaten)->first();
+        if ($wilayah_komuditas) {
+            if ($ternak->kategori_produk_id == '1') {
+                $wilayah_komuditas->jml_sapi_potong = $wilayah_komuditas->jml_sapi_potong - $ternak->jumlah;
+                $wilayah_komuditas->jml_sapi_potong = $wilayah_komuditas->jml_sapi_potong + $request->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '2') {
+                $wilayah_komuditas->jml_sapi_perah = $wilayah_komuditas->jml_sapi_perah - $ternak->jumlah;
+                $wilayah_komuditas->jml_sapi_perah = $wilayah_komuditas->jml_sapi_perah + $request->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '3') {
+                $wilayah_komuditas->jml_kerbau = $wilayah_komuditas->jml_kerbau - $ternak->jumlah;
+                $wilayah_komuditas->jml_kerbau = $wilayah_komuditas->jml_kerbau + $request->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '4') {
+                $wilayah_komuditas->jml_dombakambing = $wilayah_komuditas->jml_dombakambing - $ternak->jumlah;
+                $wilayah_komuditas->jml_dombakambing = $wilayah_komuditas->jml_dombakambing + $request->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '5') {
+                $wilayah_komuditas->jml_babi = $wilayah_komuditas->jml_babi - $ternak->jumlah;
+                $wilayah_komuditas->jml_babi = $wilayah_komuditas->jml_babi + $request->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '6') {
+                $wilayah_komuditas->jml_ayam_petelur = $wilayah_komuditas->jml_ayam_petelur - $ternak->jumlah;
+                $wilayah_komuditas->jml_ayam_petelur = $wilayah_komuditas->jml_ayam_petelur + $request->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '7') {
+                $wilayah_komuditas->jml_ayam_pedaging = $wilayah_komuditas->jml_ayam_pedaging - $ternak->jumlah;
+                $wilayah_komuditas->jml_ayam_pedaging = $wilayah_komuditas->jml_ayam_pedaging + $request->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '8') {
+                $wilayah_komuditas->jml_burung_puyuh = $wilayah_komuditas->jml_burung_puyuh - $ternak->jumlah;
+                $wilayah_komuditas->jml_burung_puyuh = $wilayah_komuditas->jml_burung_puyuh + $request->jumlah;
+            }
+            $wilayah_komuditas->save();
+        }
+
         return redirect()->route('ternak')->with('sukses', 'Anda berhasil mengubah data');
     }
 
@@ -88,6 +154,36 @@ class DaftarTernakController extends Controller
         if ($ternak->user_id != auth()->user()->id) {
             return redirect()->route('ternak');
         }
+
+        $wilayah_komuditas = WilayahKomuditas::where('kabupaten', auth()->user()->kabupaten)->first();
+        if ($wilayah_komuditas) {
+            if ($ternak->kategori_produk_id == '1') {
+                $wilayah_komuditas->jml_sapi_potong = $wilayah_komuditas->jml_sapi_potong - $ternak->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '2') {
+                $wilayah_komuditas->jml_sapi_perah = $wilayah_komuditas->jml_sapi_perah - $ternak->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '3') {
+                $wilayah_komuditas->jml_kerbau = $wilayah_komuditas->jml_kerbau - $ternak->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '4') {
+                $wilayah_komuditas->jml_dombakambing = $wilayah_komuditas->jml_dombakambing - $ternak->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '5') {
+                $wilayah_komuditas->jml_babi = $wilayah_komuditas->jml_babi - $ternak->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '6') {
+                $wilayah_komuditas->jml_ayam_petelur = $wilayah_komuditas->jml_ayam_petelur - $ternak->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '7') {
+                $wilayah_komuditas->jml_ayam_pedaging = $wilayah_komuditas->jml_ayam_pedaging - $ternak->jumlah;
+            }
+            if ($ternak->kategori_produk_id == '8') {
+                $wilayah_komuditas->jml_burung_puyuh = $wilayah_komuditas->jml_burung_puyuh - $ternak->jumlah;
+            }
+            $wilayah_komuditas->save();
+        }
+
         $ternak->delete();
         $this->hitungLevelUser(auth()->user());
         return redirect()->route('ternak')->with('sukses', 'Anda menghapus data');

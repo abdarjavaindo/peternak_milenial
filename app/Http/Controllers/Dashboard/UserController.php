@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kategori_produk;
 use App\Models\User;
 use App\Models\UserTernak;
+use App\Models\WilayahKomuditas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -134,13 +135,77 @@ class UserController extends Controller
         ]);
         $this->hitungLevelUser($admin);
 
+        $wilayah_komuditas = WilayahKomuditas::where('kabupaten', $request->kabupaten)->first();
+        if ($kategori_produk->id == '1') {
+            $wilayah_komuditas->jml_sapi_potong = $wilayah_komuditas->jml_sapi_potong + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '2') {
+            $wilayah_komuditas->jml_sapi_perah = $wilayah_komuditas->jml_sapi_perah + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '3') {
+            $wilayah_komuditas->jml_kerbau = $wilayah_komuditas->jml_kerbau + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '4') {
+            $wilayah_komuditas->jml_dombakambing = $wilayah_komuditas->jml_dombakambing + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '5') {
+            $wilayah_komuditas->jml_babi = $wilayah_komuditas->jml_babi + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '6') {
+            $wilayah_komuditas->jml_ayam_petelur = $wilayah_komuditas->jml_ayam_petelur + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '7') {
+            $wilayah_komuditas->jml_ayam_pedaging = $wilayah_komuditas->jml_ayam_pedaging + str_replace('.', '', $request->jumlah);
+        }
+        if ($kategori_produk->id == '8') {
+            $wilayah_komuditas->jml_burung_puyuh = $wilayah_komuditas->jml_burung_puyuh + str_replace('.', '', $request->jumlah);
+        }
+        $wilayah_komuditas->save();
+
         return redirect()->route('user')->with('sukses', 'Anda berhasil menambahkan data user');
     }
 
     public function destroy(User $user)
     {
-        $user->delete();
-        return redirect()->route('user')->with('sukses', 'Anda berhasil menghapus data');
+        DB::transaction(function () use ($user) {
+            // Ambil wilayah sesuai kabupaten user
+            $wilayah = WilayahKomuditas::where(
+                'kabupaten',
+                $user->kabupaten
+            )->first();
+            if ($wilayah) {
+                // Mapping kategori ke kolom wilayah
+                $mapKolom = [
+                    1 => 'jml_sapi_potong',
+                    2 => 'jml_sapi_perah',
+                    3 => 'jml_kerbau',
+                    4 => 'jml_dombakambing',
+                    5 => 'jml_babi',
+                    6 => 'jml_ayam_petelur',
+                    7 => 'jml_ayam_pedaging',
+                    8 => 'jml_burung_puyuh',
+                ];
+                // Ambil SEMUA ternak milik user
+                $userTernaks = UserTernak::where('user_id', $user->id)->get();
+                foreach ($userTernaks as $ternak) {
+                    if (isset($mapKolom[$ternak->kategori_produk_id])) {
+                        $kolom = $mapKolom[$ternak->kategori_produk_id];
+                        $wilayah->$kolom -= (int) $ternak->jumlah;
+                        // optional safety
+                        if ($wilayah->$kolom < 0) {
+                            $wilayah->$kolom = 0;
+                        }
+                    }
+                }
+                $wilayah->save();
+            }
+            // Hapus user (user_ternaks ikut terhapus karena cascade)
+            $user->delete();
+        });
+
+        return redirect()
+            ->route('user')
+            ->with('sukses', 'Anda berhasil menghapus data user');
     }
 
     public function edit(User $user)
@@ -199,26 +264,74 @@ class UserController extends Controller
             return redirect()->back()->with('gagal', 'Umur harus antara 19 sampai 39 tahun.');
         }
 
-        $data = [
-            'name' => $request->name,
-            'nik' => $request->nik,
-        ];
-        $data = [
-            'name' => $request->name,
-            'nik' => $request->nik,
-            'no_telp' => $request->no_telp,
-            'kabupaten' => $request->kabupaten,
-            'kecamatan' => $request->kecamatan,
-            'desa' => $request->desa,
-            'tgl_lahir' => $request->tgl_lahir,
-        ];
-        if ($request->hasFile('img_ktp')) {
-            $data['img_ktp'] = $request->file('img_ktp')->store('ktp', 'public');
-        }
-        if ($request->password) {
-            $data['password'] = Hash::make($request->password);
-        }
-        User::where('id', $user->id)->update($data);
+        DB::transaction(function () use ($request, $user) {
+            $kabupatenLama = $user->kabupaten;
+            $kabupatenBaru = $request->kabupaten;
+
+            $data = [
+                'name' => $request->name,
+                'nik' => $request->nik,
+                'no_telp' => $request->no_telp,
+                'kabupaten' => $request->kabupaten,
+                'kecamatan' => $request->kecamatan,
+                'desa' => $request->desa,
+                'tgl_lahir' => $request->tgl_lahir,
+            ];
+            if ($request->hasFile('img_ktp')) {
+                $data['img_ktp'] = $request->file('img_ktp')->store('ktp', 'public');
+            }
+            if ($request->password) {
+                $data['password'] = Hash::make($request->password);
+            }
+            User::where('id', $user->id)->update($data);
+
+            // =========================
+            // Jika kabupaten berubah
+            // =========================
+            if ($kabupatenLama !== $kabupatenBaru) {
+                $mapKolom = [
+                    1 => 'jml_sapi_potong',
+                    2 => 'jml_sapi_perah',
+                    3 => 'jml_kerbau',
+                    4 => 'jml_dombakambing',
+                    5 => 'jml_babi',
+                    6 => 'jml_ayam_petelur',
+                    7 => 'jml_ayam_pedaging',
+                    8 => 'jml_burung_puyuh',
+                ];
+
+                $wilayahLama = WilayahKomuditas::where('kabupaten', $kabupatenLama)->first();
+                $wilayahBaru = WilayahKomuditas::where('kabupaten', $kabupatenBaru)->first();
+
+                $userTernaks = UserTernak::where('user_id', $user->id)->get();
+
+                foreach ($userTernaks as $ternak) {
+                    if (!isset($mapKolom[$ternak->kategori_produk_id])) {
+                        continue;
+                    }
+
+                    $kolom = $mapKolom[$ternak->kategori_produk_id];
+                    $jumlah = (int) $ternak->jumlah;
+
+                    // Kurangi wilayah lama
+                    if ($wilayahLama) {
+                        $wilayahLama->$kolom -= $jumlah;
+                        if ($wilayahLama->$kolom < 0) {
+                            $wilayahLama->$kolom = 0;
+                        }
+                    }
+
+                    // Tambah wilayah baru
+                    if ($wilayahBaru) {
+                        $wilayahBaru->$kolom += $jumlah;
+                    }
+                }
+
+                if ($wilayahLama) $wilayahLama->save();
+                if ($wilayahBaru) $wilayahBaru->save();
+            }
+        });
+
         return redirect()->route('user')->with('sukses', 'Anda berhasil memperbarui data');
     }
 

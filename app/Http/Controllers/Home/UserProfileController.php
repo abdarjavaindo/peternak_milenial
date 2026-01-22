@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
+use App\Models\UserTernak;
+use App\Models\WilayahKomuditas;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +66,45 @@ class UserProfileController extends Controller
             'gambar' => 'mimes:jpg,jpeg,png|max:11000',
         ]);
         $user = User::where('id', auth()->user()->id)->first();
+
+        $kabupatenLama = $user->kabupaten;
+        $kabupatenBaru = $request->kabupaten;
+        if ($kabupatenLama !== $kabupatenBaru) {
+            $mapKolom = [
+                1 => 'jml_sapi_potong',
+                2 => 'jml_sapi_perah',
+                3 => 'jml_kerbau',
+                4 => 'jml_dombakambing',
+                5 => 'jml_babi',
+                6 => 'jml_ayam_petelur',
+                7 => 'jml_ayam_pedaging',
+                8 => 'jml_burung_puyuh',
+            ];
+            $wilayahLama = WilayahKomuditas::where('kabupaten', $kabupatenLama)->first();
+            $wilayahBaru = WilayahKomuditas::where('kabupaten', $kabupatenBaru)->first();
+            $userTernaks = UserTernak::where('user_id', $user->id)->get();
+            foreach ($userTernaks as $ternak) {
+                if (!isset($mapKolom[$ternak->kategori_produk_id])) {
+                    continue;
+                }
+                $kolom = $mapKolom[$ternak->kategori_produk_id];
+                $jumlah = (int) $ternak->jumlah;
+                // Kurangi wilayah lama
+                if ($wilayahLama) {
+                    $wilayahLama->$kolom -= $jumlah;
+                    if ($wilayahLama->$kolom < 0) {
+                        $wilayahLama->$kolom = 0;
+                    }
+                }
+                // Tambah wilayah baru
+                if ($wilayahBaru) {
+                    $wilayahBaru->$kolom += $jumlah;
+                }
+            }
+            if ($wilayahLama) $wilayahLama->save();
+            if ($wilayahBaru) $wilayahBaru->save();
+        }
+
         $user->email = $request->email;
         $user->no_telp = $request->no_telp;
         $user->name = $request->name;

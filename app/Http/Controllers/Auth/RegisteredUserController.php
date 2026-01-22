@@ -178,6 +178,35 @@ class RegisteredUserController extends Controller
         ]);
         $this->hitungLevelUser($user);
 
+        $wilayah_komuditas = WilayahKomuditas::where('kabupaten', $kabupaten->nama)->first();
+        if ($wilayah_komuditas) {
+            if ($kategori_produk->id == '1') {
+                $wilayah_komuditas->jml_sapi_potong = $wilayah_komuditas->jml_sapi_potong + str_replace('.', '', $request->jumlah);
+            }
+            if ($kategori_produk->id == '2') {
+                $wilayah_komuditas->jml_sapi_perah = $wilayah_komuditas->jml_sapi_perah + str_replace('.', '', $request->jumlah);
+            }
+            if ($kategori_produk->id == '3') {
+                $wilayah_komuditas->jml_kerbau = $wilayah_komuditas->jml_kerbau + str_replace('.', '', $request->jumlah);
+            }
+            if ($kategori_produk->id == '4') {
+                $wilayah_komuditas->jml_dombakambing = $wilayah_komuditas->jml_dombakambing + str_replace('.', '', $request->jumlah);
+            }
+            if ($kategori_produk->id == '5') {
+                $wilayah_komuditas->jml_babi = $wilayah_komuditas->jml_babi + str_replace('.', '', $request->jumlah);
+            }
+            if ($kategori_produk->id == '6') {
+                $wilayah_komuditas->jml_ayam_petelur = $wilayah_komuditas->jml_ayam_petelur + str_replace('.', '', $request->jumlah);
+            }
+            if ($kategori_produk->id == '7') {
+                $wilayah_komuditas->jml_ayam_pedaging = $wilayah_komuditas->jml_ayam_pedaging + str_replace('.', '', $request->jumlah);
+            }
+            if ($kategori_produk->id == '8') {
+                $wilayah_komuditas->jml_burung_puyuh = $wilayah_komuditas->jml_burung_puyuh + str_replace('.', '', $request->jumlah);
+            }
+            $wilayah_komuditas->save();
+        }
+
         return redirect()->route('tokoku');
     }
 }
