@@ -172,7 +172,7 @@
                                             {{-- User already passed --}}
                                             <div class="alert alert-success">
                                                 <i class="uil uil-check-circle me-1"></i>
-                                                <strong>Selamat!</strong> Anda sudah lulus postest ini dengan nilai
+                                                <strong>Selamat!</strong> Anda sudah lulus post-test ini dengan nilai
                                                 <strong>{{ $existingAttempt->nilai }}</strong>
                                             </div>
                                             <a href="{{ route('postest.hasil', $existingAttempt) }}"
@@ -183,12 +183,12 @@
                                             {{-- User failed, can retry --}}
                                             <div class="alert alert-warning">
                                                 <i class="uil uil-exclamation-triangle me-1"></i>
-                                                Anda belum lulus postest ini. Nilai terakhir:
+                                                Anda belum lulus post-test ini. Nilai terakhir:
                                                 <strong>{{ $existingAttempt->nilai }}</strong>
                                             </div>
                                             <a href="{{ route('postest.mulai', $kursus_materi) }}"
                                                 class="btn btn-warning btn-lg">
-                                                <i class="uil uil-redo me-1"></i> Ulangi Postest
+                                                <i class="uil uil-redo me-1"></i> Ulangi Post-test
                                             </a>
                                             <a href="{{ route('postest.hasil', $existingAttempt) }}"
                                                 class="btn btn-outline-secondary">
@@ -198,12 +198,12 @@
                                             {{-- User has in-progress attempt --}}
                                             <div class="alert alert-info">
                                                 <i class="uil uil-clock me-1"></i>
-                                                Anda memiliki postest yang belum selesai. Lanjutkan untuk
+                                                Anda memiliki post-test yang belum selesai. Lanjutkan untuk
                                                 menyelesaikannya.
                                             </div>
                                             <a href="{{ route('postest.soal', [$inProgressAttempt, 1]) }}"
                                                 class="btn btn-info btn-lg">
-                                                <i class="uil uil-arrow-right me-1"></i> Lanjutkan Postest
+                                                <i class="uil uil-arrow-right me-1"></i> Lanjutkan Post-test
                                             </a>
                                         @else
                                             {{-- First time taking postest --}}

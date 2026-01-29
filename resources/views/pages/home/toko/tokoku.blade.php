@@ -24,7 +24,7 @@
 
                             <!-- Categories -->
                             <div class="widget pt-2">
-                                <h5 class="widget-title">Komuditas</h5>
+                                <h5 class="widget-title">Komoditas</h5>
                                 <ul class="list-unstyled mt-4 mb-0 blog-categories">
                                     @foreach ($kategori_produk as $item)
                                         <li>

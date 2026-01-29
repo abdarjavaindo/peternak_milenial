@@ -3,8 +3,8 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
             <li class="breadcrumb-item"><a href="{{ route('bagian', $materi->bagian->kursus->id) }}">Section</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('materi', $materi->bagian->id) }}">Materi dan Postest</a></li>
-            <li class="breadcrumb-item active">Hasil Postest</li>
+            <li class="breadcrumb-item"><a href="{{ route('materi', $materi->bagian->id) }}">Materi dan Post-test</a></li>
+            <li class="breadcrumb-item active">Hasil Post-test</li>
         </ol>
     </nav>
 
@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-description">
-                        <h5 class="mb-0">Hasil Postest: {{ $materi->judul }}</h5>
+                        <h5 class="mb-0">Hasil Post-test: {{ $materi->judul }}</h5>
                         <p class="text-muted">
                             KKM: {{ $materi->nilai_lulus_postest ?? 70 }} |
                             Durasi: {{ $materi->durasi_postest ?? '-' }} menit
@@ -79,40 +79,40 @@
             }
         },
         columns: [{
-            data: 'DT_RowIndex'
-        },
-        {
-            data: 'nama_user'
-        },
-        {
-            data: 'email'
-        },
-        {
-            data: 'nilai_format',
-            className: 'text-center'
-        },
-        {
-            data: 'status_format',
-            className: 'text-center',
-            orderable: false
-        },
-        {
-            data: 'waktu',
-            className: 'text-center'
-        },
-        {
-            data: 'tgl_ujian',
-            className: 'text-center'
-        },
-        {
-            data: 'aksi',
-            className: 'text-center',
-            orderable: false,
-            searchable: false
-        }
+                data: 'DT_RowIndex'
+            },
+            {
+                data: 'nama_user'
+            },
+            {
+                data: 'email'
+            },
+            {
+                data: 'nilai_format',
+                className: 'text-center'
+            },
+            {
+                data: 'status_format',
+                className: 'text-center',
+                orderable: false
+            },
+            {
+                data: 'waktu',
+                className: 'text-center'
+            },
+            {
+                data: 'tgl_ujian',
+                className: 'text-center'
+            },
+            {
+                data: 'aksi',
+                className: 'text-center',
+                orderable: false,
+                searchable: false
+            }
         ],
         language: {
-            emptyTable: 'Belum ada peserta yang mengerjakan postest ini',
+            emptyTable: 'Belum ada peserta yang mengerjakan post-test ini',
             zeroRecords: 'Data Tidak Ditemukan'
         },
         columnDefs: [{
@@ -121,13 +121,13 @@
         }],
     });
 
-    $(document).on('click', '.delete-button', function (e) {
+    $(document).on('click', '.delete-button', function(e) {
         e.preventDefault();
         var form = $(this).closest('form');
         Swal.fire({
-            title: 'Hapus Hasil Postest?',
-            html: '<p>Apakah Anda yakin ingin menghapus hasil postest ini?</p>' +
-                '<p class="text-warning"><strong>ℹ️ Info:</strong> User akan dapat mengulang postest.</p>',
+            title: 'Hapus Hasil Post-test?',
+            html: '<p>Apakah Anda yakin ingin menghapus hasil post-test ini?</p>' +
+                '<p class="text-warning"><strong>ℹ️ Info:</strong> User akan dapat mengulang post-test.</p>',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',

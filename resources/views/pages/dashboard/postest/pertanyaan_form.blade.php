@@ -12,7 +12,7 @@
                 </li>
                 <li class="breadcrumb-item">
                     <a href="{{ route('materi', $pertanyaan->materi->bagian->id) }}">
-                        Materi dan Postest
+                        Materi dan Post-test
                     </a>
                 </li>
                 <li class="breadcrumb-item">

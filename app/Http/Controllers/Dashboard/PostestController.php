@@ -35,7 +35,7 @@ class PostestController extends Controller
     public function pertanyaan(KursusMateri $materi)
     {
         if ($materi->jenis == 'materi') {
-            return redirect()->route('materi.edit', $materi->id)->with('gagal', 'Ini bukan postest, anda tidak bisa menambahkan pertanyaan');
+            return redirect()->route('materi.edit', $materi->id)->with('gagal', 'Ini bukan post-test, anda tidak bisa menambahkan pertanyaan');
         }
         return view('pages.dashboard.postest.pertanyaan', compact('materi'));
     }
@@ -211,7 +211,7 @@ class PostestController extends Controller
     public function hasil(KursusMateri $materi)
     {
         if ($materi->jenis !== 'postest') {
-            return redirect()->back()->with('gagal', 'Ini bukan postest');
+            return redirect()->back()->with('gagal', 'Ini bukan post-test');
         }
         return view('pages.dashboard.postest.hasil', compact('materi'));
     }
@@ -246,7 +246,7 @@ class PostestController extends Controller
             'materi_judul' => $materiJudul,
         ]);
 
-        return redirect()->back()->with('sukses', 'Data hasil postest berhasil dihapus, user dapat mengulang');
+        return redirect()->back()->with('sukses', 'Data hasil post-test berhasil dihapus, user dapat mengulang');
     }
 
     // #endregion

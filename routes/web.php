@@ -237,7 +237,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('user')->group(fun
     Route::delete('/{user}', [UserController::class, 'destroy'])->name('user.destroy');
     Route::get('/level/{user}', [UserController::class, 'level'])->name('user.level');
     Route::post('/level/{user}', [UserController::class, 'levelstore'])->name('user.levelstore');
-    // komuditas
+    // Komoditas
     // Route::get('/komuditas/{user}', [UserController::class, 'komuditas'])->name('user.komuditas');
 });
 

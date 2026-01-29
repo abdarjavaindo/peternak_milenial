@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">{{ isset($kategori_produk) ? 'Edit' : 'Tambah' }} Komuditas</h1>
+    <h1 class="app-page-title">{{ isset($kategori_produk) ? 'Edit' : 'Tambah' }} Komoditas</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -35,7 +35,7 @@
 
                         <div class="mb-3">
                             <label for="nama_kategori" class="form-label">
-                                Nama Komuditas
+                                Nama Komoditas
                                 <span class="text-danger"><i>(required)</i></span>
                             </label>
                             <input type="text" class="form-control" id="nama_kategori" name="nama_kategori"

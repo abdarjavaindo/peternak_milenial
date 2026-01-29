@@ -480,7 +480,7 @@
             <div class="row justify-content-center">
                 <div class="col-12 mb-0 content-head">
                     <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-3">
-                        <strong>Peta Komuditas di Jawa Timur</strong>
+                        <strong>Peta Komoditas di Jawa Timur</strong>
                     </h3>
                 </div>
             </div>

@@ -262,7 +262,7 @@ class PembelajaranController extends Controller
             'postest_deleted_count' => $postestCount,
         ]);
 
-        return redirect()->back()->with('sukses', 'Anda berhasil menghapus data kepesertaan lengkap (progress, postest, dan jawaban)');
+        return redirect()->back()->with('sukses', 'Anda berhasil menghapus data kepesertaan lengkap (progress, post-test, dan jawaban)');
     }
 
     public function peserta_lulus(Kursus $kursus, User $user)
@@ -314,7 +314,7 @@ class PembelajaranController extends Controller
                     </form>';
 
                 return $deleteForm . ' <a href="' . $editUrl . '" class="btn btn-sm btn-warning mb-1 btn-icon"><i class="fa fa-edit"></i></a>'
-                    . ' <a href="' . $materi . '" class="badge bg-success text-white mb-1 btn-icon">materi dan postest</a>';
+                    . ' <a href="' . $materi . '" class="badge bg-success text-white mb-1 btn-icon">materi dan post-test</a>';
             })
             ->addIndexColumn()
             ->rawColumns(['aksi'])
@@ -372,7 +372,7 @@ class PembelajaranController extends Controller
             return redirect()->back()->with(
                 'gagal',
                 "Tidak dapat menghapus bagian \"{$bagian->judul}\" " .
-                    "karena ada data postest peserta. " .
+                    "karena ada data post-test peserta. " .
                     "Hapus peserta terlebih dahulu."
             );
         }
@@ -461,7 +461,7 @@ class PembelajaranController extends Controller
             return redirect()->back()->with(
                 'gagal',
                 "Tidak dapat menghapus materi \"{$materi->judul}\" " .
-                    "karena ada data postest peserta."
+                    "karena ada data post-test peserta."
             );
         }
 

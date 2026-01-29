@@ -32,7 +32,7 @@
                             <div class="widget pt-2">
                                 <h5 class="widget-title d-flex justify-content-between align-items-center cursor-pointer"
                                     onclick="toggleKategori(this)">
-                                    Komuditas
+                                    Komoditas
                                     <i
                                         class="uil uil-angle-down category-arrow {{ isset($current_kategori) ? 'rotate' : '' }}"></i>
                                 </h5>

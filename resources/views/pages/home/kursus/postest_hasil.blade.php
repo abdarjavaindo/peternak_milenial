@@ -121,7 +121,7 @@
                             @if ($attempt->status !== 'lulus')
                                 <div class="mt-3">
                                     <a href="{{ route('postest.mulai', $materi) }}" class="btn btn-warning">
-                                        <i class="uil uil-redo me-1"></i> Ulangi Postest
+                                        <i class="uil uil-redo me-1"></i> Ulangi Post-test
                                     </a>
                                 </div>
                             @endif

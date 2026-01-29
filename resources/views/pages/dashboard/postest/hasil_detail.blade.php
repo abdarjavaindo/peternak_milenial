@@ -4,7 +4,7 @@
             <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
             <li class="breadcrumb-item"><a href="{{ route('bagian', $materi->bagian->kursus->id) }}">Section</a></li>
             <li class="breadcrumb-item"><a href="{{ route('materi', $materi->bagian->id) }}">Materi</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('hasil', $materi->id) }}">Hasil Postest</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('hasil', $materi->id) }}">Hasil Post-test</a></li>
             <li class="breadcrumb-item active">Detail Jawaban</li>
         </ol>
     </nav>
@@ -17,7 +17,7 @@
                     <!-- Header Info -->
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <h5>Detail Hasil Postest</h5>
+                            <h5>Detail Hasil Post-test</h5>
                             <table class="table table-borderless table-sm">
                                 <tr>
                                     <td width="120">Nama</td>
@@ -44,7 +44,7 @@
                                 <tr>
                                     <td>Status</td>
                                     <td>:
-                                        @if($attempt->status === 'lulus')
+                                        @if ($attempt->status === 'lulus')
                                             <span class="badge bg-success">Lulus</span>
                                         @else
                                             <span class="badge bg-danger">Tidak Lulus</span>
@@ -81,7 +81,7 @@
                                         </td>
                                         <td>{{ $jawaban->jawaban->opsi ?? '-' }}</td>
                                         <td class="text-center">
-                                            @if($jawaban->is_correct == '1')
+                                            @if ($jawaban->is_correct == '1')
                                                 <span class="badge bg-success">Benar</span>
                                             @else
                                                 <span class="badge bg-danger">Salah</span>

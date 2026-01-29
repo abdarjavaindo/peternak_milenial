@@ -25,7 +25,7 @@ class PostestUserController extends Controller
 
         // Validation: must be postest type
         if (!$materi->isPostest()) {
-            return redirect()->back()->with('gagal', 'Ini bukan postest');
+            return redirect()->back()->with('gagal', 'Ini bukan post-test');
         }
 
         // Check existing attempt (get latest one)
@@ -73,7 +73,7 @@ class PostestUserController extends Controller
 
             // CHECK 1: Training sudah expired?
             if (now()->greaterThanOrEqualTo($trainingDeadline)) {
-                return redirect()->back()->with('gagal', 'Waktu pelatihan sudah habis. Postest tidak dapat dimulai.');
+                return redirect()->back()->with('gagal', 'Waktu pelatihan sudah habis. Post-test tidak dapat dimulai.');
             }
 
             // CHECK 2: Hitung sisa waktu training dalam menit
@@ -134,7 +134,7 @@ class PostestUserController extends Controller
         $totalSoal = count($questions);
 
         if ($totalSoal === 0) {
-            return redirect()->back()->with('gagal', 'Tidak ada soal dalam postest ini');
+            return redirect()->back()->with('gagal', 'Tidak ada soal dalam post-test ini');
         }
 
         // Bounds check

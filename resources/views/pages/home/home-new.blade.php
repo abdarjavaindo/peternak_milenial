@@ -84,7 +84,7 @@
                                             {{ $set_komuditas }}
                                         </a>
                                         <p class="text-muted mt-2">
-                                            Komuditas Peternak
+                                            Komoditas Peternak
                                         </p>
                                     </div>
                                 </div>
@@ -222,7 +222,7 @@
             <div class="row justify-content-center">
                 <div class="col-12 text-center">
                     <div class="section-title">
-                        <h4 class="title">Peta Komuditas di Jawa Timur</h4>
+                        <h4 class="title">Peta Komoditas di Jawa Timur</h4>
                         <small class="text-muted">Klik wilayah untuk melihat detail</small>
                     </div>
                 </div>

@@ -52,7 +52,7 @@ class KategoriProdukController extends Controller
         ]);
         $data_kategori_produk = Kategori_produk::where('slug_kategori', Str::slug($request->nama_kategori))->first();
         if ($data_kategori_produk) {
-            return redirect()->route('kategori-produk')->with('gagal', 'Slug atau nama komuditas sudah ada');
+            return redirect()->route('kategori-produk')->with('gagal', 'Slug atau nama komoditas sudah ada');
         }
         $data = [
             'hewan_id' => $request->hewan_id,

@@ -11,7 +11,7 @@
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('materi', $pertanyaan->materi->bagian->id) }}">
-                    Materi dan Postest
+                    Materi dan Post-test
                 </a>
             </li>
             <li class="breadcrumb-item">
@@ -83,20 +83,20 @@
             }
         },
         columns: [{
-            data: 'DT_RowIndex'
-        },
-        {
-            data: 'opsi'
-        },
-        {
-            data: 'benarkah'
-        },
-        {
-            data: 'aksi',
-            className: 'text-center',
-            orderable: false,
-            searchable: false
-        }
+                data: 'DT_RowIndex'
+            },
+            {
+                data: 'opsi'
+            },
+            {
+                data: 'benarkah'
+            },
+            {
+                data: 'aksi',
+                className: 'text-center',
+                orderable: false,
+                searchable: false
+            }
         ],
         language: {
             emptyTable: 'Data Kosong',
@@ -108,7 +108,7 @@
         }],
     });
 
-    $(document).on('click', '.delete-button', function (e) {
+    $(document).on('click', '.delete-button', function(e) {
         e.preventDefault();
         var form = $(this).closest('form');
         Swal.fire({

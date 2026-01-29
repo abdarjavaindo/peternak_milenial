@@ -15,7 +15,7 @@
                 <a class="flex-sm-fill text-sm-center nav-link active"
                     href="{{ route('user.edit', $adminbasic->id) }}">Edit User</a>
                 <a class="flex-sm-fill text-sm-center nav-link"
-                    href="{{ route('user.komuditas', $adminbasic->id) }}">Komuditas</a>
+                    href="{{ route('user.komuditas', $adminbasic->id) }}">Komoditas</a>
             </nav>
         @endif --}}
 

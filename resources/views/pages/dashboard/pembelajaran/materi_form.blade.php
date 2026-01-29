@@ -4,10 +4,20 @@
     @if (request()->segment(2) == 'materi-edit')
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pelatihan</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('bagian', $materi->bagian->kursus->id) }}">Section</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('materi', $materi->bagian->id) }}">Materi dan
-                        Postest</a>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('pembelajaran') }}">
+                        Pelatihan
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('bagian', $materi->bagian->kursus->id) }}">
+                        Section
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('materi', $materi->bagian->id) }}">
+                        Materi dan Post-test
+                    </a>
                 </li>
                 <li class="breadcrumb-item active">Edit Pertanyaan</li>
             </ol>
@@ -70,7 +80,7 @@
                                 </option>
                                 <option value="postest"
                                     {{ old('jenis') == 'postest' || @$materi->jenis == 'postest' ? 'selected' : '' }}>
-                                    Postest
+                                    Post-test
                                 </option>
                             </select>
                             @error('jenis')
@@ -82,7 +92,7 @@
                             <label for="durasi_postest" class="form-label">
                                 Durasi (Menit)
                             </label>
-                            <small>*isi jika tipe materi postest</small>
+                            <small>*isi jika tipe materi adalah post-test</small>
                             <input type="number" class="form-control" id="durasi_postest" name="durasi_postest"
                                 value="{{ isset($materi) ? $materi->durasi_postest : old('durasi_postest') }}">
                             @error('durasi_postest')
@@ -94,7 +104,7 @@
                             <label for="nilai_lulus_postest" class="form-label">
                                 KKM
                             </label>
-                            <small>*isi jika tipe materi postest</small>
+                            <small>*isi jika tipe materi post-test</small>
                             <input type="number" class="form-control" id="nilai_lulus_postest"
                                 name="nilai_lulus_postest"
                                 value="{{ isset($materi) ? $materi->nilai_lulus_postest : old('nilai_lulus_postest') }}">

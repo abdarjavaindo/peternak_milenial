@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <h1 class="app-page-title">Komuditas yang Dijual</h1>
+    <h1 class="app-page-title">Komoditas yang Dijual</h1>
 
     <section class="section">
         <x-flash-message></x-flash-message>
@@ -20,7 +20,7 @@
                                 <tr>
                                     <th class="text-center" width="5%">No</th>
                                     <th class="text-center" width="12%">Hewan</th>
-                                    <th class="text-center" width="12%">Komuditas</th>
+                                    <th class="text-center" width="12%">Komoditas</th>
                                     <th class="text-center" width="13%">Slug</th>
                                     <th class="text-center" width="20%">Rincian</th>
                                 </tr>
@@ -57,23 +57,23 @@
             }
         },
         columns: [{
-            data: 'DT_RowIndex'
-        },
-        {
-            data: 'hewan'
-        },
-        {
-            data: 'nama_kategori'
-        },
-        {
-            data: 'slug_kategori'
-        },
-        {
-            data: 'aksi',
-            className: 'text-center',
-            orderable: false,
-            searchable: false
-        }
+                data: 'DT_RowIndex'
+            },
+            {
+                data: 'hewan'
+            },
+            {
+                data: 'nama_kategori'
+            },
+            {
+                data: 'slug_kategori'
+            },
+            {
+                data: 'aksi',
+                className: 'text-center',
+                orderable: false,
+                searchable: false
+            }
         ],
         language: {
             emptyTable: 'Data Kosong',
@@ -85,7 +85,7 @@
         }],
     });
 
-    $(document).on('click', '.delete-button', function (e) {
+    $(document).on('click', '.delete-button', function(e) {
         e.preventDefault();
         var form = $(this).closest('form');
         Swal.fire({

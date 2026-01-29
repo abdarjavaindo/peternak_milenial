@@ -21,7 +21,7 @@
 
                                 <div class="mb-3">
                                     <label for="nama_ternak" class="form-label">
-                                        Komuditas Hewan Ternak yang Dimiliki
+                                        Komoditas Hewan Ternak yang Dimiliki
                                         @if (isset($ternak))
                                             <span class="text-warning"><i>(readonly)</i></span>
                                         @else

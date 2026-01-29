@@ -34,7 +34,7 @@
 
                                 <div class="mb-3">
                                     <label for="kategori_produk_id" class="form-label">
-                                        Komuditas
+                                        Komoditas
                                         <span class="text-danger"><i>(required)</i></span>
                                     </label>
                                     <select name="kategori_produk_id" id="kategori_produk_id"

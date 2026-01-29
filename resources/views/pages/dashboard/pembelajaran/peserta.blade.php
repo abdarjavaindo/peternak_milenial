@@ -96,7 +96,7 @@
         Swal.fire({
             title: 'Hapus Kepesertaan?',
             html: '<p>Apakah Anda yakin ingin menghapus kepesertaan user ini?</p>' +
-                '<p class="text-danger"><strong>⚠️ Perhatian:</strong> Data progress, postest, dan jawaban user juga akan dihapus.</p>',
+                '<p class="text-danger"><strong>⚠️ Perhatian:</strong> Data progress, post-test, dan jawaban user juga akan dihapus.</p>',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',

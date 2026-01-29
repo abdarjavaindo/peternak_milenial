@@ -105,7 +105,7 @@
                         <li class="submenu-item">
                             <a class="submenu-link {{ request()->segment(1) == 'kategori-produk' ? 'active' : '' }}"
                                 href="{{ route('kategori-produk') }}">
-                                Komuditas yang Dijual
+                                Komoditas yang Dijual
                             </a>
                         </li>
                         <li class="submenu-item">

@@ -5,7 +5,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
             <li class="breadcrumb-item"><a href="{{ route('bagian', $materi->bagian->kursus->id) }}">Section</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('materi', $materi->bagian->id) }}">Materi dan Postest</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('materi', $materi->bagian->id) }}">Materi dan Post-test</a></li>
             <li class="breadcrumb-item active">Pertanyaan</li>
         </ol>
     </nav>
@@ -75,17 +75,17 @@
             }
         },
         columns: [{
-            data: 'DT_RowIndex'
-        },
-        {
-            data: 'pertanyaan'
-        },
-        {
-            data: 'aksi',
-            className: 'text-center',
-            orderable: false,
-            searchable: false
-        }
+                data: 'DT_RowIndex'
+            },
+            {
+                data: 'pertanyaan'
+            },
+            {
+                data: 'aksi',
+                className: 'text-center',
+                orderable: false,
+                searchable: false
+            }
         ],
         language: {
             emptyTable: 'Data Kosong',
@@ -97,7 +97,7 @@
         }],
     });
 
-    $(document).on('click', '.delete-button', function (e) {
+    $(document).on('click', '.delete-button', function(e) {
         e.preventDefault();
         var form = $(this).closest('form');
         Swal.fire({

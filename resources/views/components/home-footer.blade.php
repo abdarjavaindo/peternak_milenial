@@ -51,7 +51,7 @@
                                                 {{ $set_komuditas }}
                                             </a>
                                             <p class="text-muted mt-2">
-                                                Komuditas Peternak
+                                                Komoditas Peternak
                                             </p>
                                         </div>
                                     </div>
